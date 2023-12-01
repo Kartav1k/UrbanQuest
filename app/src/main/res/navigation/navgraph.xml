@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navgraph"
+    app:startDestination="@id/screenOfRegistration">
+
+    <fragment
+        android:id="@+id/screenOfRegistration"
+        android:name="com.example.urbanquest.ui.ScreenOfRegistration"
+        android:label="fragment_screen_of_registration"
+        tools:layout="@layout/fragment_screen_of_registration" >
+        <action
+            android:id="@+id/action_screenOfRegistration_to_buttonHub"
+            app:destination="@id/buttonHub" />
+    </fragment>
+    <fragment
+        android:id="@+id/screenOfLogin"
+        android:name="com.example.urbanquest.ui.ScreenOfLogin"
+        android:label="fragment_screen_of_login"
+        tools:layout="@layout/fragment_screen_of_login" />
+    <fragment
+        android:id="@+id/buttonHub"
+        android:name="com.example.urbanquest.ui.ButtonHub"
+        android:label="ButtonHub" >
+        <action
+            android:id="@+id/action_buttonHub_to_screenOfLogin"
+            app:destination="@id/screenOfLogin" />
+        <action
+            android:id="@+id/action_buttonHub_to_recView"
+            app:destination="@id/recView" />
+        <action
+            android:id="@+id/action_buttonHub_to_cameraFragment"
+            app:destination="@id/cameraFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recView"
+        android:name="com.example.urbanquest.ui.RecView"
+        android:label="RecView" />
+    <fragment
+        android:id="@+id/cameraFragment"
+        android:name="com.example.urbanquest.ui.CameraFragment"
+        android:label="CameraFragment" />
+</navigation>
