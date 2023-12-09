@@ -32,6 +32,9 @@
         <action
             android:id="@+id/action_buttonHub_to_cameraFragment"
             app:destination="@id/cameraFragment" />
+        <action
+            android:id="@+id/action_buttonHub_to_screenOfData"
+            app:destination="@id/screenOfData" />
     </fragment>
     <fragment
         android:id="@+id/recView"
@@ -41,4 +44,18 @@
         android:id="@+id/cameraFragment"
         android:name="com.example.urbanquest.ui.CameraFragment"
         android:label="CameraFragment" />
+    <fragment
+        android:id="@+id/screenOfData"
+        android:name="com.example.urbanquest.ui.ScreenOfData"
+        android:label="fragment_screen_of_data"
+        tools:layout="@layout/fragment_screen_of_data" >
+        <action
+            android:id="@+id/action_screenOfData_to_screenOfList"
+            app:destination="@id/screenOfList" />
+    </fragment>
+    <fragment
+        android:id="@+id/screenOfList"
+        android:name="com.example.urbanquest.ui.ScreenOfList"
+        android:label="fragment_screen_of_list"
+        tools:layout="@layout/fragment_screen_of_list" />
 </navigation>

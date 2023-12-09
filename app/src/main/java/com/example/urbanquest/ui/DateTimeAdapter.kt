@@ -5,10 +5,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.urbanquest.Data.Models.DateItem
+import com.example.urbanquest.data.models.RecViewElementaOfData
 import com.example.urbanquest.R
 
-class DateTimeAdapter(private val dateTimeList: List<DateItem>) :
+class DateTimeAdapter(private val dateTimeList: List<RecViewElementaOfData>) :
     RecyclerView.Adapter<DateTimeAdapter.DateTimeViewHolder>() {
 
     class DateTimeViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

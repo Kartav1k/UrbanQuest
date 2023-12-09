@@ -12,8 +12,8 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.urbanquest.Data.Models.DateItem
 import com.example.urbanquest.R
+import com.example.urbanquest.data.models.RecViewElementaOfData
 import java.io.File
 
 
@@ -33,14 +33,14 @@ class RecView : Fragment(){
         recView.layoutManager=LinearLayoutManager(requireContext())
         Log.d("RecView", "Список создан")
     }
-    private fun loadDatesFromFile(): List<DateItem> {
+    private fun loadDatesFromFile(): List<RecViewElementaOfData> {
         val dir = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "photos")
         val fileName = File(dir, "date.txt")
-        val dateItems = mutableListOf<DateItem>()
+        val dateItems = mutableListOf<RecViewElementaOfData>()
         if (fileName.exists()) {
             val lines = fileName.readLines()
             for (line in lines) {
-                dateItems.add(DateItem(line))
+                dateItems.add(RecViewElementaOfData(line))
             }
         }
         return dateItems

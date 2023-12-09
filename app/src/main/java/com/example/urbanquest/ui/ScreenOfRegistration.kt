@@ -9,7 +9,7 @@ import android.widget.Button
 import android.widget.EditText
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.example.urbanquest.Data.Models.UserData
+import com.example.urbanquest.data.models.UserData
 import com.example.urbanquest.R
 import com.example.urbanquest.ui.state_holder.RegistrationViewModel
 
