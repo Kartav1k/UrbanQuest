@@ -16,7 +16,6 @@ class ProductViewModel @Inject constructor(application: Application, val product
     fun insertProduct(product: ProductEntity){
         productRepository.insertProduct(product)
     }
-
 }
 
 
