@@ -5,15 +5,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.urbanquest.R
 import com.example.urbanquest.ui.state_holder.ProductViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class ScreenOfList : Fragment() {
-    private lateinit var productViewModel: ProductViewModel
+    private val userViewModel: ProductViewModel by viewModels()
     private lateinit var productAdapter: ProductAdapter
 
     override fun onCreateView(
@@ -31,8 +34,8 @@ class ScreenOfList : Fragment() {
         recyclerView.adapter = productAdapter
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        productViewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
-        productViewModel.getAllProducts().observe(viewLifecycleOwner, Observer { products ->
+        //productViewModel = ViewModelProvider(this).get(ProductViewModel::class.java)
+        userViewModel.getAllProducts().observe(viewLifecycleOwner, Observer { products ->
             productAdapter.setData(products)
         })
     }
