@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +23,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -30,7 +32,7 @@ import com.example.urbanquest.ui.theme.White
 import com.example.urbanquest.ui.theme.WhiteGrey
 import com.example.urbanquest.ui.theme.linkColor
 
-//Доделать ввод текста
+//Функция регистрации, пока без логики создания аккаунта с данными, пароль не скрывается и если перейти из меню назад, данные не сохраняются в строках
 @Composable
 fun Registration(navController: NavHostController, isAuthorization: Boolean){
     val password = remember { mutableStateOf("") }
@@ -52,7 +54,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
 
         TextField(login.value,
             placeholder = {
-                Text("Логин", fontSize = 12.sp
+                Text("Логин", fontSize = 12.sp, color = WhiteGrey
                 )},
             onValueChange = {
                 login.value=it
@@ -62,15 +64,19 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             modifier = Modifier
                 .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
             colors = TextFieldDefaults.colors(
-                unfocusedTextColor = WhiteGrey,
+                unfocusedTextColor = Black,
                 focusedContainerColor = MaterialTheme.colorScheme.outlineVariant,
                 focusedTextColor = Black,
-                unfocusedContainerColor = White
+                unfocusedContainerColor = White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
             )
+
         )
         TextField(phone.value,
             placeholder = {
-                Text("Телефон", fontSize = 12.sp
+                Text("Телефон", fontSize = 12.sp, color = WhiteGrey
                 )},
             onValueChange = {
                 phone.value=it
@@ -80,16 +86,19 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             modifier = Modifier
                 .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
             colors = TextFieldDefaults.colors(
-                unfocusedTextColor = WhiteGrey,
+                unfocusedTextColor = Black,
                 focusedContainerColor = MaterialTheme.colorScheme.outlineVariant,
                 focusedTextColor = Black,
-                unfocusedContainerColor = White
+                unfocusedContainerColor = White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
             )
         )
 
         TextField(password.value,
             placeholder = {
-                Text("Пароль", fontSize = 12.sp
+                Text("Пароль", fontSize = 12.sp, color = WhiteGrey
                 )},
             onValueChange = {
                 password.value=it
@@ -99,16 +108,19 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             modifier = Modifier
                 .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
             colors = TextFieldDefaults.colors(
-                unfocusedTextColor = WhiteGrey,
+                unfocusedTextColor = Black,
                 focusedContainerColor = MaterialTheme.colorScheme.outlineVariant,
                 focusedTextColor = Black,
-                unfocusedContainerColor = White
+                unfocusedContainerColor = White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
             )
         )
 
         TextField(confirmation_password.value,
             placeholder = {
-                Text("Повторите пароль", fontSize = 12.sp
+                Text("Повторите пароль", fontSize = 12.sp, color = WhiteGrey
                 )},
             onValueChange = {
                 confirmation_password.value=it
@@ -118,10 +130,13 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             modifier = Modifier
                 .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
             colors = TextFieldDefaults.colors(
-                unfocusedTextColor = WhiteGrey,
+                unfocusedTextColor = Black,
                 focusedContainerColor = MaterialTheme.colorScheme.outlineVariant,
                 focusedTextColor = Black,
-                unfocusedContainerColor = White
+                unfocusedContainerColor = White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
             )
         )
 

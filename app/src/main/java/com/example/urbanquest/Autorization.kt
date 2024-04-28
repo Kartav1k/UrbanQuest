@@ -14,19 +14,28 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.ui.theme.Black
+import com.example.urbanquest.ui.theme.White
+import com.example.urbanquest.ui.theme.WhiteGrey
 import com.example.urbanquest.ui.theme.linkColor
 
 
-//Доделать ввод текста
+//Функция авторизации, пока без логики сохранения данных и сверки их с сервером, пароль не скрывается и если перейти из меню назад, данные не сохраняются в строках
 @Composable
 fun Authorization(navController: NavHostController){
+    val login = remember { mutableStateOf("") }
+    val password = remember { mutableStateOf("") }
     Column(modifier = Modifier
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
@@ -40,31 +49,51 @@ fun Authorization(navController: NavHostController){
                 .fillMaxSize()
         )
 
-        TextField(value = "",
+        TextField(login.value,
             placeholder = {
-                Text("Логин", fontSize = 12.sp
+                Text("Логин", fontSize = 12.sp, color = WhiteGrey
                 )
             },
             onValueChange = {
-
+                login.value=it
             },
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
             modifier = Modifier
-                .padding(start = 84.dp, end = 84.dp, bottom = 16.dp)
+                .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
+            colors = TextFieldDefaults.colors(
+                unfocusedTextColor = Black,
+                focusedContainerColor = MaterialTheme.colorScheme.outlineVariant,
+                focusedTextColor = Black,
+                unfocusedContainerColor = White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
+            minLines = 1
         )
-        TextField(value = "",
+        TextField(password.value,
             placeholder = {
-                Text("Пароль", fontSize = 12.sp
+                Text("Пароль", fontSize = 12.sp, color = WhiteGrey
                 )
             },
             onValueChange = {
-
+                password.value=it
             },
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
             modifier = Modifier
-                .padding(start = 84.dp, end = 84.dp, bottom = 3.dp)
+                .padding(start = 84.dp, end = 84.dp, bottom = 3.dp),
+            colors = TextFieldDefaults.colors(
+                unfocusedTextColor = Black,
+                focusedContainerColor = MaterialTheme.colorScheme.outlineVariant,
+                focusedTextColor = Black,
+                unfocusedContainerColor = White,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            ),
+            minLines = 1
         )
         Row(){
             Text("Забыли пароль? ", color = MaterialTheme.colorScheme.tertiary)
