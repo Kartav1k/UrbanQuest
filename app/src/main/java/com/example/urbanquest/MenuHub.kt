@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 
 
 @Composable
-fun MenuHub(navController: NavHostController){
+fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
     Box(
         modifier = Modifier
             .fillMaxSize()){

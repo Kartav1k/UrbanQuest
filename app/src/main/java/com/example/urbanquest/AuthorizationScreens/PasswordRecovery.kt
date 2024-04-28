@@ -1,8 +1,7 @@
-package com.example.urbanquest
+package com.example.urbanquest.AuthorizationScreens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -25,17 +24,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.ui.theme.Black
-import com.example.urbanquest.ui.theme.White
-import com.example.urbanquest.ui.theme.WhiteGrey
-import com.example.urbanquest.ui.theme.linkColor
+import com.example.urbanquest.R
 
-
-//Функция авторизации, пока без логики сохранения данных и сверки их с сервером, пароль не скрывается и если перейти из меню назад, данные не сохраняются в строках
+//Функция изменения пароля, пока без логики сохранения данных, пароль не скрывается, не сохраняется и изменяет в БД у пользователя, данные не сохраняются в строках
 @Composable
-fun Authorization(navController: NavHostController){
-    val login = remember { mutableStateOf("") }
+fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean){
     val password = remember { mutableStateOf("") }
+    val confirmationPassword = remember { mutableStateOf("") }
+    val phone = remember { mutableStateOf("") }
     Column(modifier = Modifier
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
@@ -49,32 +45,32 @@ fun Authorization(navController: NavHostController){
                 .fillMaxSize()
         )
 
-        TextField(login.value,
+        TextField(phone.value,
             placeholder = {
-                Text("Логин", fontSize = 12.sp, color = WhiteGrey
+                Text("Телефон", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
                 )
             },
             onValueChange = {
-                login.value=it
+                phone.value=it
             },
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
             modifier = Modifier
                 .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
             colors = TextFieldDefaults.colors(
-                unfocusedTextColor = Black,
-                focusedContainerColor = MaterialTheme.colorScheme.outlineVariant,
-                focusedTextColor = Black,
-                unfocusedContainerColor = White,
+                unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                focusedTextColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
-            ),
-            minLines = 1
+            )
+
         )
         TextField(password.value,
             placeholder = {
-                Text("Пароль", fontSize = 12.sp, color = WhiteGrey
+                Text("Пароль", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
                 )
             },
             onValueChange = {
@@ -83,23 +79,40 @@ fun Authorization(navController: NavHostController){
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
             modifier = Modifier
-                .padding(start = 84.dp, end = 84.dp, bottom = 3.dp),
+                .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
             colors = TextFieldDefaults.colors(
-                unfocusedTextColor = Black,
-                focusedContainerColor = MaterialTheme.colorScheme.outlineVariant,
-                focusedTextColor = Black,
-                unfocusedContainerColor = White,
+                unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                focusedTextColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
-            ),
-            minLines = 1
+            )
         )
-        Row(){
-            Text("Забыли пароль? ", color = MaterialTheme.colorScheme.tertiary)
-            Text("Восстановите", color = linkColor, modifier = Modifier
-                .padding(bottom = 16.dp))
-        }
+
+        TextField(confirmationPassword.value,
+            placeholder = {
+                Text("Подтвердите новый пароль", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
+                )
+            },
+            onValueChange = {
+                confirmationPassword.value=it
+            },
+            shape = RoundedCornerShape(45.dp),
+            singleLine = true,
+            modifier = Modifier
+                .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
+            colors = TextFieldDefaults.colors(
+                unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
+                focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                focusedTextColor = MaterialTheme.colorScheme.tertiary,
+                unfocusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
+                focusedIndicatorColor = Color.Transparent,
+                unfocusedIndicatorColor = Color.Transparent,
+                disabledIndicatorColor = Color.Transparent
+            )
+        )
         Button(
             onClick = {
                 navController.navigate("MenuHub")
@@ -115,5 +128,4 @@ fun Authorization(navController: NavHostController){
 
         }
     }
-
 }

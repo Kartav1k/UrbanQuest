@@ -20,17 +20,18 @@ private val DarkColorScheme = darkColorScheme(
     primary = White,
     secondary = BlackGreen,
     outline = GreenUQ,
-    tertiary = White,
-    outlineVariant = White
+    tertiary = White,                           //Text
+    outlineVariant = BlackGrey,
+    secondaryContainer = Black
 )
 
 private val LightColorScheme = lightColorScheme(
     primary = GreenUQ,
     secondary = ButtonColor,
-    tertiary = Black,
+    tertiary = Black,                           //Text
     background = GreenUQ,
-    outlineVariant = White
-
+    outlineVariant = WhiteGrey,
+    secondaryContainer = White
 
     /* Other default colors to override
     background = Color(0xFFFFFBFE),

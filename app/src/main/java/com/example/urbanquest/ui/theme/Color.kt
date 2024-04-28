@@ -3,7 +3,7 @@ package com.example.urbanquest.ui.theme
 import androidx.compose.ui.graphics.Color
 
 
-val BlackGreen = Color (0xFF004607)
+val BlackGreen = Color (0xFF1EA03B)
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 
@@ -19,6 +19,6 @@ val Grey = Color(0xFF6B6B6B)
 val GreenUQ = Color(0xFF65D067)
 val ButtonColor = Color(0xFFC9EA63)
 val linkColor = Color(0xFF0075FF)
-val BlackGrey = Color(0xFF484848)
+val BlackGrey = Color(0xFF6B6B6B)
 val Red = Color(0xFFFF2828)
 val WhiteGrey = Color(0xFF807C7B)
