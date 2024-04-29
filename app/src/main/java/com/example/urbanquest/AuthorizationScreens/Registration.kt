@@ -144,7 +144,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
                 .height(height = 52.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)) {
-            Text("Регистрация", color = MaterialTheme.colorScheme.tertiary, fontSize = 16.sp)
+            Text("Регистрация", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
 
         }
     }

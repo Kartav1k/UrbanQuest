@@ -124,7 +124,7 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)
         ) {
-            Text("Вход", color = MaterialTheme.colorScheme.tertiary, fontSize = 16.sp)
+            Text("Вход", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
 
         }
     }

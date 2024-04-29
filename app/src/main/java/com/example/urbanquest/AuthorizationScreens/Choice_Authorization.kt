@@ -52,7 +52,7 @@ fun ChoiceAuthorization(navController: NavHostController){
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)
             ) {
-            Text("Зарегистрироваться", color = MaterialTheme.colorScheme.tertiary, fontSize = 16.sp)
+            Text("Зарегистрироваться", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
             
         }
 
@@ -66,7 +66,7 @@ fun ChoiceAuthorization(navController: NavHostController){
                 .height(height = 52.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)) {
-            Text("Авторизироваться", color = MaterialTheme.colorScheme.tertiary, fontSize = 16.sp)
+            Text("Авторизироваться", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
         }
 
         Button(
@@ -79,7 +79,7 @@ fun ChoiceAuthorization(navController: NavHostController){
                 .height(height = 52.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)) {
-            Text("Гостевой вход", color = MaterialTheme.colorScheme.tertiary, fontSize = 16.sp)
+            Text("Гостевой вход", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
 
         }
 

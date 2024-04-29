@@ -101,8 +101,8 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
         )
 
         Row(){
-            Text("Забыли пароль? ", color = MaterialTheme.colorScheme.tertiary)
-            Text("Восстановите", color = linkColor, modifier = Modifier
+            Text("Забыли пароль? ", color = MaterialTheme.colorScheme.tertiary, fontSize = 12.sp)
+            Text("Восстановите", color = linkColor, fontSize = 12.sp, modifier = Modifier
                 .padding(bottom = 16.dp)
                 .clickable { navController.navigate("PasswordRecovery")})
         }
@@ -118,7 +118,7 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)
         ) {
-            Text("Вход", color = MaterialTheme.colorScheme.tertiary, fontSize = 16.sp)
+            Text("Вход", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
 
         }
     }
