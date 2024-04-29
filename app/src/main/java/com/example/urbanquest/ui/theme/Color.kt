@@ -1,5 +1,6 @@
 package com.example.urbanquest.ui.theme
 
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.ui.graphics.Color
 
 
@@ -22,3 +23,4 @@ val linkColor = Color(0xFF0075FF)
 val BlackGrey = Color(0xFF6B6B6B)
 val Red = Color(0xFFFF2828)
 val WhiteGrey = Color(0xFF807C7B)
+val BottomAppBarColor = Color (0xFF484848)
