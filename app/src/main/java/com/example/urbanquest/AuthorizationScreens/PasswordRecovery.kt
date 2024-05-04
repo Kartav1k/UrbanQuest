@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -20,7 +19,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -32,17 +32,17 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
     val password = remember { mutableStateOf("") }
     val confirmationPassword = remember { mutableStateOf("") }
     val phone = remember { mutableStateOf("") }
+
     Column(modifier = Modifier
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
-            painter = painterResource(id = R.drawable.iconforstartscreen),
+            imageVector = ImageVector.vectorResource(id = R.drawable.iconforstartscreen),
             contentDescription = "Иконка на начальном экране",
             alignment = Alignment.TopEnd,
             modifier = Modifier
-                .padding(start = 68.dp, top = 48.dp, end = 68.dp, bottom = 24.dp)
-                .size(224.dp)
-                .fillMaxSize()
+                .padding(start = 82.dp, top = 24.dp, end = 82.dp, bottom = 24.dp)
+
         )
 
         TextField(phone.value,
@@ -68,6 +68,7 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
             )
 
         )
+
         TextField(password.value,
             placeholder = {
                 Text("Пароль", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
@@ -113,6 +114,7 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
                 disabledIndicatorColor = Color.Transparent
             )
         )
+
         Button(
             onClick = {
                 navController.navigate("MenuHub")

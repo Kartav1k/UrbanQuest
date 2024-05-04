@@ -37,11 +37,11 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
-            painter = painterResource(id = R.drawable.iconforstartscreen),
+            painter = painterResource(id = R.drawable.iconforstartscreen_png),
             contentDescription = "Иконка на начальном экране",
             alignment = Alignment.TopEnd,
             modifier = Modifier
-                .padding(start = 68.dp, top = 48.dp, end = 68.dp, bottom = 24.dp)
+                .padding(start = 82.dp, top = 24.dp, end = 82.dp, bottom = 24.dp)
                 .size(224.dp)
                 .fillMaxSize()
         )

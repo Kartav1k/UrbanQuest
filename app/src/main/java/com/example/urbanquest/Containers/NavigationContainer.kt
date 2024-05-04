@@ -1,23 +1,27 @@
-package com.example.urbanquest
+package com.example.urbanquest.Containers
 
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import com.example.urbanquest.AuthorizationScreens.Authorization
 import com.example.urbanquest.AuthorizationScreens.ChoiceAuthorization
 import com.example.urbanquest.AuthorizationScreens.PasswordRecovery
 import com.example.urbanquest.AuthorizationScreens.Registration
+import com.example.urbanquest.Favourite
+import com.example.urbanquest.MenuHub
+import com.example.urbanquest.ProfileScreen
+import com.example.urbanquest.Search
+import com.example.urbanquest.YandexMap
 
 var isAuthorization: Boolean = false
 //navController: NavHostController
 @Composable
-fun NavigationContainer() {
+fun NavigationContainer(navController: NavHostController) {
 
-    val navController = rememberNavController()
     NavHost(navController = navController,
-        startDestination = "choice_authorization"){
-        composable("choice_authorization"){
+        startDestination = "Choice_authorization"){
+        composable("Choice_authorization"){
             ChoiceAuthorization(navController)
         }
         composable("Registration"){
@@ -32,6 +36,17 @@ fun NavigationContainer() {
         composable("PasswordRecovery"){
             PasswordRecovery(navController, isAuthorization)
         }
+        composable("Profile"){
+            ProfileScreen(navController, isAuthorization)
+        }
+        composable("YandexMap"){
+            YandexMap(navController, isAuthorization)
+        }
+        composable("Search"){
+            Search(navController, isAuthorization)
+        }
+        composable("Favourite"){
+            Favourite(navController, isAuthorization)
+        }
     }
-
 }
