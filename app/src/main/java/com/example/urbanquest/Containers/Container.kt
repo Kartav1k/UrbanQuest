@@ -10,7 +10,6 @@ import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -19,9 +18,11 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.urbanquest.R
 import com.example.urbanquest.ui.theme.BottomAppBarColor
 
 
@@ -47,7 +48,7 @@ fun Container(){
 
                 ) {
 
-                    Spacer(Modifier.weight(0.5f, true))
+                    Spacer(Modifier.weight(1f, true))
 
                     IconButton(
                         onClick = {
@@ -72,7 +73,8 @@ fun Container(){
                             if (currentRoute != "Search") {
                                 navController.navigate("Search")
                             }
-                        }
+                        },
+                        enabled = currentRoute != "Search"
                     ) {
                         Icon(
                             Icons.Filled.Search,
@@ -89,13 +91,15 @@ fun Container(){
                             if (currentRoute != "YandexMap") {
                                 navController.navigate("YandexMap")
                             }
-                        }
+                        },
+                        enabled = currentRoute != "YandexMap"
                     ) {
                         Icon(
-                            Icons.Filled.ShoppingCart,//пока заглушка
+                            painter = painterResource(id = R.drawable.map_icon),
                             contentDescription = "Карта",
-                            Modifier.size(40.dp),
-                            tint = if (currentRoute == "Map") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer
+                            modifier = Modifier
+                                .size(156.dp),
+                            tint = if (currentRoute == "YandexMap") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer
                         )
                     }
 
@@ -106,7 +110,8 @@ fun Container(){
                             if (currentRoute != "Favourite") {
                                 navController.navigate("Favourite")
                             }
-                        }
+                        },
+                        enabled = currentRoute != "Favourite"
                     ) {
                         Icon(
                             Icons.Filled.FavoriteBorder,
@@ -123,7 +128,8 @@ fun Container(){
                             if (currentRoute != "Profile") {
                                 navController.navigate("Profile")
                             }
-                        }
+                        },
+                        enabled = currentRoute != "Profile"
                     ) {
                         Icon(
                             Icons.Filled.Person,
@@ -133,7 +139,7 @@ fun Container(){
                         )
                     }
 
-                    Spacer(Modifier.weight(0.5f, true))
+                    Spacer(Modifier.weight(1f, true))
 
                 }
             }
