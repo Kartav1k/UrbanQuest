@@ -26,6 +26,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
+import com.example.urbanquest.constants.entrance_text
+import com.example.urbanquest.constants.passwordRepeat_text
+import com.example.urbanquest.constants.password_text
+import com.example.urbanquest.constants.phone_text
 
 //Функция изменения пароля, пока без логики сохранения данных, пароль не скрывается, не сохраняется и изменяет в БД у пользователя, данные не сохраняются в строках
 @Composable
@@ -34,21 +38,26 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
     val confirmationPassword = remember { mutableStateOf("") }
     val phone = remember { mutableStateOf("") }
 
-    Column(modifier = Modifier
+    Column(
+        modifier = Modifier
         .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally) {
         Image(
             imageVector = ImageVector.vectorResource(id = R.drawable.iconforstartscreen),
-            contentDescription = "Иконка на начальном экране",
+            contentDescription = "Icon on start screen",
             alignment = Alignment.TopEnd,
             modifier = Modifier
                 .padding(start = 96.dp, top = 24.dp, end = 96.dp, bottom = 24.dp)
 
         )
 
-        TextField(phone.value,
+        TextField(
+            phone.value,
             placeholder = {
-                Text("Телефон", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
+                Text(
+                    phone_text,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.outlineVariant
                 )
             },
             onValueChange = {
@@ -71,9 +80,13 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
 
         )
 
-        TextField(password.value,
+        TextField(
+            password.value,
             placeholder = {
-                Text("Пароль", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
+                Text(
+                    password_text,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.outlineVariant
                 )
             },
             onValueChange = {
@@ -95,9 +108,13 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
             )
         )
 
-        TextField(confirmationPassword.value,
+        TextField(
+            confirmationPassword.value,
             placeholder = {
-                Text("Повторите пароль", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
+                Text(
+                    passwordRepeat_text,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.outlineVariant
                 )
             },
             onValueChange = {
@@ -130,7 +147,10 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)
         ) {
-            Text("Вход", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
+            Text(
+                entrance_text,
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 14.sp)
 
         }
     }

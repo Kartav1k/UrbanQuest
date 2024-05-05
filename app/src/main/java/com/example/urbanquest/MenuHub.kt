@@ -23,6 +23,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.constants.LABEL_menu
+import com.example.urbanquest.constants.LABEL_recomendation
+import com.example.urbanquest.constants.doRecomendationList_text
+import com.example.urbanquest.constants.foodPlaces_text
+import com.example.urbanquest.constants.question_text
+import com.example.urbanquest.constants.recomendationList_text
+import com.example.urbanquest.constants.walkingPlaces_text
 
 
 @Composable
@@ -61,7 +67,8 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     .fillMaxWidth(),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text("Куда вы хотите сходить?",
+                Text(
+                    question_text,
                     fontSize = 18.sp,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.tertiary,
@@ -69,14 +76,16 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     modifier = Modifier
                         .padding(top=8.dp,end=16.dp)
                 )
-                Text("Составьте свой список рекомендаций",
+                Text(
+                    doRecomendationList_text,
                     fontSize = 11.sp,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.tertiary)
             }
         }
 
-        Text("Ваш список рекомендаций",
+        Text(
+            LABEL_recomendation,
             fontSize = 22.sp,
             textAlign = TextAlign.Start,
             color = MaterialTheme.colorScheme.tertiary,
@@ -101,15 +110,18 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                 ),
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
         ) {
-            Column(modifier = Modifier
-                .fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally) {
-                Text("Посмотрите свой список",
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxWidth(),
+            ){
+                Text(
+                    recomendationList_text,
                     fontSize =12.sp,
-                    color = MaterialTheme.colorScheme.tertiary)
-                Text("рекомендаций",
-                    fontSize =12.sp,
-                    color = MaterialTheme.colorScheme.tertiary)
+                    color = MaterialTheme.colorScheme.tertiary,
+                    textAlign = TextAlign.Center,
+                    softWrap = true
+                )
             }
         }
 
@@ -140,7 +152,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        "Места для прогулок",
+                        walkingPlaces_text,
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.tertiary,
                         textAlign = TextAlign.Center,
@@ -172,7 +184,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        "Рестораны и кафе",
+                        foodPlaces_text,
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.tertiary,
                         textAlign = TextAlign.Center,  // Центрирование текста

@@ -20,6 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
+import com.example.urbanquest.constants.authorization_text
+import com.example.urbanquest.constants.guest_text
+import com.example.urbanquest.constants.registration_text
 
 
 //Начальный экран, где выбор куда перейти: на регистрацию, на авторизацию или войти без входа с урезанным функционалом(не реализовано)
@@ -33,7 +36,7 @@ fun ChoiceAuthorization(navController: NavHostController){
 
         Image(
             imageVector = ImageVector.vectorResource(id = R.drawable.iconforstartscreen),
-            contentDescription = "Иконка на начальном экране",
+            contentDescription = "Icon on start screen",
             alignment = Alignment.TopEnd,
             modifier = Modifier
                 .padding(start = 96.dp, top = 24.dp, end = 96.dp, bottom = 24.dp)
@@ -51,7 +54,10 @@ fun ChoiceAuthorization(navController: NavHostController){
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)
             ) {
-            Text("Зарегистрироваться", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
+            Text(
+                registration_text,
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 14.sp)
             
         }
 
@@ -65,7 +71,10 @@ fun ChoiceAuthorization(navController: NavHostController){
                 .height(height = 52.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)) {
-            Text("Авторизироваться", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
+            Text(
+                authorization_text,
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 14.sp)
         }
 
         Button(
@@ -78,7 +87,10 @@ fun ChoiceAuthorization(navController: NavHostController){
                 .height(height = 52.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)) {
-            Text("Гостевой вход", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
+            Text(
+                guest_text,
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 14.sp)
 
         }
 

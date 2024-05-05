@@ -28,6 +28,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
+import com.example.urbanquest.constants.entrance_text
+import com.example.urbanquest.constants.forgetPassword_text
+import com.example.urbanquest.constants.login_text
+import com.example.urbanquest.constants.password_text
+import com.example.urbanquest.constants.recovery_text
 import com.example.urbanquest.ui.theme.WhiteGrey
 import com.example.urbanquest.ui.theme.linkColor
 
@@ -45,15 +50,17 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
 
         Image(
             imageVector = ImageVector.vectorResource(id = R.drawable.iconforstartscreen),
-            contentDescription = "Иконка на начальном экране",
+            contentDescription = "Icon on start screen",
             alignment = Alignment.TopEnd,
             modifier = Modifier
                 .padding(start = 96.dp, top = 24.dp, end = 96.dp, bottom = 24.dp)
         )
 
-        TextField(login.value,
+        TextField(
+            login.value,
             placeholder = {
-                Text("Логин", fontSize = 12.sp, color = WhiteGrey
+                Text(
+                    login_text, fontSize = 12.sp, color = WhiteGrey
                 )
             },
             onValueChange = {
@@ -76,9 +83,11 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
             minLines = 1
         )
 
-        TextField(password.value,
+        TextField(
+            password.value,
             placeholder = {
-                Text("Пароль", fontSize = 12.sp, color = WhiteGrey
+                Text(
+                    password_text, fontSize = 12.sp, color = WhiteGrey
                 )
             },
             onValueChange = {
@@ -102,8 +111,15 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
         )
 
         Row(){
-            Text("Забыли пароль? ", color = MaterialTheme.colorScheme.tertiary, fontSize = 12.sp)
-            Text("Восстановите", color = linkColor, fontSize = 12.sp, modifier = Modifier
+            Text(
+                forgetPassword_text,
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 12.sp)
+            Text(
+                recovery_text,
+                color = linkColor,
+                fontSize = 12.sp,
+                modifier = Modifier
                 .padding(bottom = 16.dp)
                 .clickable { navController.navigate("PasswordRecovery")})
         }
@@ -119,7 +135,10 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)
         ) {
-            Text("Вход", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
+            Text(
+                entrance_text,
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 14.sp)
 
         }
     }

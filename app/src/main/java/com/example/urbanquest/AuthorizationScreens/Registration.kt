@@ -27,6 +27,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
+import com.example.urbanquest.constants.login_text
+import com.example.urbanquest.constants.passwordRepeat_text
+import com.example.urbanquest.constants.password_text
+import com.example.urbanquest.constants.phone_text
+import com.example.urbanquest.constants.registration_text
 
 //Функция регистрации, пока без логики сохранения данных, пароль не скрывается и если перейти из меню назад, данные не сохраняются в строках
 //Добавить ограничения на ввод, сокрытие паролей, сохранение аккаунта, и проверку на ошибки
@@ -43,7 +48,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
 
         Image(
             imageVector = ImageVector.vectorResource(id = R.drawable.iconforstartscreen),
-            contentDescription = "Иконка на начальном экране",
+            contentDescription = "Icon on start screen",
             alignment = Alignment.TopEnd,
             modifier = Modifier
                 .padding(
@@ -53,9 +58,13 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
                     bottom = 16.dp
                 )
         )
-        TextField(login.value,
+        TextField(
+            login.value,
             placeholder = {
-                Text("Логин", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
+                Text(
+                    login_text,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.outlineVariant
                 )},
             onValueChange = {
                 login.value=it
@@ -77,9 +86,13 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             )
 
         )
-        TextField(phone.value,
+        TextField(
+            phone.value,
             placeholder = {
-                Text("Телефон", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
+                Text(
+                    phone_text,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.outlineVariant
                 )},
             onValueChange = {
                 phone.value=it
@@ -100,9 +113,13 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             )
         )
 
-        TextField(password.value,
+        TextField(
+            password.value,
             placeholder = {
-                Text("Пароль", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
+                Text(
+                    password_text,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.outlineVariant
                 )},
             onValueChange = {
                 password.value=it
@@ -123,9 +140,13 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             )
         )
 
-        TextField(confirmationPassword.value,
+        TextField(
+            confirmationPassword.value,
             placeholder = {
-                Text("Повторите пароль", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
+                Text(
+                    passwordRepeat_text,
+                    fontSize = 12.sp,
+                    color = MaterialTheme.colorScheme.outlineVariant
                 )},
             onValueChange = {
                 confirmationPassword.value=it
@@ -156,7 +177,10 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
                 .height(height = 52.dp)
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)) {
-            Text("Регистрация", color = MaterialTheme.colorScheme.tertiary, fontSize = 14.sp)
+            Text(
+                registration_text,
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 14.sp)
 
         }
     }
