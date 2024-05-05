@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -32,6 +33,7 @@ import com.example.urbanquest.ui.theme.linkColor
 
 
 //Функция авторизации, пока без логики сохранения данных и сверки их с сервером, пароль не скрывается и если перейти из меню назад, данные не сохраняются в строках
+//Добавить сокрытие пароля, проверку с аккаунтом в базе
 @Composable
 fun Authorization(navController: NavHostController, isAuthorization: Boolean){
     val login = remember { mutableStateOf("") }
@@ -46,7 +48,7 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
             contentDescription = "Иконка на начальном экране",
             alignment = Alignment.TopEnd,
             modifier = Modifier
-                .padding(start = 82.dp, top = 24.dp, end = 82.dp, bottom = 24.dp)
+                .padding(start = 96.dp, top = 24.dp, end = 96.dp, bottom = 24.dp)
         )
 
         TextField(login.value,
@@ -57,6 +59,7 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
             onValueChange = {
                 login.value=it
             },
+            textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
             modifier = Modifier
@@ -81,6 +84,7 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
             onValueChange = {
                 password.value=it
             },
+            textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
             modifier = Modifier

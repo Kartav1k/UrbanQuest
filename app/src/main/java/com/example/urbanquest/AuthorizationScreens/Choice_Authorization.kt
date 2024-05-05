@@ -36,7 +36,7 @@ fun ChoiceAuthorization(navController: NavHostController){
             contentDescription = "Иконка на начальном экране",
             alignment = Alignment.TopEnd,
             modifier = Modifier
-                .padding(start = 82.dp, top = 24.dp, end = 82.dp, bottom = 24.dp)
+                .padding(start = 96.dp, top = 24.dp, end = 96.dp, bottom = 24.dp)
 
         )
 

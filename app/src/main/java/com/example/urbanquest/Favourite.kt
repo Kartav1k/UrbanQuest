@@ -15,6 +15,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.constants.LABEL_favourite
 
 @Composable
 fun Favourite(navController: NavHostController, isAuthorization: Boolean){
@@ -37,7 +38,7 @@ fun Favourite(navController: NavHostController, isAuthorization: Boolean){
             }
 
             Text(
-                text = "Избранное",
+                text = LABEL_favourite,
                 fontSize = 32.sp,
                 modifier = Modifier.padding(top = 10.dp),
                 color = MaterialTheme.colorScheme.tertiary

@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -41,7 +42,7 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
             contentDescription = "Иконка на начальном экране",
             alignment = Alignment.TopEnd,
             modifier = Modifier
-                .padding(start = 82.dp, top = 24.dp, end = 82.dp, bottom = 24.dp)
+                .padding(start = 96.dp, top = 24.dp, end = 96.dp, bottom = 24.dp)
 
         )
 
@@ -53,9 +54,10 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
             onValueChange = {
                 phone.value=it
             },
+            textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
-            modifier = Modifier
+            modifier = Modifier.fillMaxWidth()
                 .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
             colors = TextFieldDefaults.colors(
                 unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
@@ -77,9 +79,10 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
             onValueChange = {
                 password.value=it
             },
+            textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
-            modifier = Modifier
+            modifier = Modifier.fillMaxWidth()
                 .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
             colors = TextFieldDefaults.colors(
                 unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
@@ -94,15 +97,16 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
 
         TextField(confirmationPassword.value,
             placeholder = {
-                Text("Подтвердите новый пароль", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
+                Text("Повторите пароль", fontSize = 12.sp, color = MaterialTheme.colorScheme.outlineVariant
                 )
             },
             onValueChange = {
                 confirmationPassword.value=it
             },
+            textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
-            modifier = Modifier
+            modifier = Modifier.fillMaxWidth()
                 .padding(start = 84.dp, end = 84.dp, bottom = 16.dp),
             colors = TextFieldDefaults.colors(
                 unfocusedTextColor = MaterialTheme.colorScheme.tertiary,

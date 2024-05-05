@@ -1,4 +1,4 @@
-package com.example.urbanquest.Containers
+package com.example.urbanquest.containers
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController

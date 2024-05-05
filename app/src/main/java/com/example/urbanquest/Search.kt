@@ -28,6 +28,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.constants.LABEL_search
+import com.example.urbanquest.constants.search_placeholder
+
+
 
 @Composable
 fun Search(navController: NavHostController, isAuthorization: Boolean){
@@ -54,7 +58,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
             }
 
             Text(
-                text = "Поиск",
+                text = LABEL_search,
                 fontSize = 32.sp,
                 modifier = Modifier.padding(top = 10.dp),
                 color = MaterialTheme.colorScheme.tertiary
@@ -68,7 +72,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                 searchRequest=it
             },
             placeholder = {
-                Text(text = "Поиск мест", color = MaterialTheme.colorScheme.outlineVariant,
+                Text(text = search_placeholder, color = MaterialTheme.colorScheme.outlineVariant,
                     fontSize = 14.sp)
             },
             shape = RoundedCornerShape(90.dp),

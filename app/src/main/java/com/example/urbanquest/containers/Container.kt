@@ -1,4 +1,4 @@
-package com.example.urbanquest.Containers
+package com.example.urbanquest.containers
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
