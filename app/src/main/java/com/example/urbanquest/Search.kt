@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -32,14 +34,17 @@ import com.example.urbanquest.constants.LABEL_search
 import com.example.urbanquest.constants.search_placeholder
 
 
-
 @Composable
 fun Search(navController: NavHostController, isAuthorization: Boolean){
 
     var searchRequest by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
 
-    Column {
+    Column() {
+
+        val configuration = LocalConfiguration.current
+        val screenWidth = configuration.screenWidthDp.dp
+
 
         Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
 
@@ -59,9 +64,13 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
 
             Text(
                 text = LABEL_search,
-                fontSize = 32.sp,
                 modifier = Modifier.padding(top = 10.dp),
-                color = MaterialTheme.colorScheme.tertiary
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = when {
+                    screenWidth <= 360.dp -> 32.sp
+                    screenWidth > 360.dp -> 36.sp
+                    else -> 36.sp
+                }
             )
         }
 
@@ -109,5 +118,11 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                 }
             }
         )
+
+        LazyColumn {
+            item {
+                SearchItem()
+            }
+        }
     }
 }

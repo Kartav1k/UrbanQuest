@@ -1,6 +1,8 @@
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
+    alias(libs.plugins.fireBaseAndroid)
+    id("com.google.firebase.firebase-perf")
 }
 
 android {
@@ -13,6 +15,8 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+
+
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -63,6 +67,11 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.material3.android)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.perf)
+    implementation(libs.firebase.storage)
+    implementation(libs.play.services.maps)
+    implementation(libs.androidx.benchmark.macro)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -70,4 +79,9 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    implementation(platform(libs.fireBase.com))
+    implementation(libs.fireBase.analytics)
+
+    implementation(libs.map.kit)
 }

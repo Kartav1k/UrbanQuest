@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "63765711490",
+    "project_id": "urbanquest-eded5",
+    "storage_bucket": "urbanquest-eded5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:63765711490:android:5c57c83f77275c34fdc29b",
+        "android_client_info": {
+          "package_name": "com.example.urbanquest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBZaztaDXg3OXvO7B_vHYjJ7JZqy1vUUyE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,6 +1,7 @@
 package com.example.urbanquest.AuthorizationScreens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -22,6 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
@@ -44,9 +47,13 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
     val login = remember { mutableStateOf("") }
     val password = remember { mutableStateOf("") }
     Column(modifier = Modifier
-        .fillMaxSize(),
+        .fillMaxSize()
+        .verticalScroll(ScrollState(0)),
 
         horizontalAlignment = Alignment.CenterHorizontally) {
+
+        val configuration = LocalConfiguration.current
+        val screenWidth = configuration.screenWidthDp.dp
 
         Image(
             imageVector = ImageVector.vectorResource(id = R.drawable.iconforstartscreen),
@@ -60,7 +67,7 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
             login.value,
             placeholder = {
                 Text(
-                    login_text, fontSize = 12.sp, color = WhiteGrey
+                    login_text, fontSize = 14.sp, color = WhiteGrey
                 )
             },
             onValueChange = {
@@ -87,7 +94,7 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
             password.value,
             placeholder = {
                 Text(
-                    password_text, fontSize = 12.sp, color = WhiteGrey
+                    password_text, fontSize = 14.sp, color = WhiteGrey
                 )
             },
             onValueChange = {
@@ -138,9 +145,12 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
             Text(
                 entrance_text,
                 color = MaterialTheme.colorScheme.tertiary,
-                fontSize = 14.sp)
-
+                fontSize = when {
+                    screenWidth <= 360.dp -> 14.sp
+                    screenWidth > 360.dp -> 18.sp
+                    else -> 18.sp
+                }
+            )
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package com.example.urbanquest
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -8,10 +9,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,6 +23,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -32,10 +36,18 @@ import com.example.urbanquest.constants.friends_text
 import com.example.urbanquest.constants.info_text
 import com.example.urbanquest.constants.settings_text
 
+
 @Composable
 fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
-    Column {
-        Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
+    Column(
+        modifier = Modifier.verticalScroll(ScrollState(0))
+    ) {
+
+        val configuration = LocalConfiguration.current
+        val screenWidth = configuration.screenWidthDp.dp
+
+        Row(
+            modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
 
             IconButton(
                 onClick = {
@@ -53,9 +65,13 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
 
             Text(
                 text = LABEL_profile,
-                fontSize = 32.sp,
                 modifier = Modifier.padding(top = 10.dp),
-                color = MaterialTheme.colorScheme.tertiary
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = when {
+                    screenWidth <= 360.dp -> 32.sp
+                    screenWidth > 360.dp -> 36.sp
+                    else -> 36.sp
+                }
             )
         }
 
@@ -82,7 +98,9 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                 },
                     modifier = Modifier
                         .padding(start = 12.dp, end = 32.dp)
-                        .fillMaxWidth()
+                        .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
+
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start,
@@ -97,7 +115,11 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                     Text(
                         text = friends_text,
                         color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = 16.sp
+                        fontSize = when {
+                            screenWidth <= 360.dp -> 18.sp
+                            screenWidth > 360.dp -> 22.sp
+                            else -> 22.sp
+                        }
                     )
                 }
             }
@@ -109,7 +131,9 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                 },
                 modifier = Modifier
                     .padding(start = 12.dp, end = 32.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
+
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -125,7 +149,11 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                     Text(
                         text = achievements_text,
                         color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = 16.sp
+                        fontSize = when {
+                            screenWidth <= 360.dp -> 18.sp
+                            screenWidth > 360.dp -> 22.sp
+                            else -> 22.sp
+                        }
                     )
                 }
             }
@@ -137,7 +165,9 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                 },
                 modifier = Modifier
                     .padding(start = 12.dp, end = 32.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
+
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -153,7 +183,11 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                     Text(
                         text = settings_text,
                         color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = 16.sp
+                        fontSize = when {
+                            screenWidth <= 360.dp -> 18.sp
+                            screenWidth > 360.dp -> 22.sp
+                            else -> 22.sp
+                        }
                     )
                 }
             }
@@ -165,7 +199,9 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                 },
                 modifier = Modifier
                     .padding(start = 12.dp, end = 32.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
+
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -181,7 +217,11 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                     Text(
                         text = info_text,
                         color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = 16.sp
+                        fontSize = when {
+                            screenWidth <= 360.dp -> 18.sp
+                            screenWidth > 360.dp -> 20.sp
+                            else -> 22.sp
+                        }
                     )
                 }
             }
@@ -193,7 +233,9 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                 },
                 modifier = Modifier
                     .padding(start = 12.dp, end = 32.dp)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
+
             ) {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
@@ -209,7 +251,11 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                     Text(
                         text = exit_text,
                         color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = 16.sp
+                        fontSize = when {
+                            screenWidth <= 360.dp -> 18.sp
+                            screenWidth > 360.dp -> 22.sp
+                            else -> 22.sp
+                        }
                     )
                 }
             }

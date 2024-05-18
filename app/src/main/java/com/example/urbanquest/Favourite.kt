@@ -11,6 +11,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -20,6 +21,11 @@ import com.example.urbanquest.constants.LABEL_favourite
 @Composable
 fun Favourite(navController: NavHostController, isAuthorization: Boolean){
     Column {
+
+
+        val configuration = LocalConfiguration.current
+        val screenWidth = configuration.screenWidthDp.dp
+
 
         Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
 
@@ -39,9 +45,13 @@ fun Favourite(navController: NavHostController, isAuthorization: Boolean){
 
             Text(
                 text = LABEL_favourite,
-                fontSize = 32.sp,
                 modifier = Modifier.padding(top = 10.dp),
-                color = MaterialTheme.colorScheme.tertiary
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = when {
+                    screenWidth <= 360.dp -> 32.sp
+                    screenWidth > 360.dp -> 36.sp
+                    else -> 36.sp
+                }
             )
         }
 

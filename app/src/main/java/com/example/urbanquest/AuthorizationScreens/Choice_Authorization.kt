@@ -1,12 +1,14 @@
 package com.example.urbanquest.AuthorizationScreens
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -31,8 +34,12 @@ fun ChoiceAuthorization(navController: NavHostController){
     
     Column(
         modifier = Modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .verticalScroll(ScrollState(0)),
         horizontalAlignment = Alignment.CenterHorizontally) {
+
+        val configuration = LocalConfiguration.current
+        val screenWidth = configuration.screenWidthDp.dp
 
         Image(
             imageVector = ImageVector.vectorResource(id = R.drawable.iconforstartscreen),
@@ -57,7 +64,12 @@ fun ChoiceAuthorization(navController: NavHostController){
             Text(
                 registration_text,
                 color = MaterialTheme.colorScheme.tertiary,
-                fontSize = 14.sp)
+                fontSize = when {
+                    screenWidth <= 360.dp -> 14.sp
+                    screenWidth > 360.dp -> 18.sp
+                    else -> 18.sp
+                }
+            )
             
         }
 
@@ -74,7 +86,12 @@ fun ChoiceAuthorization(navController: NavHostController){
             Text(
                 authorization_text,
                 color = MaterialTheme.colorScheme.tertiary,
-                fontSize = 14.sp)
+                fontSize = when {
+                    screenWidth <= 360.dp -> 14.sp
+                    screenWidth > 360.dp -> 18.sp
+                    else -> 18.sp
+                }
+            )
         }
 
         Button(
@@ -90,8 +107,12 @@ fun ChoiceAuthorization(navController: NavHostController){
             Text(
                 guest_text,
                 color = MaterialTheme.colorScheme.tertiary,
-                fontSize = 14.sp)
-
+                fontSize = when {
+                    screenWidth <= 360.dp -> 14.sp
+                    screenWidth > 360.dp -> 18.sp
+                    else -> 18.sp
+                }
+            )
         }
 
     }
