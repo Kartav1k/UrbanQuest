@@ -1,8 +1,9 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
-    alias(libs.plugins.fireBaseAndroid)
-    id("com.google.firebase.firebase-perf")
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -22,6 +23,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "MAPKIT_API_KEY", "\"${getMapkitApiKey()}\"")
     }
 
     buildTypes {
@@ -42,6 +44,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.1"
@@ -51,7 +54,20 @@ android {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
     }
+
 }
+
+
+fun getMapkitApiKey(): String {
+    val properties = Properties()
+    project.file("../local.properties").inputStream().use { properties.load(it) }
+    val value = properties.getProperty("MAPKIT_API_KEY", "")
+    if (value.isEmpty()) {
+        throw InvalidUserDataException("MapKit API key is not provided. Set your API key in the project's local.properties file: `MAPKIT_API_KEY=<your-api-key-value>`.")
+    }
+    return value
+}
+
 
 dependencies {
 
@@ -67,11 +83,10 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.material3.android)
-    implementation(libs.firebase.database)
-    implementation(libs.firebase.perf)
-    implementation(libs.firebase.storage)
     implementation(libs.play.services.maps)
     implementation(libs.androidx.benchmark.macro)
+    implementation(libs.firebase.database)
+    implementation(libs.firebase.auth)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -79,9 +94,10 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-
-    implementation(platform(libs.fireBase.com))
-    implementation(libs.fireBase.analytics)
+    implementation("com.google.firebase:firebase-analytics")
+    implementation(platform(libs.google.firebase.bom))
+    implementation(libs.picasso)
+    implementation (libs.coil.compose)
 
     implementation(libs.map.kit)
 }

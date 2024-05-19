@@ -10,6 +10,7 @@ import com.yandex.mapkit.mapview.MapView
 
 
 private lateinit var mapView: MapView
+
 @Composable
 fun YandexMap(navController: NavHostController, isAuthorization: Boolean){
     MapKitFactory.initialize(LocalContext.current)
@@ -25,7 +26,6 @@ fun YandexMap(navController: NavHostController, isAuthorization: Boolean){
         update = { view ->
             MapKitFactory.getInstance().onStart()
             mapView.onStart()
-            
         }
     )
 }

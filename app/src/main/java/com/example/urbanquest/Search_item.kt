@@ -1,7 +1,6 @@
 package com.example.urbanquest
 
 import android.util.Log
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -22,17 +21,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
+import coil.request.ImageRequest
 
 
-@Preview(showBackground = true)
 @Composable
-fun SearchItem(){
+fun SearchItem(name: String, address: String, time_open: String, rate: Double, isWorking: Boolean, imageURL: String){
 
     val isClicked = remember { mutableStateOf(false) }
 
@@ -49,18 +52,35 @@ fun SearchItem(){
 
         val configuration = LocalConfiguration.current
         val screenWidth = configuration.screenWidthDp.dp
+        //Picasso.get().load(imageURL).into()
 
 
         Row(){
 
-            Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.iconforstartscreen),
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imageURL)
+                    .build(),
+                contentDescription = "Icon from Storage",
+                contentScale = ContentScale.Inside,
+                modifier = Modifier
+                .padding(start = 8.dp, top = 12.dp, end = 4.dp, bottom = 12.dp)
+                .size(96.dp),
+                placeholder = painterResource(R.drawable.loading),
+                error = painterResource(R.drawable.placeholder_icon),
+                filterQuality = FilterQuality.High,
+                alignment = Alignment.Center,
+            )
+
+
+            /*Image(
+                imageVector = ImageVector.vectorResource(id = R.drawable.placeholder_icon),
                 contentDescription = "Icon on start screen",
                 alignment = Alignment.Center,
                 modifier = Modifier
                     .padding(start = 8.dp, top = 12.dp, end = 4.dp, bottom = 12.dp)
                     .size(96.dp)
-            )
+            )*/
 
 
             //The line with the name and the "Favorites" button
@@ -73,7 +93,7 @@ fun SearchItem(){
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text("Тест",
+                    Text(name,
                         modifier = Modifier
                             .padding(top = 8.dp),
                         color = MaterialTheme.colorScheme.tertiary,
@@ -88,11 +108,11 @@ fun SearchItem(){
                         tint = if (isClicked.value) Color.Red else MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .padding(top = 8.dp, end = 16.dp)
-                            .size(25.dp).
-                    clickable {
-                        isClicked.value = !isClicked.value
-                        Log.d("Favourite", "Не реализовано")
-                    })
+                            .size(25.dp)
+                            .clickable {
+                                isClicked.value = !isClicked.value
+                                Log.d("Favourite", "Не реализовано")
+                            })
                 }
 
 
@@ -106,7 +126,7 @@ fun SearchItem(){
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(20.dp))
-                    Text(text = "Тестовый адрес",
+                    Text(address,
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         maxLines = 3,
@@ -131,7 +151,7 @@ fun SearchItem(){
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(20.dp))
-                    Text(text = "Тест оценка",
+                    Text(rate.toString(),
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {
@@ -155,7 +175,7 @@ fun SearchItem(){
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(20.dp))
-                    Text(text = "Открыто с 00:00",
+                    Text(text = if(isWorking) "Открыто с $time_open" else "Закрыто",
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {
@@ -169,14 +189,3 @@ fun SearchItem(){
         }
     }
 }
-
-/*
-val configuration = LocalConfiguration.current
-val screenWidth = configuration.screenWidthDp.dp
-
-fontSize = when {
-    screenWidth <= 360.dp -> 16.sp
-    screenWidth > 360.dp -> 18.sp
-    else -> 18.sp
-}
-*/
