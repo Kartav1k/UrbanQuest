@@ -1,5 +1,6 @@
 package com.example.urbanquest.AuthorizationScreens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
@@ -16,8 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -26,25 +29,30 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
+import com.example.urbanquest.constants.email_text
 import com.example.urbanquest.constants.login_text
 import com.example.urbanquest.constants.passwordRepeat_text
 import com.example.urbanquest.constants.password_text
-import com.example.urbanquest.constants.phone_text
 import com.example.urbanquest.constants.registration_text
 
-//Функция регистрации, пока без логики сохранения данных, пароль не скрывается и если перейти из меню назад, данные не сохраняются в строках
-//Добавить ограничения на ввод, сокрытие паролей, сохранение аккаунта, и проверку на ошибки
+//Функция регистрации, пока данные не сохраняются в строках при переходе назад
+
+
 @Composable
 fun Registration(navController: NavHostController, isAuthorization: Boolean){
-    val password = remember { mutableStateOf("") }
-    val confirmationPassword = remember { mutableStateOf("") }
-    val login = remember { mutableStateOf("") }
-    val phone = remember { mutableStateOf("") }
+
+    var password by remember { mutableStateOf("") }
+    var confirmationPassword by remember { mutableStateOf("") }
+    var login by remember { mutableStateOf("") }
+    var email by remember { mutableStateOf("") }
     val context = LocalContext.current
+
+
     Column(modifier = Modifier
         .fillMaxSize()
         .verticalScroll(ScrollState(0)),
@@ -66,7 +74,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
                 )
         )
         TextField(
-            login.value,
+            login,
             placeholder = {
                 Text(
                     login_text,
@@ -74,7 +82,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
                     color = MaterialTheme.colorScheme.outlineVariant
                 )},
             onValueChange = {
-                login.value=it
+                login = it
             },
             textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(45.dp),
@@ -94,15 +102,15 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
 
         )
         TextField(
-            phone.value,
+            email,
             placeholder = {
                 Text(
-                    phone_text,
+                    email_text,
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )},
             onValueChange = {
-                phone.value=it
+                email = it
             },
             textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(45.dp),
@@ -121,15 +129,16 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
         )
 
         TextField(
-            password.value,
+            password,
             placeholder = {
                 Text(
                     password_text,
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )},
+            visualTransformation = PasswordVisualTransformation(),
             onValueChange = {
-                password.value=it
+                password = it
             },
             textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(45.dp),
@@ -148,15 +157,16 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
         )
 
         TextField(
-            confirmationPassword.value,
+            confirmationPassword,
             placeholder = {
                 Text(
                     passwordRepeat_text,
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )},
+            visualTransformation = PasswordVisualTransformation(),
             onValueChange = {
-                confirmationPassword.value=it
+                confirmationPassword = it
             },
             textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(45.dp),
@@ -174,9 +184,22 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             )
         )
 
+
         Button(
             onClick = {
-                navController.navigate("MenuHub")
+                if (password == confirmationPassword
+                    && isEmailEmpty(email)
+                    && isLoginEmpty(login)
+                    && isEmailCorrect(email)
+                    && isPasswordCorrect(password)
+                    && isLoginCorrect(login))
+                {
+                    registrationUser(email, login, password)
+                    navController.navigate("MenuHub")
+                } else {
+                    //Добавить вывод Тостов с определенной проблемой, а не в общем случае
+                    Toast.makeText(context, "Недопустимое значение в одном из полей, исправьте его" , Toast.LENGTH_SHORT).show()
+                }
             },
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier

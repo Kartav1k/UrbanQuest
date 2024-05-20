@@ -1,6 +1,6 @@
-package com.example.urbanquest
+package com.example.urbanquest.SearchScreens
 
-import android.util.Log
+import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,11 +32,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.urbanquest.R
+import com.example.urbanquest.containers.saveSearchQuery
 
 
 @Composable
-fun SearchItem(name: String, address: String, time_open: String, rate: Double, isWorking: Boolean, imageURL: String){
+fun SearchItem(context: Context, name: String, address: String, time_open: String, rate: Double, isWorking: Boolean, imageURL: String){
 
+    val context = LocalContext.current
+    val sharedPref = context.getSharedPreferences("Favorites", Context.MODE_PRIVATE)
     val isClicked = remember { mutableStateOf(false) }
 
 
@@ -48,7 +52,6 @@ fun SearchItem(name: String, address: String, time_open: String, rate: Double, i
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.secondaryContainer)
     ) {
-
 
         val configuration = LocalConfiguration.current
         val screenWidth = configuration.screenWidthDp.dp
@@ -71,20 +74,6 @@ fun SearchItem(name: String, address: String, time_open: String, rate: Double, i
                 filterQuality = FilterQuality.High,
                 alignment = Alignment.Center,
             )
-
-
-            /*Image(
-                imageVector = ImageVector.vectorResource(id = R.drawable.placeholder_icon),
-                contentDescription = "Icon on start screen",
-                alignment = Alignment.Center,
-                modifier = Modifier
-                    .padding(start = 8.dp, top = 12.dp, end = 4.dp, bottom = 12.dp)
-                    .size(96.dp)
-            )*/
-
-
-            //The line with the name and the "Favorites" button
-
 
 
             Column {
@@ -111,7 +100,14 @@ fun SearchItem(name: String, address: String, time_open: String, rate: Double, i
                             .size(25.dp)
                             .clickable {
                                 isClicked.value = !isClicked.value
-                                Log.d("Favourite", "Не реализовано")
+                                val editor = sharedPref.edit()
+                                if (isClicked.value) {
+                                    editor.putBoolean(name, true)
+                                    saveSearchQuery(context, name) // Добавление в историю при нажатии на иконку
+                                } else {
+                                    editor.remove(name)
+                                }
+                                editor.apply()
                             })
                 }
 
@@ -121,7 +117,8 @@ fun SearchItem(name: String, address: String, time_open: String, rate: Double, i
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = ImageVector.vectorResource(
-                        id = R.drawable.map_pin_icon),
+                        id = R.drawable.map_pin_icon
+                    ),
                         contentDescription = "map_pin",
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
@@ -146,7 +143,8 @@ fun SearchItem(name: String, address: String, time_open: String, rate: Double, i
                 Row (
                     verticalAlignment = Alignment.CenterVertically){
                     Icon(imageVector = ImageVector.vectorResource(
-                        id = R.drawable.star_icon),
+                        id = R.drawable.star_icon
+                    ),
                         contentDescription = "rate",
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
@@ -170,7 +168,8 @@ fun SearchItem(name: String, address: String, time_open: String, rate: Double, i
                     .padding(bottom = 8.dp),
                     verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = ImageVector.vectorResource(
-                        id = R.drawable.clock_icon),
+                        id = R.drawable.clock_icon
+                    ),
                         contentDescription = "map_pin",
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier

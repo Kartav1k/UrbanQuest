@@ -1,4 +1,4 @@
-package com.example.urbanquest
+package com.example.urbanquest.ProfileScreens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
@@ -29,6 +29,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.R
 import com.example.urbanquest.constants.LABEL_profile
 import com.example.urbanquest.constants.achievements_text
 import com.example.urbanquest.constants.exit_text
@@ -161,7 +162,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
 
             Button(
                 onClick = {
-
+                    navController.navigate("Settings")
                 },
                 modifier = Modifier
                     .padding(start = 12.dp, end = 32.dp)

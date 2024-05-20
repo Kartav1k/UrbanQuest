@@ -18,8 +18,10 @@ class MainActivity : ComponentActivity() {
         val mapkitApiKey = BuildConfig.MAPKIT_API_KEY
         MapKitFactory.setApiKey(mapkitApiKey)
 
+        val isDarkTheme = getThemeState(this)
+
         setContent {
-            UrbanQuestTheme {
+            UrbanQuestTheme (darkTheme = isDarkTheme){
                 Box(modifier = Modifier
                     .fillMaxSize()
                 ){

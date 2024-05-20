@@ -2,7 +2,7 @@ package com.example.urbanquest.constants
 
 //TextFields
 const val password_text="Пароль"
-const val phone_text="Телефон"
+const val email_text="Почта"
 const val passwordRepeat_text="Повторите пароль"
 const val login_text="Логин"
 const val forgetPassword_text="Забыли пароль?"
@@ -15,10 +15,11 @@ const val LABEL_menu="Меню"
 const val LABEL_search="Поиск"
 const val LABEL_favourite="Избранное"
 const val LABEL_recomendation = "Ваш список рекомендаций"
+const val LABEL_settings = "Настройки"
 
 //Buttons
 const val friends_text="Друзья"
-const val settings_text="Достижения"
+const val settings_text="Настройки"
 const val exit_text="Выход из профиля"
 const val achievements_text="Достижения"
 const val info_text="Информация о приложении"
@@ -39,3 +40,6 @@ const val search_placeholder="Поиск мест"
 const val authorization_warning="Зарегистрируйтесь, чтобы иметь доступ \n" +
         "к этому разделу"
 const val error_warning="Упс, возникли проблемы!"
+
+//Text
+const val change_theme = "Смена темы"

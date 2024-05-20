@@ -1,4 +1,4 @@
-package com.example.urbanquest
+package com.example.urbanquest.SearchScreens
 
  data class Walking_Place_Item
      (

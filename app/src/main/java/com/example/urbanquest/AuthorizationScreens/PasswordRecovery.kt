@@ -29,17 +29,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
+import com.example.urbanquest.constants.email_text
 import com.example.urbanquest.constants.entrance_text
 import com.example.urbanquest.constants.passwordRepeat_text
 import com.example.urbanquest.constants.password_text
-import com.example.urbanquest.constants.phone_text
 
 //Функция изменения пароля, пока без логики сохранения данных, пароль не скрывается, не сохраняется и изменяет в БД у пользователя, данные не сохраняются в строках
 @Composable
 fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean){
     val password = remember { mutableStateOf("") }
     val confirmationPassword = remember { mutableStateOf("") }
-    val phone = remember { mutableStateOf("") }
+    val email = remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -60,16 +60,16 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
         )
 
         TextField(
-            phone.value,
+            email.value,
             placeholder = {
                 Text(
-                    phone_text,
+                    email_text,
                     fontSize = 14.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )
             },
             onValueChange = {
-                phone.value=it
+                email.value=it
             },
             textStyle = TextStyle(fontSize = 14.sp),
             shape = RoundedCornerShape(45.dp),

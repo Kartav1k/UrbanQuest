@@ -1,8 +1,9 @@
-package com.example.urbanquest
+package com.example.urbanquest.SearchScreens
 
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,25 +34,38 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.R
 import com.example.urbanquest.constants.LABEL_search
 import com.example.urbanquest.constants.search_placeholder
+import com.example.urbanquest.containers.clearSearchHistory
+import com.example.urbanquest.containers.getSearchHistory
+import com.example.urbanquest.containers.saveSearchQuery
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 var searchListOfWalkingPlaces: ArrayList<Walking_Place_Item> = arrayListOf()
 private lateinit var firebaseRef: DatabaseReference
+
+
 
 @Composable
 fun Search(navController: NavHostController, isAuthorization: Boolean){
@@ -59,10 +74,17 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
     val keyboardController = LocalSoftwareKeyboardController.current
     var isError by remember { mutableStateOf(false) }
     var isEmpty by remember { mutableStateOf(false) }
+    var isLoading by remember { mutableStateOf(false) }
+    var searchJob by remember { mutableStateOf<Job?>(null) }
+    var showHistory by remember { mutableStateOf(false) }
+    val context = LocalContext.current
+
+
 
 
 
     fun fetchData(query: String){
+        isLoading = true
         firebaseRef = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/").getReference("walking_places_info")
         firebaseRef.addValueEventListener(object: ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -85,13 +107,18 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                     isError = true
                     Log.d("Firebase", "Impossible error")
                 }
+                isLoading = false
+                saveSearchQuery(context, query)
             }
 
             override fun onCancelled(error: DatabaseError) {
                 Log.d("Firebase", "$error")
+                isLoading = false
             }
         })
     }
+
+    val searchHistory = getSearchHistory(context).take(3)
 
     Column() {
 
@@ -131,20 +158,29 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
         TextField(
             value = searchRequest,
             onValueChange = {
-                searchRequest=it
-                fetchData(searchRequest)
+                searchRequest = it
+                searchJob?.cancel()
+                searchJob = CoroutineScope(Dispatchers.Main).launch {
+                    delay(2000)
+                    fetchData(searchRequest)
+                }
+                //fetchData(searchRequest)
             },
             placeholder = {
                 Text(
                     text = search_placeholder,
                     color = MaterialTheme.colorScheme.outlineVariant,
-                    fontSize = 14.sp)
+                    fontSize = 14.sp
+                )
             },
             shape = RoundedCornerShape(90.dp),
             singleLine = true,
             modifier = Modifier
                 .padding(start = 20.dp, end = 20.dp)
-                .fillMaxWidth(),
+                .fillMaxWidth()
+                .onFocusChanged { focusState ->
+                                showHistory = focusState.isFocused
+                },
             colors = TextFieldDefaults.colors(
                 unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -167,61 +203,58 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                 )
             },
             trailingIcon = {
-                if (searchRequest.isNotBlank()){
+                if (searchRequest.isNotBlank()) {
                     Icon(Icons.Filled.Clear,
                         contentDescription = "Clear icon",
-                        tint=MaterialTheme.colorScheme.tertiary,
+                        tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.clickable {
                             searchRequest = ""
                             searchListOfWalkingPlaces.clear()
                             isEmpty = false
                             isError = false
+                            isLoading = false
                             keyboardController?.hide()
                         }
                     )
                 }
             }
         )
-        when {
-            isError -> {
-                key(searchRequest) {
-                    Log.d("Firebase", "Срабатывание ошибки")
-                    Column(
+        if (showHistory && searchRequest.isBlank()) {
+            key(showHistory){
+                Column {
+                    Row(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(20.dp),
-                        verticalArrangement = Arrangement.Center,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                            .fillMaxWidth()
+                            .padding(horizontal = 20.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         Text(
-                            text = "Ошибка. Попробуйте еще раз.",
-                            color = MaterialTheme.colorScheme.error,
+                            text = "История поиска",
+                            color = MaterialTheme.colorScheme.tertiary,
                             fontSize = 18.sp
                         )
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Button(onClick = {
-                            fetchData(searchRequest)
-                        }) {
-                            Text("Обновить")
-                        }
+                        Text(
+                            text = "Очистить",
+                            color = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.clickable {
+                                clearSearchHistory(context)
+                            },
+                            fontSize = 18.sp
+                        )
                     }
-                }
-            }
-
-            isEmpty -> {
-                Log.d("Firebase", "Проверка на пустоту 1")
-                key(searchRequest) {
-                    if (searchListOfWalkingPlaces.isEmpty()) {
-                        Log.d("Firebase", "Проверка на пустоту 2")
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(20.dp),
-                            verticalArrangement = Arrangement.Top,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
+                    LazyColumn {
+                        items(searchHistory) { query ->
                             Text(
-                                text = "Не найдено",
+                                text = query,
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
+                                    .clickable {
+                                        searchRequest = query
+                                        fetchData(query)
+                                        saveSearchQuery(context, query)
+                                        showHistory = false // Скрыть историю после выбора запроса
+                                    },
                                 color = MaterialTheme.colorScheme.tertiary,
                                 fontSize = 18.sp
                             )
@@ -229,21 +262,80 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                     }
                 }
             }
-
-            else -> {
-                Log.d("Firebase", "Все норм 1")
-                key(searchRequest) {
-                    LazyColumn {
-                        Log.d("Firebase", "Все норм 2")
-                        items(searchListOfWalkingPlaces) { place ->
-                            SearchItem(
-                                name = place.name,
-                                address = place.address,
-                                time_open = place.time_open,
-                                rate = place.rate,
-                                isWorking = place.isWorking,
-                                imageURL = place.imageURL
+        }
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            when {
+                isError -> {
+                    key(searchRequest) {
+                        Log.d("Firebase", "Срабатывание ошибки")
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(20.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Ошибка. Попробуйте еще раз.",
+                                color = MaterialTheme.colorScheme.error,
+                                fontSize = 18.sp
                             )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(onClick = {
+                                fetchData(searchRequest)
+                            }) {
+                                Text("Обновить")
+                            }
+                        }
+                    }
+                }
+
+                isEmpty -> {
+                    Log.d("Firebase", "Проверка на пустоту 1")
+                    key(searchRequest) {
+                        if (searchListOfWalkingPlaces.isEmpty()) {
+                            Log.d("Firebase", "Проверка на пустоту 2")
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(20.dp),
+                                verticalArrangement = Arrangement.Top,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = "Не найдено",
+                                    color = MaterialTheme.colorScheme.tertiary,
+                                    fontSize = 18.sp
+                                )
+                            }
+                        }
+                    }
+                }
+
+                else -> {
+                    Log.d("Firebase", "Все норм 1")
+                    key(searchRequest) {
+                        LazyColumn {
+                            Log.d("Firebase", "Все норм 2")
+                            items(searchListOfWalkingPlaces) { place ->
+                                SearchItem(
+                                    context = context,
+                                    name = place.name,
+                                    address = place.address,
+                                    time_open = place.time_open,
+                                    rate = place.rate,
+                                    isWorking = place.isWorking,
+                                    imageURL = place.imageURL
+                                )
+                            }
                         }
                     }
                 }
