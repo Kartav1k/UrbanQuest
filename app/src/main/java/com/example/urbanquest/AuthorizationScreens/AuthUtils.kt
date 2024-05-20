@@ -4,8 +4,11 @@ import android.util.Log
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
 fun isLoginEmpty(login: String): Boolean {
     return login.isNotBlank()
@@ -57,3 +60,35 @@ fun registrationUser(email: String, login: String, password: String) {
             }
         }
 }
+
+
+fun checkLoginInDB(login: String, onEmailReceived: (String?) -> Unit, onError: (Exception) -> Unit) {
+    val firebaseRef = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/").getReference("users")
+    firebaseRef.addListenerForSingleValueEvent(object : ValueEventListener {
+        override fun onDataChange(snapshot: DataSnapshot) {
+            val userData = ArrayList<User>()
+            if (snapshot.exists()) {
+                for (items in snapshot.children) {
+                    val item = items.getValue(User::class.java)
+                    if (item != null && item.login?.contains(login, ignoreCase = false) == true) {
+                        userData.add(item)
+                    }
+                }
+                if (userData.isNotEmpty()) {
+                    val email = userData.first().email
+                    onEmailReceived(email)
+                } else {
+                    onEmailReceived(null)
+                }
+            } else {
+                onEmailReceived(null)
+            }
+        }
+
+        override fun onCancelled(error: DatabaseError) {
+            onError(error.toException())
+        }
+    })
+}
+
+
