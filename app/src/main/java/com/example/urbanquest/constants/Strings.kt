@@ -19,6 +19,9 @@ const val LABEL_favourite = "Избранное"
 const val LABEL_recomendation = "Ваш список рекомендаций"
 const val LABEL_settings = "Настройки"
 const val LABEL_info = "О программе"
+const val LABEL_friend = "Друзья"
+const val LABEL_achievements = "Достижения"
+
 
 //Buttons
 const val friends_text = "Друзья"
@@ -30,9 +33,9 @@ const val registration_text = "Зарегистрироваться"
 const val authorization_text = "Авторизироваться"
 const val entrance_text = "Войти"
 const val guest_text = "Гостевой вход"
-const val recomendationList_text = "Посмотрите свой список рекомендаций"
+const val recommendationList_text = "Посмотрите свой список рекомендаций"
 const val question_text = "Куда вы хотите сходить?"
-const val doRecomendationList_text = "Составьте свой список рекомендаций"
+const val doRecommendationList_text = "Составьте свой список рекомендаций"
 const val walkingPlaces_text = "Места для прогулок"
 const val foodPlaces_text = "Рестораны и кафе"
 

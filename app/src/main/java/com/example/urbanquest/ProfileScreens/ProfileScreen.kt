@@ -87,12 +87,13 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
 
 
         Column(
+
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.Start) {
 
             Button(
                 onClick = {
-
+                    navController.navigate("FriendList")
                 },
                     modifier = Modifier
                         .padding(start = 12.dp, end = 32.dp)
@@ -125,7 +126,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
 
             Button(
                 onClick = {
-
+                    navController.navigate("Achievements")
                 },
                 modifier = Modifier
                     .padding(start = 12.dp, end = 32.dp)
