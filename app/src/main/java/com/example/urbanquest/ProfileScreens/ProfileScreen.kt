@@ -1,7 +1,6 @@
 package com.example.urbanquest.ProfileScreens
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -9,10 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -41,7 +38,7 @@ import com.example.urbanquest.constants.settings_text
 @Composable
 fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
     Column(
-        modifier = Modifier.verticalScroll(ScrollState(0))
+        modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
 
         val configuration = LocalConfiguration.current
@@ -58,7 +55,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                     .padding(top = 4.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
                     contentDescription = "Back button",
                     tint = MaterialTheme.colorScheme.tertiary
                 )
@@ -107,7 +104,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                     horizontalArrangement = Arrangement.Start,
                     modifier = Modifier.fillMaxWidth()){
                     Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.friends),
+                        imageVector = ImageVector.vectorResource(id = R.drawable.friends_icon),
                         contentDescription = "Friends",
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
@@ -142,10 +139,12 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Icon(
-                        Icons.Filled.Star,
+                        imageVector = ImageVector.vectorResource(id = R.drawable.star_icon),
                         contentDescription = "Achievements",
                         tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.padding(end = 8.dp).size(30.dp)
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(30.dp)
                     )
                     Text(
                         text = achievements_text,
@@ -176,10 +175,12 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Icon(
-                        Icons.Filled.Settings,
+                        imageVector = ImageVector.vectorResource(id = R.drawable.settings_icon),
                         contentDescription = "Settings",
                         tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.padding(end = 8.dp).size(30.dp)
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(30.dp)
                     )
                     Text(
                         text = settings_text,
@@ -213,7 +214,9 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                         imageVector = ImageVector.vectorResource(id = R.drawable.info_icon),
                         contentDescription = "Info about App",
                         tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.padding(end = 8.dp).size(30.dp)
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(30.dp)
                     )
                     Text(
                         text = info_text,
@@ -247,7 +250,9 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                         imageVector = ImageVector.vectorResource(id = R.drawable.exit_icon),
                         contentDescription = "Exit from App",
                         tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.padding(end = 8.dp).size(30.dp)
+                        modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(35.dp)
                     )
                     Text(
                         text = exit_text,

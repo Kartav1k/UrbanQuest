@@ -6,9 +6,12 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
 import com.yandex.mapkit.MapKitFactory
+import com.yandex.mapkit.geometry.Point
+import com.yandex.mapkit.map.CameraPosition
+import com.yandex.mapkit.map.MapObjectCollection
 import com.yandex.mapkit.mapview.MapView
 
-
+private lateinit var mapObjectCollection: MapObjectCollection
 private lateinit var mapView: MapView
 
 @Composable
@@ -26,6 +29,13 @@ fun YandexMap(navController: NavHostController, isAuthorization: Boolean){
         update = { view ->
             MapKitFactory.getInstance().onStart()
             mapView.onStart()
+            mapView
+                .mapWindow.map
+                .move(
+                    CameraPosition(
+                        Point(55.751225, 37.629540), 12.0f, 0.0f, 0.0f
+                    )
+                )
         }
     )
 }

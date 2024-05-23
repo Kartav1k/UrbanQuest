@@ -1,13 +1,13 @@
 package com.example.urbanquest.ProfileScreens
 
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -16,6 +16,8 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,18 +30,16 @@ import androidx.navigation.NavHostController
 import com.example.urbanquest.R
 import com.example.urbanquest.constants.LABEL_settings
 import com.example.urbanquest.constants.change_theme
-import com.example.urbanquest.containers.getThemeState
-import com.example.urbanquest.containers.setThemeState
 
 
 @Composable
-fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean){
-    Column(modifier = Modifier.verticalScroll(ScrollState(0))) {
+fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean, themeViewModel: ThemeViewModel){
+    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
         val configuration = LocalConfiguration.current
         val screenWidth = configuration.screenWidthDp.dp
         val context = LocalContext.current
-        var isDarkTheme = getThemeState(context)
+        val isDarkTheme by themeViewModel.isDarkTheme.observeAsState(false)
 
         Row(
             modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
@@ -52,7 +52,7 @@ fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean){
                     .padding(top = 4.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
                     contentDescription = "Back button",
                     tint = MaterialTheme.colorScheme.tertiary
                 )
@@ -73,7 +73,7 @@ fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean){
         Row(verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier
-                .padding(start = 16.dp, end = 32.dp)
+                .padding(start = 24.dp, end = 32.dp)
                 .fillMaxWidth(),
         ){
             Text(change_theme,
@@ -90,8 +90,7 @@ fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean){
             Switch(
                 checked = isDarkTheme,
                 onCheckedChange = {
-                    isDarkTheme = it
-                    setThemeState(context, isDarkTheme)
+                    themeViewModel.toggleTheme(it)
                 },
                 colors = SwitchDefaults.colors(
                     uncheckedThumbColor = MaterialTheme.colorScheme.secondaryContainer,

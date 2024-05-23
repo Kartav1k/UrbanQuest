@@ -28,12 +28,14 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.urbanquest.R
-import com.example.urbanquest.containers.saveSearchQuery
+import com.example.urbanquest.constants.close_place
+import com.example.urbanquest.constants.open_place
 
 
 @Composable
@@ -77,6 +79,9 @@ fun SearchItem(context: Context, name: String, address: String, time_open: Strin
 
 
             Column {
+
+                //The line with the favourite places
+
                 Row(modifier = Modifier
                     .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -90,7 +95,9 @@ fun SearchItem(context: Context, name: String, address: String, time_open: Strin
                             screenWidth <= 360.dp -> 20.sp
                             screenWidth > 360.dp -> 26.sp
                             else -> 22.sp
-                        }
+                        },
+                        maxLines = 1,
+                        overflow = TextOverflow.Ellipsis
                     )
                     Icon(imageVector = ImageVector.vectorResource(id = R.drawable.favourite_icon),
                         contentDescription = "favourite icon",
@@ -100,15 +107,16 @@ fun SearchItem(context: Context, name: String, address: String, time_open: Strin
                             .size(25.dp)
                             .clickable {
                                 isClicked.value = !isClicked.value
-                                val editor = sharedPref.edit()
+                                /*val editor = sharedPref.edit()
                                 if (isClicked.value) {
                                     editor.putBoolean(name, true)
                                     saveSearchQuery(context, name) // Добавление в историю при нажатии на иконку
                                 } else {
                                     editor.remove(name)
                                 }
-                                editor.apply()
-                            })
+                                editor.apply()*/
+                            }
+                    )
                 }
 
 
@@ -174,7 +182,7 @@ fun SearchItem(context: Context, name: String, address: String, time_open: Strin
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(20.dp))
-                    Text(text = if(isWorking) "Открыто с $time_open" else "Закрыто",
+                    Text(text = if(isWorking) "$open_place $time_open" else close_place,
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {

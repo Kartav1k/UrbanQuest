@@ -94,9 +94,11 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("com.google.firebase:firebase-analytics")
+    implementation(libs.firebase.analytics)
+    implementation (libs.androidx.runtime.livedata)
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.picasso)
+    implementation(libs.androidx.lifecycle.viewmodel.compose)
     implementation (libs.coil.compose)
 
     implementation(libs.map.kit)

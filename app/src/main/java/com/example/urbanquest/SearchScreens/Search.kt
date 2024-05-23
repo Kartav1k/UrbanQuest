@@ -11,12 +11,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
@@ -34,7 +32,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
@@ -46,10 +43,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
 import com.example.urbanquest.constants.LABEL_search
+import com.example.urbanquest.constants.item_not_found
 import com.example.urbanquest.constants.search_placeholder
-import com.example.urbanquest.containers.clearSearchHistory
-import com.example.urbanquest.containers.getSearchHistory
-import com.example.urbanquest.containers.saveSearchQuery
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -65,8 +60,6 @@ import kotlinx.coroutines.launch
 var searchListOfWalkingPlaces: ArrayList<Walking_Place_Item> = arrayListOf()
 private lateinit var firebaseRef: DatabaseReference
 
-
-
 @Composable
 fun Search(navController: NavHostController, isAuthorization: Boolean){
 
@@ -76,12 +69,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
     var isEmpty by remember { mutableStateOf(false) }
     var isLoading by remember { mutableStateOf(false) }
     var searchJob by remember { mutableStateOf<Job?>(null) }
-    var showHistory by remember { mutableStateOf(false) }
     val context = LocalContext.current
-
-
-
-
 
     fun fetchData(query: String){
         isLoading = true
@@ -97,7 +85,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                         val item = items.getValue(Walking_Place_Item::class.java)
                         if (item != null && item.name?.contains(query, ignoreCase = true) == true){
                             searchListOfWalkingPlaces.add(item)
-                            Log.d("Firebase", "Сохранило?")
+                            Log.d("Firebase", "Saved request")
                         }
                     }
                     isEmpty = searchListOfWalkingPlaces.isEmpty()
@@ -108,7 +96,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                     Log.d("Firebase", "Impossible error")
                 }
                 isLoading = false
-                saveSearchQuery(context, query)
+                //saveSearchQuery(context, query)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -118,7 +106,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
         })
     }
 
-    val searchHistory = getSearchHistory(context).take(3)
+    //val searchHistory = getSearchHistory(context).take(3)
 
     Column() {
 
@@ -136,7 +124,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                     .padding(top = 4.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
                     contentDescription = "Back button",
                     tint = MaterialTheme.colorScheme.tertiary
                 )
@@ -161,7 +149,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                 searchRequest = it
                 searchJob?.cancel()
                 searchJob = CoroutineScope(Dispatchers.Main).launch {
-                    delay(2000)
+                    delay(500)
                     fetchData(searchRequest)
                 }
                 //fetchData(searchRequest)
@@ -177,10 +165,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
             singleLine = true,
             modifier = Modifier
                 .padding(start = 20.dp, end = 20.dp)
-                .fillMaxWidth()
-                .onFocusChanged { focusState ->
-                                showHistory = focusState.isFocused
-                },
+                .fillMaxWidth(),
             colors = TextFieldDefaults.colors(
                 unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
                 focusedContainerColor = MaterialTheme.colorScheme.secondaryContainer,
@@ -191,23 +176,26 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                 disabledIndicatorColor = Color.Transparent
             ),
             leadingIcon = {
-                Icon(Icons.Filled.Search,
+                Icon(imageVector = ImageVector.vectorResource(id = R.drawable.magnifier_icon),
                     contentDescription = "Search icon",
                     tint = MaterialTheme.colorScheme.tertiary,
                     modifier = Modifier
+                        .size(25.dp)
                         .padding(end = 4.dp)
                         .clickable {
-                            Log.d("Firebase", "Нажали поиск")
+                            Log.d("Firebase", "Search activated")
                             fetchData(searchRequest)
                         }
                 )
             },
             trailingIcon = {
                 if (searchRequest.isNotBlank()) {
-                    Icon(Icons.Filled.Clear,
+                    Icon(imageVector = ImageVector.vectorResource(id = R.drawable.clear_icon),
                         contentDescription = "Clear icon",
                         tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.clickable {
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable {
                             searchRequest = ""
                             searchListOfWalkingPlaces.clear()
                             isEmpty = false
@@ -219,7 +207,94 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                 }
             }
         )
-        if (showHistory && searchRequest.isBlank()) {
+
+
+        if (isLoading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            when {
+                isError -> {
+                    key(searchRequest) {
+                        Log.d("Firebase", "Error")
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .padding(20.dp),
+                            verticalArrangement = Arrangement.Center,
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            Text(
+                                text = "Error. Try again.",
+                                color = MaterialTheme.colorScheme.error,
+                                fontSize = 18.sp
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            Button(onClick = {
+                                fetchData(searchRequest)
+                            }) {
+                                Text("Refresh")
+                            }
+                        }
+                    }
+                }
+
+                isEmpty -> {
+                    Log.d("Firebase", "Check to void request - 1")
+                    key(searchRequest) {
+                        if (searchListOfWalkingPlaces.isEmpty()) {
+                            Log.d("Firebase", "Check to void request - 2")
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(20.dp),
+                                verticalArrangement = Arrangement.Top,
+                                horizontalAlignment = Alignment.CenterHorizontally
+                            ) {
+                                Text(
+                                    text = item_not_found,
+                                    color = MaterialTheme.colorScheme.tertiary,
+                                    fontSize = 18.sp
+                                )
+                            }
+                        }
+                    }
+                }
+
+                else -> {
+                    Log.d("Firebase", "Normal request - 1")
+                    key(searchRequest) {
+                        LazyColumn {
+                            Log.d("Firebase", "Normal request - 2")
+                            items(searchListOfWalkingPlaces) { place ->
+                                SearchItem(
+                                    context = context,
+                                    name = place.name,
+                                    address = place.address,
+                                    time_open = place.time_open,
+                                    rate = place.rate,
+                                    isWorking = place.isWorking,
+                                    imageURL = place.imageURL
+                                )
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+
+
+/*
+if (showHistory && searchRequest.isBlank()) {
             key(showHistory){
                 Column {
                     Row(
@@ -252,8 +327,12 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                                     .clickable {
                                         searchRequest = query
                                         fetchData(query)
-                                        saveSearchQuery(context, query)
-                                        showHistory = false // Скрыть историю после выбора запроса
+                                        if(query.isNotBlank()){
+                                            saveSearchQuery(context, query)
+                                            showHistory = false
+                                        }
+                                        //saveSearchQuery(context, query)
+                                        //showHistory = false
                                     },
                                 color = MaterialTheme.colorScheme.tertiary,
                                 fontSize = 18.sp
@@ -263,83 +342,4 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                 }
             }
         }
-        if (isLoading) {
-            Box(
-                modifier = Modifier
-                    .fillMaxSize(),
-                contentAlignment = Alignment.Center
-            ) {
-                CircularProgressIndicator()
-            }
-        } else {
-            when {
-                isError -> {
-                    key(searchRequest) {
-                        Log.d("Firebase", "Срабатывание ошибки")
-                        Column(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(20.dp),
-                            verticalArrangement = Arrangement.Center,
-                            horizontalAlignment = Alignment.CenterHorizontally
-                        ) {
-                            Text(
-                                text = "Ошибка. Попробуйте еще раз.",
-                                color = MaterialTheme.colorScheme.error,
-                                fontSize = 18.sp
-                            )
-                            Spacer(modifier = Modifier.height(8.dp))
-                            Button(onClick = {
-                                fetchData(searchRequest)
-                            }) {
-                                Text("Обновить")
-                            }
-                        }
-                    }
-                }
-
-                isEmpty -> {
-                    Log.d("Firebase", "Проверка на пустоту 1")
-                    key(searchRequest) {
-                        if (searchListOfWalkingPlaces.isEmpty()) {
-                            Log.d("Firebase", "Проверка на пустоту 2")
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(20.dp),
-                                verticalArrangement = Arrangement.Top,
-                                horizontalAlignment = Alignment.CenterHorizontally
-                            ) {
-                                Text(
-                                    text = "Не найдено",
-                                    color = MaterialTheme.colorScheme.tertiary,
-                                    fontSize = 18.sp
-                                )
-                            }
-                        }
-                    }
-                }
-
-                else -> {
-                    Log.d("Firebase", "Все норм 1")
-                    key(searchRequest) {
-                        LazyColumn {
-                            Log.d("Firebase", "Все норм 2")
-                            items(searchListOfWalkingPlaces) { place ->
-                                SearchItem(
-                                    context = context,
-                                    name = place.name,
-                                    address = place.address,
-                                    time_open = place.time_open,
-                                    rate = place.rate,
-                                    isWorking = place.isWorking,
-                                    imageURL = place.imageURL
-                                )
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
+ */

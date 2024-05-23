@@ -1,6 +1,7 @@
 package com.example.urbanquest.containers
 
 import androidx.compose.runtime.Composable
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -12,6 +13,7 @@ import com.example.urbanquest.Favourite
 import com.example.urbanquest.MenuHub
 import com.example.urbanquest.ProfileScreens.ProfileScreen
 import com.example.urbanquest.ProfileScreens.SettingsScreen
+import com.example.urbanquest.ProfileScreens.ThemeViewModel
 import com.example.urbanquest.SearchScreens.Search
 import com.example.urbanquest.YandexMap
 
@@ -20,7 +22,10 @@ var isAuthorization: Boolean = false
 @Composable
 fun NavigationContainer(navController: NavHostController) {
 
+    val themeViewModel: ThemeViewModel = viewModel()
+
     NavHost(navController = navController,
+
         startDestination = "Choice_authorization"){
         composable("Choice_authorization"){
             ChoiceAuthorization(navController)
@@ -50,7 +55,7 @@ fun NavigationContainer(navController: NavHostController) {
             Favourite(navController, isAuthorization)
         }
         composable("Settings"){
-            SettingsScreen(navController, isAuthorization)
+            SettingsScreen(navController, isAuthorization, themeViewModel)
         }
     }
 }

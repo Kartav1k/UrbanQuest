@@ -37,7 +37,7 @@ fun Favourite(navController: NavHostController, isAuthorization: Boolean){
                     .padding(top = 4.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
                     contentDescription = "Back button",
                     tint = MaterialTheme.colorScheme.tertiary
                 )
