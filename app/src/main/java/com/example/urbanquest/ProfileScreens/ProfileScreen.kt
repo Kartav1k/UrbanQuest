@@ -197,7 +197,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
 
             Button(
                 onClick = {
-
+                    navController.navigate("InfoAboutApp")
                 },
                 modifier = Modifier
                     .padding(start = 12.dp, end = 32.dp)

@@ -1,5 +1,7 @@
 package com.example.urbanquest.constants
 
+const val name_app = "UrbanQuest"
+
 //TextFields
 const val password_text = "Пароль"
 const val email_text = "Почта"
@@ -16,6 +18,7 @@ const val LABEL_search = "Поиск"
 const val LABEL_favourite = "Избранное"
 const val LABEL_recomendation = "Ваш список рекомендаций"
 const val LABEL_settings = "Настройки"
+const val LABEL_info = "О программе"
 
 //Buttons
 const val friends_text = "Друзья"
@@ -45,3 +48,6 @@ const val close_place = "Закрыто"
 const val open_place = "Открыто с "
 const val unlimited_access = "Без ограничений"
 const val item_not_found = "Не найдено"
+const val yandex_terms_of_use_of_the_service="Условия использования сервиса Яндекс.Карты"
+const val version_app = "Версия приложения - "
+const val name_app_text = "Название приложения - "

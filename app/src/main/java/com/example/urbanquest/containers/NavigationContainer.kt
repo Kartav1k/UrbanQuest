@@ -11,6 +11,7 @@ import com.example.urbanquest.AuthorizationScreens.PasswordRecovery
 import com.example.urbanquest.AuthorizationScreens.Registration
 import com.example.urbanquest.Favourite
 import com.example.urbanquest.MenuHub
+import com.example.urbanquest.ProfileScreens.InfoAboutApp
 import com.example.urbanquest.ProfileScreens.ProfileScreen
 import com.example.urbanquest.ProfileScreens.SettingsScreen
 import com.example.urbanquest.ProfileScreens.ThemeViewModel
@@ -18,7 +19,7 @@ import com.example.urbanquest.SearchScreens.Search
 import com.example.urbanquest.YandexMap
 
 var isAuthorization: Boolean = false
-//navController: NavHostController
+
 @Composable
 fun NavigationContainer(navController: NavHostController) {
 
@@ -27,6 +28,7 @@ fun NavigationContainer(navController: NavHostController) {
     NavHost(navController = navController,
 
         startDestination = "Choice_authorization"){
+
         composable("Choice_authorization"){
             ChoiceAuthorization(navController)
         }
@@ -56,6 +58,15 @@ fun NavigationContainer(navController: NavHostController) {
         }
         composable("Settings"){
             SettingsScreen(navController, isAuthorization, themeViewModel)
+        }
+        composable("InfoAboutApp"){
+            InfoAboutApp(navController, isAuthorization)
+        }
+        composable("Achievements"){
+
+        }
+        composable("FriendList"){
+
         }
     }
 }
