@@ -17,8 +17,11 @@ import com.example.urbanquest.ProfileScreens.InfoAboutApp
 import com.example.urbanquest.ProfileScreens.ProfileScreen
 import com.example.urbanquest.ProfileScreens.SettingsScreen
 import com.example.urbanquest.ProfileScreens.ThemeViewModel
+import com.example.urbanquest.SearchScreens.PlaceItem
 import com.example.urbanquest.SearchScreens.Search
+import com.example.urbanquest.SearchScreens.WalkingPlaceViewModel
 import com.example.urbanquest.YandexMap
+
 
 var isAuthorization: Boolean = false
 
@@ -26,6 +29,8 @@ var isAuthorization: Boolean = false
 fun NavigationContainer(navController: NavHostController) {
 
     val themeViewModel: ThemeViewModel = viewModel()
+    val walkingPlacesViewModel: WalkingPlaceViewModel = viewModel()
+    val tags: List<String> = listOf()
 
     NavHost(navController = navController,
 
@@ -50,7 +55,7 @@ fun NavigationContainer(navController: NavHostController) {
             YandexMap(navController, isAuthorization)
         }
         composable("Search"){
-            Search(navController, isAuthorization)
+            Search(navController, isAuthorization, walkingPlacesViewModel)
         }
         composable("Favourite"){
             Favourite(navController, isAuthorization)
@@ -69,6 +74,9 @@ fun NavigationContainer(navController: NavHostController) {
         }
         composable("FriendList"){
             FriendList(navController, isAuthorization)
+        }
+        composable("placeItem") {
+            PlaceItem(navController, walkingPlacesViewModel)
         }
     }
 }

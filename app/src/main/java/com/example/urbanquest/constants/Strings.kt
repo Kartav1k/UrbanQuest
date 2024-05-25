@@ -38,6 +38,7 @@ const val question_text = "Куда вы хотите сходить?"
 const val doRecommendationList_text = "Составьте свой список рекомендаций"
 const val walkingPlaces_text = "Места для прогулок"
 const val foodPlaces_text = "Рестораны и кафе"
+const val show_on_map = "На карте"
 
 //Warnings
 const val authorization_warning = "Зарегистрируйтесь, чтобы иметь доступ \n" +
@@ -48,6 +49,7 @@ const val autorization_error = "Недопустимое значение в о�
 //Text
 const val change_theme = "Смена темы"
 const val close_place = "Закрыто"
+const val open = "Открыто"
 const val open_place = "Открыто с "
 const val unlimited_access = "Без ограничений"
 const val item_not_found = "Не найдено"

@@ -1,6 +1,6 @@
-package com.example.urbanquest.SearchScreens
+package com.example.urbanquest.SearchScreens.data
 
- data class Walking_Place_Item
+data class Walking_Place_Item
      (
       val name: String = "",
       val address: String = "",
@@ -11,5 +11,7 @@ package com.example.urbanquest.SearchScreens
       val description: String = "",
       val geopoint_latitude: String = "",
       val geopoint_longtitude: String = "",
-      val imageURL: String = ""
+      val imageURL: String = "",
+      val tags: Map<String, String> = emptyMap(),
+      val working_time: Map<String, WorkingTime> = emptyMap()
  )

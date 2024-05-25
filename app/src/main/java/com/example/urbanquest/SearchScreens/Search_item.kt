@@ -31,19 +31,20 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.urbanquest.R
-import com.example.urbanquest.constants.close_place
-import com.example.urbanquest.constants.open_place
+import com.example.urbanquest.SearchScreens.data.Walking_Place_Item
 
 
 @Composable
-fun SearchItem(context: Context, name: String, address: String, time_open: String, rate: Double, isWorking: Boolean, imageURL: String){
+fun SearchItem(context: Context, place: Walking_Place_Item, navController: NavHostController, walkingPlaceViewModel: WalkingPlaceViewModel){
 
     val context = LocalContext.current
     val sharedPref = context.getSharedPreferences("Favorites", Context.MODE_PRIVATE)
     val isClicked = remember { mutableStateOf(false) }
+
 
 
 
@@ -53,18 +54,21 @@ fun SearchItem(context: Context, name: String, address: String, time_open: Strin
         .clip(RoundedCornerShape(15.dp))
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.secondaryContainer)
+        .clickable {
+            walkingPlaceViewModel.selectPlace(place)
+            navController.navigate("placeItem")
+        }
     ) {
 
         val configuration = LocalConfiguration.current
         val screenWidth = configuration.screenWidthDp.dp
-        //Picasso.get().load(imageURL).into()
-
+        val time_open = place.time_open
 
         Row(){
 
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(imageURL)
+                    .data(place.imageURL)
                     .build(),
                 contentDescription = "Icon from Storage",
                 contentScale = ContentScale.Inside,
@@ -87,7 +91,7 @@ fun SearchItem(context: Context, name: String, address: String, time_open: Strin
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(name,
+                    Text(place.name,
                         modifier = Modifier
                             .padding(top = 8.dp),
                         color = MaterialTheme.colorScheme.tertiary,
@@ -131,7 +135,7 @@ fun SearchItem(context: Context, name: String, address: String, time_open: Strin
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(20.dp))
-                    Text(address,
+                    Text(place.address,
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         maxLines = 3,
@@ -157,7 +161,7 @@ fun SearchItem(context: Context, name: String, address: String, time_open: Strin
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(20.dp))
-                    Text(rate.toString(),
+                    Text(place.rate.toString(),
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {
@@ -181,8 +185,9 @@ fun SearchItem(context: Context, name: String, address: String, time_open: Strin
                         contentDescription = "map_pin",
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
-                            .size(20.dp))
-                    Text(text = if(isWorking) "$open_place $time_open" else close_place,
+                            .size(20.dp)
+                    )
+                    Text(text = isOpen(place.working_time),
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {

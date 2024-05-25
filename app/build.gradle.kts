@@ -99,6 +99,7 @@ dependencies {
     implementation(platform(libs.google.firebase.bom))
     implementation(libs.picasso)
     implementation(libs.androidx.lifecycle.viewmodel.compose)
+    implementation (libs.gson)
     implementation (libs.coil.compose)
 
     implementation(libs.map.kit)

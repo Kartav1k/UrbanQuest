@@ -42,6 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
+import com.example.urbanquest.SearchScreens.data.Walking_Place_Item
 import com.example.urbanquest.constants.LABEL_search
 import com.example.urbanquest.constants.item_not_found
 import com.example.urbanquest.constants.search_placeholder
@@ -61,7 +62,7 @@ var searchListOfWalkingPlaces: ArrayList<Walking_Place_Item> = arrayListOf()
 private lateinit var firebaseRef: DatabaseReference
 
 @Composable
-fun Search(navController: NavHostController, isAuthorization: Boolean){
+fun Search(navController: NavHostController, isAuthorization: Boolean, walkingPlaceViewModel: WalkingPlaceViewModel){
 
     var searchRequest by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -274,12 +275,9 @@ fun Search(navController: NavHostController, isAuthorization: Boolean){
                             items(searchListOfWalkingPlaces) { place ->
                                 SearchItem(
                                     context = context,
-                                    name = place.name,
-                                    address = place.address,
-                                    time_open = place.time_open,
-                                    rate = place.rate,
-                                    isWorking = place.isWorking,
-                                    imageURL = place.imageURL
+                                    place = place,
+                                    navController,
+                                    walkingPlaceViewModel = walkingPlaceViewModel
                                 )
                             }
                         }
