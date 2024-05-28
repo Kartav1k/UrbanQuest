@@ -19,7 +19,7 @@ import com.example.urbanquest.ProfileScreens.SettingsScreen
 import com.example.urbanquest.ProfileScreens.ThemeViewModel
 import com.example.urbanquest.SearchScreens.PlaceItem
 import com.example.urbanquest.SearchScreens.Search
-import com.example.urbanquest.SearchScreens.WalkingPlaceViewModel
+import com.example.urbanquest.SearchScreens.ItemFromDBViewModel
 import com.example.urbanquest.YandexMap
 
 
@@ -29,7 +29,7 @@ var isAuthorization: Boolean = false
 fun NavigationContainer(navController: NavHostController) {
 
     val themeViewModel: ThemeViewModel = viewModel()
-    val walkingPlacesViewModel: WalkingPlaceViewModel = viewModel()
+    val walkingPlacesViewModel: ItemFromDBViewModel = viewModel()
     val tags: List<String> = listOf()
 
     NavHost(navController = navController,

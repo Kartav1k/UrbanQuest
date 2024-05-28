@@ -3,14 +3,14 @@ package com.example.urbanquest.SearchScreens
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.urbanquest.SearchScreens.data.Walking_Place_Item
+import com.example.urbanquest.SearchScreens.data.ItemFromDB
 
-class WalkingPlaceViewModel : ViewModel() {
+class ItemFromDBViewModel : ViewModel() {
 
-    private val _selectedPlace = MutableLiveData<Walking_Place_Item?>()
-    val selectedPlace: LiveData<Walking_Place_Item?> = _selectedPlace
+    private val _selectedPlace = MutableLiveData<ItemFromDB?>()
+    val selectedPlace: LiveData<ItemFromDB?> = _selectedPlace
 
-    fun selectPlace(place: Walking_Place_Item) {
+    fun selectPlace(place: ItemFromDB) {
         _selectedPlace.value = place
     }
 }

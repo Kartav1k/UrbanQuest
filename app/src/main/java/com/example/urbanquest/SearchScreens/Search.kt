@@ -42,15 +42,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
-import com.example.urbanquest.SearchScreens.data.Walking_Place_Item
+import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import com.example.urbanquest.constants.LABEL_search
 import com.example.urbanquest.constants.item_not_found
 import com.example.urbanquest.constants.search_placeholder
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -58,11 +54,12 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 
-var searchListOfWalkingPlaces: ArrayList<Walking_Place_Item> = arrayListOf()
+var searchListOfWalkingPlaces: ArrayList<ItemFromDB> = arrayListOf()
+var searchListOfCafes_And_Restaurants: ArrayList<ItemFromDB> = arrayListOf()
 private lateinit var firebaseRef: DatabaseReference
 
 @Composable
-fun Search(navController: NavHostController, isAuthorization: Boolean, walkingPlaceViewModel: WalkingPlaceViewModel){
+fun Search(navController: NavHostController, isAuthorization: Boolean, itemFromDBViewModel: ItemFromDBViewModel){
 
     var searchRequest by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -72,39 +69,21 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, walkingPl
     var searchJob by remember { mutableStateOf<Job?>(null) }
     val context = LocalContext.current
 
-    fun fetchData(query: String){
+    suspend fun fetchData(query: String) {
         isLoading = true
-        firebaseRef = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/").getReference("walking_places_info")
-        firebaseRef.addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                Log.d("Firebase", "Start 1")
-                isEmpty = true
-                isError = false
-                searchListOfWalkingPlaces.clear()
-                if (snapshot.exists()){
-                    for (items in snapshot.children){
-                        val item = items.getValue(Walking_Place_Item::class.java)
-                        if (item != null && item.name?.contains(query, ignoreCase = true) == true){
-                            searchListOfWalkingPlaces.add(item)
-                            Log.d("Firebase", "Saved request")
-                        }
-                    }
-                    isEmpty = searchListOfWalkingPlaces.isEmpty()
-                    Log.d("Firebase", if (isEmpty) "Query is empty" else "Query has results")
-                }
-                else{
-                    isError = true
-                    Log.d("Firebase", "Impossible error")
-                }
-                isLoading = false
-                //saveSearchQuery(context, query)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.d("Firebase", "$error")
-                isLoading = false
-            }
-        })
+        try {
+            val (walkingPlaces, cafesAndRestaurants) = searchItems(query)
+            searchListOfWalkingPlaces.clear()
+            searchListOfCafes_And_Restaurants.clear()
+            searchListOfWalkingPlaces.addAll(walkingPlaces)
+            searchListOfCafes_And_Restaurants.addAll(cafesAndRestaurants)
+            isEmpty = searchListOfWalkingPlaces.isEmpty() && searchListOfCafes_And_Restaurants.isEmpty()
+        } catch (e: Exception) {
+            isError = true
+            Log.d("Firebase", "Error fetching data: ${e.message}")
+        } finally {
+            isLoading = false
+        }
     }
 
     //val searchHistory = getSearchHistory(context).take(3)
@@ -165,7 +144,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, walkingPl
             shape = RoundedCornerShape(90.dp),
             singleLine = true,
             modifier = Modifier
-                .padding(start = 20.dp, end = 20.dp)
+                .padding(start = 20.dp, end = 20.dp, bottom = 8.dp)
                 .fillMaxWidth(),
             colors = TextFieldDefaults.colors(
                 unfocusedTextColor = MaterialTheme.colorScheme.tertiary,
@@ -185,7 +164,10 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, walkingPl
                         .padding(end = 4.dp)
                         .clickable {
                             Log.d("Firebase", "Search activated")
-                            fetchData(searchRequest)
+                            searchJob?.cancel()
+                            searchJob = CoroutineScope(Dispatchers.Main).launch {
+                                fetchData(searchRequest)
+                            }
                         }
                 )
             },
@@ -197,12 +179,13 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, walkingPl
                         modifier = Modifier
                             .size(20.dp)
                             .clickable {
-                            searchRequest = ""
-                            searchListOfWalkingPlaces.clear()
-                            isEmpty = false
-                            isError = false
-                            isLoading = false
-                            keyboardController?.hide()
+                                searchRequest = ""
+                                searchListOfWalkingPlaces.clear()
+                                searchListOfCafes_And_Restaurants.clear()
+                                isEmpty = false
+                                isError = false
+                                isLoading = false
+                                keyboardController?.hide()
                         }
                     )
                 }
@@ -237,7 +220,10 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, walkingPl
                             )
                             Spacer(modifier = Modifier.height(8.dp))
                             Button(onClick = {
-                                fetchData(searchRequest)
+                                searchJob?.cancel()
+                                searchJob = CoroutineScope(Dispatchers.Main).launch {
+                                    fetchData(searchRequest)
+                                }
                             }) {
                                 Text("Refresh")
                             }
@@ -248,7 +234,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, walkingPl
                 isEmpty -> {
                     Log.d("Firebase", "Check to void request - 1")
                     key(searchRequest) {
-                        if (searchListOfWalkingPlaces.isEmpty()) {
+                        if (searchListOfWalkingPlaces.isEmpty() && searchListOfCafes_And_Restaurants.isEmpty()) {
                             Log.d("Firebase", "Check to void request - 2")
                             Column(
                                 modifier = Modifier
@@ -272,12 +258,12 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, walkingPl
                     key(searchRequest) {
                         LazyColumn {
                             Log.d("Firebase", "Normal request - 2")
-                            items(searchListOfWalkingPlaces) { place ->
+                            items(searchListOfWalkingPlaces + searchListOfCafes_And_Restaurants) { place ->
                                 SearchItem(
                                     context = context,
                                     place = place,
                                     navController,
-                                    walkingPlaceViewModel = walkingPlaceViewModel
+                                    itemFromDBViewModel = itemFromDBViewModel
                                 )
                             }
                         }

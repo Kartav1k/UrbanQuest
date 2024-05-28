@@ -22,7 +22,6 @@ const val LABEL_info = "О программе"
 const val LABEL_friend = "Друзья"
 const val LABEL_achievements = "Достижения"
 
-
 //Buttons
 const val friends_text = "Друзья"
 const val settings_text  = "Настройки"

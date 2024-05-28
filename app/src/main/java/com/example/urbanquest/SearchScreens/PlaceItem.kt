@@ -44,7 +44,7 @@ import com.example.urbanquest.constants.show_on_map
 
 
 @Composable
-fun PlaceItem(navController: NavHostController, viewModel: WalkingPlaceViewModel) {
+fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) {
 
 
     val place by viewModel.selectedPlace.observeAsState()

@@ -35,11 +35,11 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.urbanquest.R
-import com.example.urbanquest.SearchScreens.data.Walking_Place_Item
+import com.example.urbanquest.SearchScreens.data.ItemFromDB
 
 
 @Composable
-fun SearchItem(context: Context, place: Walking_Place_Item, navController: NavHostController, walkingPlaceViewModel: WalkingPlaceViewModel){
+fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostController, itemFromDBViewModel: ItemFromDBViewModel){
 
     val context = LocalContext.current
     val sharedPref = context.getSharedPreferences("Favorites", Context.MODE_PRIVATE)
@@ -55,7 +55,7 @@ fun SearchItem(context: Context, place: Walking_Place_Item, navController: NavHo
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.secondaryContainer)
         .clickable {
-            walkingPlaceViewModel.selectPlace(place)
+            itemFromDBViewModel.selectPlace(place)
             navController.navigate("placeItem")
         }
     ) {
