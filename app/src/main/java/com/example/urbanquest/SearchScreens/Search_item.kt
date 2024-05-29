@@ -3,6 +3,7 @@ package com.example.urbanquest.SearchScreens
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -86,24 +88,32 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
 
                 //The line with the favourite places
 
-                Row(modifier = Modifier
-                    .fillMaxWidth(),
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(place.name,
+                    Box(
                         modifier = Modifier
-                            .padding(top = 8.dp),
-                        color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = when {
-                            screenWidth <= 360.dp -> 20.sp
-                            screenWidth > 360.dp -> 26.sp
-                            else -> 22.sp
-                        },
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Icon(imageVector = ImageVector.vectorResource(id = R.drawable.favourite_icon),
+                            .weight(1f)
+                            .horizontalScroll(rememberScrollState())
+                    ) {
+                        Text(
+                            place.name,
+                            modifier = Modifier.padding(top = 8.dp),
+                            color = MaterialTheme.colorScheme.tertiary,
+                            fontSize = when {
+                                screenWidth <= 360.dp -> 20.sp
+                                screenWidth > 360.dp -> 26.sp
+                                else -> 22.sp
+                            },
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
+                        )
+                    }
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = R.drawable.favourite_icon),
                         contentDescription = "favourite icon",
                         tint = if (isClicked.value) Color.Red else MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
