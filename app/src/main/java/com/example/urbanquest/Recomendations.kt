@@ -1,6 +1,6 @@
-package com.example.urbanquest.SearchScreens
+package com.example.urbanquest
 
-import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -8,15 +8,20 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -27,6 +32,7 @@ import androidx.compose.ui.graphics.FilterQuality
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -35,14 +41,47 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.urbanquest.R
+import com.example.urbanquest.SearchScreens.ItemFromDBViewModel
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
+import com.example.urbanquest.SearchScreens.isOpen
 
 
 @Composable
-fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostController, itemFromDBViewModel: ItemFromDBViewModel){
+fun Recommendations(
+    navController: NavHostController,
+    viewModel: RecommendationViewModel,
+    itemFromDBViewModel: ItemFromDBViewModel
+) {
+    val recommendations by viewModel.recommendations.observeAsState(emptyList())
+    val isLoading by viewModel.isLoading.observeAsState(false)
+    val isError by viewModel.isError.observeAsState(false)
 
-    val sharedPref = context.getSharedPreferences("Favorites", Context.MODE_PRIVATE)
+    Log.d("Recommendations", "Number of recommendations: ${recommendations.size}")
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState())
+    ) {
+        if (isLoading) {
+            CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
+        } else if (isError) {
+            Text("Ошибка загрузки данных", color = Color.Red, modifier = Modifier.align(Alignment.CenterHorizontally))
+        } else {
+            if (recommendations.isEmpty()) {
+                Text("Нет результатов", modifier = Modifier.align(Alignment.CenterHorizontally))
+            } else {
+                recommendations.forEach { item ->
+                    RecommendationItem(item, navController, itemFromDBViewModel)
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun RecommendationItem(item: ItemFromDB, navController: NavHostController, itemFromDBViewModel: ItemFromDBViewModel) {
+
     val isClicked = remember { mutableStateOf(false) }
 
     Box(modifier = Modifier
@@ -51,7 +90,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.secondaryContainer)
         .clickable {
-            itemFromDBViewModel.selectPlace(place)
+            itemFromDBViewModel.selectPlace(item)
             navController.navigate("placeItem")
         }
     ) {
@@ -62,14 +101,14 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
         Row(){
 
             AsyncImage(
-                model = ImageRequest.Builder(context)
-                    .data(place.imageURL)
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(item.imageURL)
                     .build(),
                 contentDescription = "Icon from Storage",
                 contentScale = ContentScale.Inside,
                 modifier = Modifier
-                .padding(start = 8.dp, top = 12.dp, end = 4.dp, bottom = 12.dp)
-                .size(96.dp),
+                    .padding(start = 8.dp, top = 12.dp, end = 4.dp, bottom = 12.dp)
+                    .size(96.dp),
                 placeholder = painterResource(R.drawable.loading),
                 error = painterResource(R.drawable.placeholder_icon),
                 filterQuality = FilterQuality.High,
@@ -93,7 +132,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                             .horizontalScroll(rememberScrollState())
                     ) {
                         Text(
-                            place.name,
+                            item.name,
                             modifier = Modifier.padding(top = 8.dp),
                             color = MaterialTheme.colorScheme.tertiary,
                             fontSize = when {
@@ -138,7 +177,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(20.dp))
-                    Text(place.address,
+                    Text(item.address,
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         maxLines = 3,
@@ -164,7 +203,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(20.dp))
-                    Text(place.rate.toString(),
+                    Text(item.rate.toString(),
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {
@@ -190,7 +229,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         modifier = Modifier
                             .size(20.dp)
                     )
-                    Text(text = isOpen(place.working_time),
+                    Text(text = isOpen(item.working_time),
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {

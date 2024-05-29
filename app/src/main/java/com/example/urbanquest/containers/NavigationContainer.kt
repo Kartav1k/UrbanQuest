@@ -17,9 +17,12 @@ import com.example.urbanquest.ProfileScreens.InfoAboutApp
 import com.example.urbanquest.ProfileScreens.ProfileScreen
 import com.example.urbanquest.ProfileScreens.SettingsScreen
 import com.example.urbanquest.ProfileScreens.ThemeViewModel
+import com.example.urbanquest.RecomendationTest
+import com.example.urbanquest.RecommendationViewModel
+import com.example.urbanquest.Recommendations
+import com.example.urbanquest.SearchScreens.ItemFromDBViewModel
 import com.example.urbanquest.SearchScreens.PlaceItem
 import com.example.urbanquest.SearchScreens.Search
-import com.example.urbanquest.SearchScreens.ItemFromDBViewModel
 import com.example.urbanquest.YandexMap
 
 
@@ -30,6 +33,7 @@ fun NavigationContainer(navController: NavHostController) {
 
     val themeViewModel: ThemeViewModel = viewModel()
     val walkingPlacesViewModel: ItemFromDBViewModel = viewModel()
+    val recommendationViewModel: RecommendationViewModel = viewModel()
     val tags: List<String> = listOf()
 
     NavHost(navController = navController,
@@ -77,6 +81,12 @@ fun NavigationContainer(navController: NavHostController) {
         }
         composable("placeItem") {
             PlaceItem(navController, walkingPlacesViewModel)
+        }
+        composable("RecomendationTest"){
+            RecomendationTest(navController, recommendationViewModel)
+        }
+        composable("RecomendationList"){
+            Recommendations(navController, recommendationViewModel,walkingPlacesViewModel)
         }
     }
 }
