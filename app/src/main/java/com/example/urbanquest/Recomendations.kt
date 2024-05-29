@@ -17,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -44,6 +45,9 @@ import coil.request.ImageRequest
 import com.example.urbanquest.SearchScreens.ItemFromDBViewModel
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import com.example.urbanquest.SearchScreens.isOpen
+import com.example.urbanquest.constants.LABEL_recomendationList
+import com.example.urbanquest.constants.error_warning
+import com.example.urbanquest.constants.no_result
 
 
 @Composable
@@ -55,6 +59,8 @@ fun Recommendations(
     val recommendations by viewModel.recommendations.observeAsState(emptyList())
     val isLoading by viewModel.isLoading.observeAsState(false)
     val isError by viewModel.isError.observeAsState(false)
+    val configuration = LocalConfiguration.current
+    val screenWidth = configuration.screenWidthDp.dp
 
     Log.d("Recommendations", "Number of recommendations: ${recommendations.size}")
 
@@ -63,13 +69,47 @@ fun Recommendations(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
+
+        Row(modifier = Modifier.padding(bottom = 8.dp, start = 18.dp)) {
+            IconButton(
+                onClick = {
+                    navController.popBackStack()
+                },
+                modifier = Modifier.padding(top = 4.dp)
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
+                    contentDescription = "Back button",
+                    tint = MaterialTheme.colorScheme.tertiary
+                )
+            }
+
+            Text(
+                text = LABEL_recomendationList,
+                modifier = Modifier.padding(top = 10.dp),
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = when {
+                    screenWidth <= 360.dp -> 28.sp
+                    screenWidth > 360.dp -> 30.sp
+                    else -> 30.sp
+                }
+            )
+        }
+
         if (isLoading) {
             CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         } else if (isError) {
-            Text("Ошибка загрузки данных", color = Color.Red, modifier = Modifier.align(Alignment.CenterHorizontally))
+            Text(
+                error_warning,
+                color = Color.Red,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally))
         } else {
             if (recommendations.isEmpty()) {
-                Text("Нет результатов", modifier = Modifier.align(Alignment.CenterHorizontally))
+                Text(
+                    no_result,
+                    modifier = Modifier
+                        .align(Alignment.CenterHorizontally))
             } else {
                 recommendations.forEach { item ->
                     RecommendationItem(item, navController, itemFromDBViewModel)
@@ -85,7 +125,7 @@ fun RecommendationItem(item: ItemFromDB, navController: NavHostController, itemF
     val isClicked = remember { mutableStateOf(false) }
 
     Box(modifier = Modifier
-        .padding(start = 24.dp, end = 16.dp, top = 24.dp, bottom = 8.dp)
+        .padding(start = 24.dp, end = 16.dp, top = 16.dp, bottom = 0.dp)
         .clip(RoundedCornerShape(15.dp))
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.secondaryContainer)

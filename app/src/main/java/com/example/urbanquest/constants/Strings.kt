@@ -22,6 +22,7 @@ const val LABEL_info = "О программе"
 const val LABEL_friend = "Друзья"
 const val LABEL_achievements = "Достижения"
 const val LABEL_recomendationTest = "Тест рекомендаций"
+const val LABEL_recomendationList = "Ваши рекомендации"
 
 //Buttons
 const val friends_text = "Друзья"
@@ -39,12 +40,14 @@ const val doRecommendationList_text = "Составьте свой список 
 const val walkingPlaces_text = "Места для прогулок"
 const val foodPlaces_text = "Рестораны и кафе"
 const val show_on_map = "На карте"
+const val want_eat = "Хотите зайти перекусить?"
 
 //Warnings
 const val authorization_warning = "Зарегистрируйтесь, чтобы иметь доступ \n" +
         "к этому разделу"
 const val error_warning = "Упс, возникли проблемы!"
 const val autorization_error = "Недопустимое значение в одном из полей, исправьте его"
+const val no_result = "Ничего подходящего не найдено :("
 
 //Text
 const val change_theme = "Смена темы"
@@ -56,3 +59,4 @@ const val item_not_found = "Не найдено"
 const val yandex_terms_of_use_of_the_service="Условия использования сервиса Яндекс.Карты"
 const val version_app = "Версия приложения - "
 const val name_app_text = "Название приложения - "
+const val create_recomendation_list = "Составить рекомендации"

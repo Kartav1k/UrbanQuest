@@ -30,6 +30,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.constants.LABEL_recomendationTest
+import com.example.urbanquest.constants.create_recomendation_list
+import com.example.urbanquest.constants.want_eat
 
 
 //Добавить по кол-ву человек
@@ -69,7 +71,7 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
         Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
             IconButton(
                 onClick = {
-                    //navController.popBackStack()
+                    navController.popBackStack()
                 },
                 modifier = Modifier.padding(top = 4.dp)
             ) {
@@ -112,7 +114,7 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
                 onCheckedChange = { showFoodOptions = it }
             )
             Text(
-                text = "Хотите зайти перекусить?",
+                text = want_eat,
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
@@ -148,7 +150,7 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
         ) {
             Text(
-                "Составить рекомендации",
+                create_recomendation_list,
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = 18.sp,
                 modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
