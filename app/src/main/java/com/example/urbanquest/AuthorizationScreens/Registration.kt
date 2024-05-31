@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -38,12 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
-import com.example.urbanquest.constants.autorization_error
-import com.example.urbanquest.constants.email_text
-import com.example.urbanquest.constants.login_text
-import com.example.urbanquest.constants.passwordRepeat_text
-import com.example.urbanquest.constants.password_text
-import com.example.urbanquest.constants.registration_text
+
 
 //Функция регистрации, пока данные не сохраняются в строках при переходе назад
 
@@ -84,7 +80,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             login,
             placeholder = {
                 Text(
-                    login_text,
+                    stringResource(R.string.login_text),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )},
@@ -112,7 +108,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             email,
             placeholder = {
                 Text(
-                    email_text,
+                    stringResource(R.string.email_text),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )},
@@ -139,7 +135,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             password,
             placeholder = {
                 Text(
-                    password_text,
+                    stringResource(R.string.password_text),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )},
@@ -187,7 +183,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
             confirmationPassword,
             placeholder = {
                 Text(
-                    passwordRepeat_text,
+                    stringResource(R.string.passwordRepeat_text),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )},
@@ -245,7 +241,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
                     navController.navigate("MenuHub")
                 } else {
                     //Добавить вывод Тостов с определенной проблемой, а не в общем случае
-                    Toast.makeText(context, autorization_error , Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context, R.string.autorization_error , Toast.LENGTH_SHORT).show()
                 }
             },
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
@@ -255,7 +251,7 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)) {
             Text(
-                registration_text,
+                stringResource(R.string.registration_text),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
                     screenWidth <= 360.dp -> 14.sp

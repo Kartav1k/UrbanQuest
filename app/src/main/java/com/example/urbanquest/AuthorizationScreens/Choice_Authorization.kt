@@ -18,14 +18,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
-import com.example.urbanquest.constants.authorization_text
-import com.example.urbanquest.constants.guest_text
-import com.example.urbanquest.constants.registration_text
 
 
 //Начальный экран, где выбор куда перейти: на регистрацию, на авторизацию или войти без входа с урезанным функционалом(не реализовано)
@@ -62,7 +60,7 @@ fun ChoiceAuthorization(navController: NavHostController){
             shape = RoundedCornerShape(15.dp)
             ) {
             Text(
-                registration_text,
+                stringResource(R.string.registration_text),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
                     screenWidth <= 360.dp -> 14.sp
@@ -84,7 +82,7 @@ fun ChoiceAuthorization(navController: NavHostController){
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)) {
             Text(
-                authorization_text,
+                stringResource(R.string.authorization_text),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
                     screenWidth <= 360.dp -> 14.sp
@@ -105,7 +103,7 @@ fun ChoiceAuthorization(navController: NavHostController){
                 .fillMaxWidth(),
             shape = RoundedCornerShape(15.dp)) {
             Text(
-                guest_text,
+                stringResource(R.string.guest_text),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
                     screenWidth <= 360.dp -> 14.sp

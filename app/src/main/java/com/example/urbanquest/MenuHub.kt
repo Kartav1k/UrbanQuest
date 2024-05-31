@@ -20,18 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.constants.LABEL_menu
-import com.example.urbanquest.constants.LABEL_recomendation
-import com.example.urbanquest.constants.doRecommendationList_text
-import com.example.urbanquest.constants.foodPlaces_text
-import com.example.urbanquest.constants.question_text
-import com.example.urbanquest.constants.recommendationList_text
-import com.example.urbanquest.constants.walkingPlaces_text
 
 
 @Composable
@@ -47,7 +41,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
 
 
         Text(
-            text = LABEL_menu,
+            text = stringResource(R.string.LABEL_menu),
             modifier = Modifier.padding(start = 32.dp, top = 12.dp, bottom = 16.dp),
             color = MaterialTheme.colorScheme.tertiary,
             fontSize = when {
@@ -80,7 +74,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    question_text,
+                    stringResource(R.string.question_text),
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.tertiary,
                     fontWeight= FontWeight(495),
@@ -93,7 +87,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     }
                 )
                 Text(
-                    doRecommendationList_text,
+                    stringResource(R.string.doRecommendationList_text),
                     fontSize = 11.sp,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.tertiary)
@@ -101,7 +95,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
         }
 
         Text(
-            LABEL_recomendation,
+            stringResource(R.string.LABEL_recomendation),
             textAlign = TextAlign.Start,
             color = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.padding(start = 32.dp, bottom = 8.dp),
@@ -136,7 +130,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                 modifier = Modifier.fillMaxWidth(),
             ){
                 Text(
-                    recommendationList_text,
+                    stringResource(R.string.recommendationList_text),
                     color = MaterialTheme.colorScheme.tertiary,
                     textAlign = TextAlign.Center,
                     softWrap = true,
@@ -176,7 +170,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        walkingPlaces_text,
+                        stringResource(R.string.walkingPlaces_text),
                         color = MaterialTheme.colorScheme.tertiary,
                         textAlign = TextAlign.Center,
                         softWrap = true,
@@ -212,7 +206,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        foodPlaces_text,
+                        stringResource(R.string.foodPlaces_text),
                         color = MaterialTheme.colorScheme.tertiary,
                         textAlign = TextAlign.Center,  // Центрирование текста
                         softWrap = true,   // Разрешает перенос текста

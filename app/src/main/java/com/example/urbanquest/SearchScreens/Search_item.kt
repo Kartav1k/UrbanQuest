@@ -166,7 +166,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                             .size(20.dp))
                     Text(place.rate.toString(),
                         color = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.padding(start = 3.dp),
+                        modifier = Modifier.padding(start = 3.dp, top = 4.dp),
                         fontSize = when {
                             screenWidth <= 360.dp -> 16.sp
                             screenWidth > 360.dp -> 18.sp
@@ -190,7 +190,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         modifier = Modifier
                             .size(20.dp)
                     )
-                    Text(text = isOpen(place.working_time),
+                    Text(text = isOpen(place.workingTime),
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {

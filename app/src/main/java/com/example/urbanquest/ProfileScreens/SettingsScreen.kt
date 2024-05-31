@@ -23,13 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
-import com.example.urbanquest.constants.LABEL_settings
-import com.example.urbanquest.constants.change_theme
 
 
 @Composable
@@ -59,7 +58,7 @@ fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean, t
             }
 
             Text(
-                text = LABEL_settings,
+                text = stringResource(R.string.LABEL_settings),
                 modifier = Modifier.padding(top = 10.dp),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
@@ -76,7 +75,8 @@ fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean, t
                 .padding(start = 24.dp, end = 32.dp)
                 .fillMaxWidth(),
         ){
-            Text(change_theme,
+            Text(
+                stringResource(R.string.change_theme),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
                     screenWidth <= 360.dp -> 18.sp

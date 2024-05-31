@@ -50,7 +50,7 @@ fun YandexMap(navController: NavHostController, isAuthorization: Boolean) {
                         geometry = point
                         setIcon(imageProvider)
                         setIconStyle(IconStyle().apply {
-                            anchor = PointF(0.38f, 0.83f)
+                            anchor = PointF(0.35f, 0.78f)
                             scale = 0.6f
                             zIndex = 10.0f
                         })

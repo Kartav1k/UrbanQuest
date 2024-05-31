@@ -22,17 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
-import com.example.urbanquest.constants.LABEL_profile
-import com.example.urbanquest.constants.achievements_text
-import com.example.urbanquest.constants.exit_text
-import com.example.urbanquest.constants.friends_text
-import com.example.urbanquest.constants.info_text
-import com.example.urbanquest.constants.settings_text
 
 
 @Composable
@@ -62,7 +57,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
             }
 
             Text(
-                text = LABEL_profile,
+                text = stringResource(R.string.LABEL_profile),
                 modifier = Modifier.padding(top = 10.dp),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
@@ -112,7 +107,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                             .padding(end = 8.dp)
                             .size(30.dp))
                     Text(
-                        text = friends_text,
+                        text = stringResource(R.string.friends_text),
                         color = MaterialTheme.colorScheme.tertiary,
                         fontSize = when {
                             screenWidth <= 360.dp -> 18.sp
@@ -148,7 +143,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                             .size(30.dp)
                     )
                     Text(
-                        text = achievements_text,
+                        text = stringResource(R.string.achievements_text),
                         color = MaterialTheme.colorScheme.tertiary,
                         fontSize = when {
                             screenWidth <= 360.dp -> 18.sp
@@ -184,7 +179,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                             .size(30.dp)
                     )
                     Text(
-                        text = settings_text,
+                        text = stringResource(R.string.settings_text),
                         color = MaterialTheme.colorScheme.tertiary,
                         fontSize = when {
                             screenWidth <= 360.dp -> 18.sp
@@ -220,7 +215,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                             .size(30.dp)
                     )
                     Text(
-                        text = info_text,
+                        text = stringResource(R.string.info_text),
                         color = MaterialTheme.colorScheme.tertiary,
                         fontSize = when {
                             screenWidth <= 360.dp -> 18.sp
@@ -256,7 +251,7 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
                             .size(35.dp)
                     )
                     Text(
-                        text = exit_text,
+                        text = stringResource(R.string.exit_text),
                         color = MaterialTheme.colorScheme.tertiary,
                         fontSize = when {
                             screenWidth <= 360.dp -> 18.sp
