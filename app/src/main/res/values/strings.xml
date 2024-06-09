@@ -21,6 +21,7 @@
     <string name="LABEL_achievements">Достижения</string>
     <string name="LABEL_recomendationTest">Тест рекомендаций</string>
     <string name="LABEL_recomendationList">Ваши рекомендации</string>
+    <string name="LABEL_foodplaces">Различные заведения</string>
 
     //Buttons
     <string name="friends_text">Друзья</string>

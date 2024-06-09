@@ -26,9 +26,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
+import com.example.urbanquest.constants.bigLabelSize
+import com.example.urbanquest.constants.eightPad
+import com.example.urbanquest.constants.fourPad
+import com.example.urbanquest.constants.labelSize
+import com.example.urbanquest.constants.mediumFontSize
+import com.example.urbanquest.constants.tenPad
+import com.example.urbanquest.constants.thirtyTwoPad
+import com.example.urbanquest.constants.twentyFourPad
+import com.example.urbanquest.constants.twentyPad
+import com.example.urbanquest.constants.twentyTwoFontSize
 
 
 @Composable
@@ -41,14 +50,14 @@ fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean, t
         val isDarkTheme by themeViewModel.isDarkTheme.observeAsState(false)
 
         Row(
-            modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
+            modifier = Modifier.padding(bottom = eightPad, start = twentyPad)) {
 
             IconButton(
                 onClick = {
                     navController.popBackStack()
                 },
                 modifier = Modifier
-                    .padding(top = 4.dp)
+                    .padding(top = fourPad)
             ) {
                 Icon(
                     imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
@@ -59,12 +68,12 @@ fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean, t
 
             Text(
                 text = stringResource(R.string.LABEL_settings),
-                modifier = Modifier.padding(top = 10.dp),
+                modifier = Modifier.padding(top = tenPad),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
-                    screenWidth <= 360.dp -> 32.sp
-                    screenWidth > 360.dp -> 36.sp
-                    else -> 36.sp
+                    screenWidth <= 360.dp -> labelSize
+                    screenWidth > 360.dp -> bigLabelSize
+                    else -> bigLabelSize
                 }
             )
         }
@@ -72,16 +81,16 @@ fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean, t
         Row(verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Start,
             modifier = Modifier
-                .padding(start = 24.dp, end = 32.dp)
+                .padding(start = twentyFourPad, end = thirtyTwoPad)
                 .fillMaxWidth(),
         ){
             Text(
                 stringResource(R.string.change_theme),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
-                    screenWidth <= 360.dp -> 18.sp
-                    screenWidth > 360.dp -> 22.sp
-                    else -> 22.sp
+                    screenWidth <= 360.dp -> mediumFontSize
+                    screenWidth > 360.dp -> twentyTwoFontSize
+                    else -> twentyTwoFontSize
                 }
             )
 

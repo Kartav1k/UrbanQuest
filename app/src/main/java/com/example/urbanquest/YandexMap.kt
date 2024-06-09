@@ -29,19 +29,15 @@ fun YandexMap(navController: NavHostController, isAuthorization: Boolean) {
 
     AndroidView(
         factory = { context ->
-            // Инициализация MapKitFactory
             MapKitFactory.initialize(context)
             val view = LayoutInflater.from(context).inflate(R.layout.yandex_map, null, false)
             val mapView = view.findViewById<MapView>(R.id.mapview)
 
-            // Установка начальной позиции камеры
             val map = mapView.mapWindow.map
             map.move(CameraPosition(Point(55.751225, 37.629540), 12.0f, 0.0f, 0.0f))
 
-            // Создание коллекции объектов карты
             val mapObjects = map.mapObjects.addCollection()
 
-            // Создание слушателя событий на карте
             val inputListener = object : InputListener {
                 override fun onMapTap(map: com.yandex.mapkit.map.Map, point: Point) {
                     currentPlacemark?.let { mapObjects.remove(it) }
@@ -55,8 +51,7 @@ fun YandexMap(navController: NavHostController, isAuthorization: Boolean) {
                             zIndex = 10.0f
                         })
                     }
-
-                    // Добавление слушателя нажатий на метку
+                    
                     val placemarkTapListener = MapObjectTapListener { _, tapPoint ->
                         Log.d("YandexMap", "Tapped the point (${tapPoint.latitude}, ${tapPoint.longitude})")
                         true
@@ -65,7 +60,7 @@ fun YandexMap(navController: NavHostController, isAuthorization: Boolean) {
                 }
 
                 override fun onMapLongTap(map: com.yandex.mapkit.map.Map, point: Point) {
-                    // Обработка долгого нажатия, если необходимо
+
                 }
             }
             map.addInputListener(inputListener)

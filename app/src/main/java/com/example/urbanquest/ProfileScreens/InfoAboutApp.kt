@@ -25,7 +25,7 @@ import com.example.urbanquest.constants.bigLabelSize
 import com.example.urbanquest.constants.eightPad
 import com.example.urbanquest.constants.fourPad
 import com.example.urbanquest.constants.labelSize
-import com.example.urbanquest.constants.sexteenFontSize
+import com.example.urbanquest.constants.sixteenFontSize
 import com.example.urbanquest.constants.sixteenPad
 import com.example.urbanquest.constants.tenPad
 import com.example.urbanquest.constants.twelvePad
@@ -42,7 +42,6 @@ fun InfoAboutApp(navController: NavHostController, isAuthorization: Boolean){
 
     LazyColumn {
 
-        //Пример использования ресурсов
         item {
             Row(
                 modifier = Modifier.padding(bottom = eightPad, start = twentyPad)) {
@@ -79,7 +78,7 @@ fun InfoAboutApp(navController: NavHostController, isAuthorization: Boolean){
                 modifier = Modifier.padding(start = sixteenPad, bottom = twelvePad),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
-                    screenWidth <= 360.dp -> sexteenFontSize
+                    screenWidth <= 360.dp -> sixteenFontSize
                     screenWidth > 360.dp -> twentyTwoFontSize
                     else -> twentyTwoFontSize
                 }
