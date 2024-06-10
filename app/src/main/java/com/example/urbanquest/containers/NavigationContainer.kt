@@ -10,6 +10,7 @@ import com.example.urbanquest.AuthorizationScreens.ChoiceAuthorization
 import com.example.urbanquest.AuthorizationScreens.PasswordRecovery
 import com.example.urbanquest.AuthorizationScreens.Registration
 import com.example.urbanquest.Favourite
+import com.example.urbanquest.FoodPlaces
 import com.example.urbanquest.MenuHub
 import com.example.urbanquest.ProfileScreens.AchievementsScreen
 import com.example.urbanquest.ProfileScreens.FriendList
@@ -23,6 +24,7 @@ import com.example.urbanquest.Recommendations
 import com.example.urbanquest.SearchScreens.ItemFromDBViewModel
 import com.example.urbanquest.SearchScreens.PlaceItem
 import com.example.urbanquest.SearchScreens.Search
+import com.example.urbanquest.WalkingPlaces
 import com.example.urbanquest.YandexMap
 
 
@@ -87,6 +89,19 @@ fun NavigationContainer(navController: NavHostController) {
         }
         composable("RecomendationList"){
             Recommendations(navController, recommendationViewModel,walkingPlacesViewModel)
+        }
+        composable("FoodPlaces"){
+            FoodPlaces(navController, isAuthorization, walkingPlacesViewModel)
+        }
+        composable("WalkingPlaces"){
+            WalkingPlaces(navController, isAuthorization, walkingPlacesViewModel)
+        }
+        composable("map/{lat}/{lon}") { backStackEntry ->
+            val lat = backStackEntry.arguments?.getString("lat")?.toDoubleOrNull()
+            val lon = backStackEntry.arguments?.getString("lon")?.toDoubleOrNull()
+            if (lat != null && lon != null) {
+                YandexMap(navController, isAuthorization, lat, lon)
+            }
         }
     }
 }

@@ -41,6 +41,20 @@ fun isOpen(working: Map<String, WorkingTime>): String {
 
     return close_place
 }
+suspend fun fetchFoodPlaces(): List<ItemFromDB> {
+    val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")
+    val cafesAndRestaurantsRef = firebaseDatabase.getReference("cafes_and_restaurants")
+    return withContext(Dispatchers.IO) {
+        searchInDatabase(cafesAndRestaurantsRef, "")
+    }
+}
+suspend fun fetchWalkingPlaces(): List<ItemFromDB> {
+    val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")
+    val WalkingPlacesRef = firebaseDatabase.getReference("walking_places_info")
+    return withContext(Dispatchers.IO) {
+        searchInDatabase(WalkingPlacesRef, "")
+    }
+}
 
 suspend fun searchItems(query: String): Pair<List<ItemFromDB>, List<ItemFromDB>> {
     val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")

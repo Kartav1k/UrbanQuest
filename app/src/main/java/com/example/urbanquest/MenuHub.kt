@@ -25,10 +25,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.constants.LABEL_foodplaces
 import com.example.urbanquest.constants.LABEL_menu
 import com.example.urbanquest.constants.LABEL_recomendation
 import com.example.urbanquest.constants.doRecommendationList_text
-import com.example.urbanquest.constants.foodPlaces_text
 import com.example.urbanquest.constants.question_text
 import com.example.urbanquest.constants.recommendationList_text
 import com.example.urbanquest.constants.walkingPlaces_text
@@ -155,7 +155,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
 
             Button(
                 onClick = {
-
+                    navController.navigate("WalkingPlaces")
                 },
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier
@@ -191,7 +191,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
 
             Button(
                 onClick = {
-
+                    navController.navigate("FoodPlaces")
                 },
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier
@@ -212,7 +212,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        foodPlaces_text,
+                        LABEL_foodplaces,
                         color = MaterialTheme.colorScheme.tertiary,
                         textAlign = TextAlign.Center,  // Центрирование текста
                         softWrap = true,   // Разрешает перенос текста

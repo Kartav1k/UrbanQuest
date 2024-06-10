@@ -23,6 +23,8 @@ const val LABEL_friend = "Друзья"
 const val LABEL_achievements = "Достижения"
 const val LABEL_recomendationTest = "Тест рекомендаций"
 const val LABEL_recomendationList = "Ваши рекомендации"
+const val LABEL_foodplaces = "Точки перекуса"
+const val LABEL_walkingplaces = "Места для прогулок"
 
 //Buttons
 const val friends_text = "Друзья"
