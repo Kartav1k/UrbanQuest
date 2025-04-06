@@ -1,3 +1,59 @@
 <resources>
-    <string name="UrbanQuest">UrbanQuest</string>
+    <string name="name_app">UrbanQuest</string>
+    //TextFields
+    <string name="password_text">Пароль</string>
+    <string name="email_text">Почта</string>
+    <string name="passwordRepeat_text">Повторите пароль</string>
+    <string name="login_text">Логин</string>
+    <string name="forgetPassword_text">Забыли пароль?</string>
+    <string name="recovery_text">Восстановите</string>
+    <string name="search_placeholder">Поиск мест</string>
+
+    //Labels
+    <string name="LABEL_profile">Профиль</string>
+    <string name="LABEL_menu">Меню</string>
+    <string name="LABEL_search">Поиск</string>
+    <string name="LABEL_favourite">Избранное</string>
+    <string name="LABEL_recomendation">Ваш список рекомендаций</string>
+    <string name="LABEL_settings">Настройки</string>
+    <string name="LABEL_info">О программе</string>
+    <string name="LABEL_friend">Друзья</string>
+    <string name="LABEL_achievements">Достижения</string>
+    <string name="LABEL_recomendationTest">Тест рекомендаций</string>
+    <string name="LABEL_recomendationList">Ваши рекомендации</string>
+    <string name="LABEL_foodplaces">Различные заведения</string>
+
+    //Buttons
+    <string name="friends_text">Друзья</string>
+    <string name="settings_text">Настройки</string>
+    <string name="exit_text">Выход из профиля</string>
+    <string name="achievements_text">Достижения</string>
+    <string name="info_text">Информация о приложении</string>
+    <string name="registration_text">Зарегистрироваться</string>
+    <string name="authorization_text">Авторизироваться</string>
+    <string name="entrance_text">Войти</string>
+    <string name="guest_text">Гостевой вход</string>
+    <string name="recommendationList_text">Посмотрите свой список рекомендаций</string>
+    <string name="question_text">Куда вы хотите сходить?</string>
+    <string name="doRecommendationList_text">Составьте свой список рекомендаций</string>
+    <string name="walkingPlaces_text">Места для прогулок</string>
+    <string name="foodPlaces_text">Рестораны и кафе</string>
+    <string name="show_on_map">На карте</string>
+    <string name="want_eat">Хотите зайти перекусить?</string>
+
+    //Warnings
+    <string name="error_warning">Упс, возникли проблемы!</string>
+    <string name="autorization_error">Недопустимое значение в одном из полей, исправьте его</string>
+    <string name="no_result">Ничего подходящего не найдено :(</string>
+
+    //Text
+    <string name="change_theme">Смена темы</string>
+    <string name="close_place">Закрыто</string>
+    <string name="open_place">Открыто с </string>
+    <string name="unlimited_access">Без ограничений</string>
+    <string name="item_not_found">Не найдено</string>
+    <string name="yandex_terms_of_use_of_the_service">Условия использования сервиса Яндекс.Карты</string>
+    <string name="version_app">Версия приложения - </string>
+    <string name="name_app_text">Название приложения - </string>
+    <string name="create_recomendation_list">Составить рекомендации</string>
 </resources>

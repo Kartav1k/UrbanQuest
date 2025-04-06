@@ -1,30 +1,39 @@
 [versions]
 agp = "8.3.2"
+
+coilCompose = "2.0.0"
+googleFirebaseBom = "33.0.0"
+gson = "2.10.1"
 kotlin = "1.9.0"
-firebase = "4.4.1"
 coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
-lifecycleRuntimeKtx = "2.7.0"
+lifecycleRuntimeKtx = "2.8.0"
 activityCompose = "1.9.0"
 composeBom = "2024.05.00"
 navigationCompose = "2.7.7"
 navigationRuntimeKtx = "2.7.7"
 material3Android = "1.2.1"
-firebaseBom = "33.0.0"
 googleServices = "4.4.1"
-firebaseDatabase = "21.0.0"
-firebasePerf = "21.0.0"
 gradle = "8.1.4"
-perfPlugin = "1.4.2"
-firebaseStorage = "21.0.0"
 mapKit = "4.6.1-lite"
+picasso = "2.8"
 playServicesMaps = "18.2.0"
 benchmarkMacro = "1.2.4"
+firebaseDatabase = "21.0.0"
+firebaseAuth = "23.0.0"
+runtimeLivedata = "1.6.7"
+
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleRuntimeKtx" }
+coil-compose = { module = "io.coil-kt:coil-compose", version.ref = "coilCompose" }
+firebase-analytics = { module = "com.google.firebase:firebase-analytics" }
+google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "googleFirebaseBom" }
+androidx-runtime-livedata = { module = "androidx.compose.runtime:runtime-livedata", version.ref = "runtimeLivedata" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
@@ -37,24 +46,20 @@ androidx-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview" }
 androidx-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-fireBase-com = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom"}
-fireBase-analytics = { group = "com.google.firebase", name = "firebase-analytics"}
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "navigationRuntimeKtx" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 google-services = { group = "com.google.gms", name = "google-services", version.ref = "googleServices" }
-firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
-firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebasePerf" }
 gradle = { group = "com.android.tools.build", name = "gradle", version.ref = "gradle" }
-perf-plugin = { group = "com.google.firebase", name = "perf-plugin", version.ref = "perfPlugin" }
-firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 map-kit = { group = "com.yandex.android", name = "maps.mobile", version.ref = "mapKit"}
+picasso = { module = "com.squareup.picasso:picasso", version.ref = "picasso" }
 play-services-maps = { group = "com.google.android.gms", name = "play-services-maps", version.ref = "playServicesMaps" }
 androidx-benchmark-macro = { group = "androidx.benchmark", name = "benchmark-macro", version.ref = "benchmarkMacro" }
+firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
+
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
-fireBaseAndroid = { id = "com.google.gms.google-services", version.ref = "firebase"}
-

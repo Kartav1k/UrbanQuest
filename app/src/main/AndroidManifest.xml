@@ -13,7 +13,7 @@
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/UrbanQuest"
+        android:label="@string/name_app"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.UrbanQuest"
@@ -21,7 +21,7 @@
         <activity
             android:name=".containers.MainActivity"
             android:exported="true"
-            android:label="@string/UrbanQuest"
+            android:label="@string/name_app"
             android:theme="@style/Theme.UrbanQuest" >
 
             <intent-filter>

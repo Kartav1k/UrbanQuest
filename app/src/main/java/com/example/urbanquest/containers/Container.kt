@@ -5,11 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.Home
-import androidx.compose.material.icons.filled.Person
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -18,7 +13,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
@@ -59,9 +56,9 @@ fun Container(){
                         enabled = currentRoute != "Menuhub",
                     ) {
                         Icon(
-                            Icons.Filled.Home,
-                            contentDescription = "Меню",
-                            Modifier.size(40.dp),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.home_icon),
+                            contentDescription = "Menu",
+                            Modifier.size(30.dp),
                             tint = if (currentRoute == "MenuHub") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer
                         )
                     }
@@ -77,9 +74,9 @@ fun Container(){
                         enabled = currentRoute != "Search"
                     ) {
                         Icon(
-                            Icons.Filled.Search,
-                            contentDescription = "Поиск",
-                            Modifier.size(40.dp),
+                            imageVector = ImageVector.vectorResource(id = R.drawable.magnifier_icon),
+                            contentDescription = "Search",
+                            Modifier.size(30.dp),
                             tint = if (currentRoute == "Search") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer
                         )
                     }
@@ -96,9 +93,9 @@ fun Container(){
                     ) {
                         Icon(
                             painter = painterResource(id = R.drawable.map_icon),
-                            contentDescription = "Карта",
+                            contentDescription = "Yandex Map",
                             modifier = Modifier
-                                .size(156.dp),
+                                .size(40.dp),
                             tint = if (currentRoute == "YandexMap") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer
                         )
                     }
@@ -114,8 +111,8 @@ fun Container(){
                         enabled = currentRoute != "Favourite"
                     ) {
                         Icon(
-                            Icons.Filled.FavoriteBorder,
-                            contentDescription = "Избранное",
+                            imageVector = ImageVector.vectorResource(id = R.drawable.favourite_icon),
+                            contentDescription = "Favourite",
                             Modifier.size(40.dp),
                             tint = if (currentRoute == "Favourite") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer
                         )
@@ -132,8 +129,8 @@ fun Container(){
                         enabled = currentRoute != "Profile"
                     ) {
                         Icon(
-                            Icons.Filled.Person,
-                            contentDescription = "Профиль",
+                            imageVector = ImageVector.vectorResource(id = R.drawable.profile_icon),
+                            contentDescription = "Profile",
                             Modifier.size(40.dp),
                             tint = if (currentRoute == "Profile") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer
                         )

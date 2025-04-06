@@ -1,6 +1,5 @@
 package com.example.urbanquest
 
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -8,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -20,18 +20,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.constants.LABEL_menu
-import com.example.urbanquest.constants.LABEL_recomendation
-import com.example.urbanquest.constants.doRecomendationList_text
-import com.example.urbanquest.constants.foodPlaces_text
-import com.example.urbanquest.constants.question_text
-import com.example.urbanquest.constants.recomendationList_text
-import com.example.urbanquest.constants.walkingPlaces_text
 
 
 @Composable
@@ -39,7 +33,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .verticalScroll(ScrollState(0)),
+            .verticalScroll(rememberScrollState()),
         ){
 
         val configuration = LocalConfiguration.current
@@ -47,7 +41,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
 
 
         Text(
-            text = LABEL_menu,
+            text = stringResource(R.string.LABEL_menu),
             modifier = Modifier.padding(start = 32.dp, top = 12.dp, bottom = 16.dp),
             color = MaterialTheme.colorScheme.tertiary,
             fontSize = when {
@@ -59,7 +53,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
 
         Button(
             onClick = {
-
+                navController.navigate("RecomendationTest")
             },
             modifier = Modifier
                 .height(80.dp)
@@ -80,7 +74,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
-                    question_text,
+                    stringResource(R.string.question_text),
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.tertiary,
                     fontWeight= FontWeight(495),
@@ -93,7 +87,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     }
                 )
                 Text(
-                    doRecomendationList_text,
+                    stringResource(R.string.doRecommendationList_text),
                     fontSize = 11.sp,
                     textAlign = TextAlign.Start,
                     color = MaterialTheme.colorScheme.tertiary)
@@ -101,7 +95,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
         }
 
         Text(
-            LABEL_recomendation,
+            stringResource(R.string.LABEL_recomendation),
             textAlign = TextAlign.Start,
             color = MaterialTheme.colorScheme.tertiary,
             modifier = Modifier.padding(start = 32.dp, bottom = 8.dp),
@@ -115,7 +109,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
 
         Button(
             onClick = {
-
+                navController.navigate("RecomendationList")
             },
             shape = RoundedCornerShape(15.dp),
             modifier = Modifier
@@ -136,7 +130,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                 modifier = Modifier.fillMaxWidth(),
             ){
                 Text(
-                    recomendationList_text,
+                    stringResource(R.string.recommendationList_text),
                     color = MaterialTheme.colorScheme.tertiary,
                     textAlign = TextAlign.Center,
                     softWrap = true,
@@ -176,7 +170,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        walkingPlaces_text,
+                        stringResource(R.string.walkingPlaces_text),
                         color = MaterialTheme.colorScheme.tertiary,
                         textAlign = TextAlign.Center,
                         softWrap = true,
@@ -212,7 +206,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
-                        foodPlaces_text,
+                        stringResource(R.string.foodPlaces_text),
                         color = MaterialTheme.colorScheme.tertiary,
                         textAlign = TextAlign.Center,  // Центрирование текста
                         softWrap = true,   // Разрешает перенос текста

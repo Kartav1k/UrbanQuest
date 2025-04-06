@@ -12,11 +12,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.constants.LABEL_favourite
 
 @Composable
 fun Favourite(navController: NavHostController, isAuthorization: Boolean){
@@ -37,14 +37,14 @@ fun Favourite(navController: NavHostController, isAuthorization: Boolean){
                     .padding(top = 4.dp)
             ) {
                 Icon(
-                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow),
+                    imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
                     contentDescription = "Back button",
                     tint = MaterialTheme.colorScheme.tertiary
                 )
             }
 
             Text(
-                text = LABEL_favourite,
+                text = stringResource(R.string.LABEL_favourite),
                 modifier = Modifier.padding(top = 10.dp),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
@@ -57,6 +57,9 @@ fun Favourite(navController: NavHostController, isAuthorization: Boolean){
 
         LazyColumn {
 
+            item {
+
+            }
         }
 
     }
