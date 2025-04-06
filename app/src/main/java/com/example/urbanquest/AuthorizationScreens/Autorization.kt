@@ -1,7 +1,7 @@
 package com.example.urbanquest.AuthorizationScreens
 
+import android.util.Log
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,17 +9,22 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -27,6 +32,8 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -38,17 +45,28 @@ import com.example.urbanquest.constants.password_text
 import com.example.urbanquest.constants.recovery_text
 import com.example.urbanquest.ui.theme.WhiteGrey
 import com.example.urbanquest.ui.theme.linkColor
+import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.auth
+import com.google.firebase.database.DatabaseReference
 
 
-//Функция авторизации, пока без логики сохранения данных и сверки их с сервером, пароль не скрывается и если перейти из меню назад, данные не сохраняются в строках
-//Добавить сокрытие пароля, проверку с аккаунтом в базе
+private lateinit var firebaseRef: DatabaseReference
+private lateinit var auth: FirebaseAuth
+var userData: ArrayList<User> = arrayListOf()
+
+
 @Composable
 fun Authorization(navController: NavHostController, isAuthorization: Boolean){
-    val login = remember { mutableStateOf("") }
-    val password = remember { mutableStateOf("") }
+
+    var login by rememberSaveable { mutableStateOf("") }
+    var password by rememberSaveable { mutableStateOf("") }
+    var isVisible by rememberSaveable { mutableStateOf(false) }
+    val auth = Firebase.auth
+
     Column(modifier = Modifier
         .fillMaxSize()
-        .verticalScroll(ScrollState(0)),
+        .verticalScroll(rememberScrollState()),
 
         horizontalAlignment = Alignment.CenterHorizontally) {
 
@@ -64,16 +82,16 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
         )
 
         TextField(
-            login.value,
+            login,
             placeholder = {
                 Text(
-                    login_text, fontSize = 14.sp, color = WhiteGrey
+                    login_text, fontSize = 12.sp, color = WhiteGrey
                 )
             },
             onValueChange = {
-                login.value=it
+                login=it
             },
-            textStyle = TextStyle(fontSize = 14.sp),
+            textStyle = TextStyle(fontSize = 12.sp),
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
             modifier = Modifier
@@ -91,16 +109,17 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
         )
 
         TextField(
-            password.value,
+            password,
             placeholder = {
                 Text(
-                    password_text, fontSize = 14.sp, color = WhiteGrey
+                    password_text, fontSize = 12.sp, color = WhiteGrey
                 )
             },
             onValueChange = {
-                password.value=it
+                password=it
             },
-            textStyle = TextStyle(fontSize = 14.sp),
+            visualTransformation = if (isVisible) VisualTransformation.None else PasswordVisualTransformation(),
+            textStyle = TextStyle(fontSize = 12.sp),
             shape = RoundedCornerShape(45.dp),
             singleLine = true,
             modifier = Modifier
@@ -114,7 +133,27 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent
             ),
-            minLines = 1
+            minLines = 1,
+            trailingIcon = {
+                val passwordIcon = if (isVisible){
+                    ImageVector.vectorResource(id = R.drawable.eye_open)
+                }
+                else{
+                    ImageVector.vectorResource(id = R.drawable.eye_close)
+                }
+                if (password.isNotBlank()) {
+                    Icon(
+                        passwordIcon,
+                        contentDescription = "Opeb password icon",
+                        tint = MaterialTheme.colorScheme.tertiary,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .clickable {
+                                isVisible = !isVisible
+                            }
+                    )
+                }
+            }
         )
 
         Row(){
@@ -127,13 +166,34 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
                 color = linkColor,
                 fontSize = 12.sp,
                 modifier = Modifier
-                .padding(bottom = 16.dp)
-                .clickable { navController.navigate("PasswordRecovery")})
+                    .padding(bottom = 16.dp)
+                    .clickable { navController.navigate("PasswordRecovery") })
         }
 
         Button(
             onClick = {
-                navController.navigate("MenuHub")
+                if (isLoginEmpty(login) && isPasswordCorrect(password) && isLoginCorrect(login)) {
+                    checkLoginInDB(login = login, onEmailReceived = { email ->
+                        if (email != null) {
+                            auth.signInWithEmailAndPassword(email, password)
+                                .addOnCompleteListener() { task ->
+                                    if (task.isSuccessful) {
+                                        Log.d("Authorization", "Success")
+                                        navController.navigate("MenuHub")
+                                    } else {
+                                        Log.d("Authorization", "Failure")
+                                    }
+                                }
+                                .addOnFailureListener { exception ->
+                                    Log.w("Authorization", "Failure", exception)
+                                }
+                        }
+                    },
+                        onError = { exception ->
+                            Log.w("Authorization", "Failure", exception)
+                        }
+                    )
+                }
             },
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier
