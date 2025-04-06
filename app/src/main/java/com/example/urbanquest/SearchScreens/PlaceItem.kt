@@ -118,7 +118,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                         shape = RoundedCornerShape(45.dp)
                     )
                     .clickable {
-
+                        navController.navigate("map/${place.geopoint_latitude}/${place.geopoint_longtitude}")
                     }
                 ){
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -193,5 +193,4 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
             )
         }
     }
-
 }
