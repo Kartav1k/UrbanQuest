@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -36,10 +37,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
-import com.example.urbanquest.constants.email_text
-import com.example.urbanquest.constants.entrance_text
-import com.example.urbanquest.constants.passwordRepeat_text
-import com.example.urbanquest.constants.password_text
 
 //Функция изменения пароля, пока без логики сохранения данных, не сохраняется и изменяет в БД у пользователя
 @Composable
@@ -72,7 +69,7 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
             email,
             placeholder = {
                 Text(
-                    email_text,
+                    stringResource(R.string.email_text),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )
@@ -102,7 +99,7 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
             password,
             placeholder = {
                 Text(
-                    password_text,
+                    stringResource(R.string.password_text),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )
@@ -152,7 +149,7 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
             confirmationPassword,
             placeholder = {
                 Text(
-                    passwordRepeat_text,
+                    stringResource(R.string.passwordRepeat_text),
                     fontSize = 12.sp,
                     color = MaterialTheme.colorScheme.outlineVariant
                 )
@@ -210,7 +207,7 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
             shape = RoundedCornerShape(15.dp)
         ) {
             Text(
-                entrance_text,
+                stringResource(R.string.entrance_text),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
                     screenWidth <= 360.dp -> 14.sp

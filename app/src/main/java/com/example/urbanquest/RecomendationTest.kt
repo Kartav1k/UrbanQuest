@@ -25,13 +25,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.constants.LABEL_recomendationTest
-import com.example.urbanquest.constants.create_recomendation_list
-import com.example.urbanquest.constants.want_eat
 
 
 //Добавить по кол-ву человек
@@ -83,7 +81,7 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
             }
 
             Text(
-                text = LABEL_recomendationTest,
+                text = stringResource(R.string.LABEL_recomendationTest),
                 modifier = Modifier.padding(top = 10.dp),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
@@ -114,7 +112,7 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
                 onCheckedChange = { showFoodOptions = it }
             )
             Text(
-                text = want_eat,
+                text = stringResource(R.string.want_eat),
                 color = MaterialTheme.colorScheme.tertiary
             )
         }
@@ -150,7 +148,7 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
         ) {
             Text(
-                create_recomendation_list,
+                stringResource(R.string.create_recomendation_list),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = 18.sp,
                 modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
@@ -161,11 +159,12 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
 
 @Composable
 fun CheckBoxList(title: String, options: List<String>, checkBoxStates: List<MutableState<Boolean>>) {
-    Column(modifier = Modifier.padding(start = 24.dp, bottom = 8.dp)) {
+    Column(modifier = Modifier.padding(start = 16.dp)) {
         Text(
             text = title,
             color = MaterialTheme.colorScheme.tertiary,
-            fontSize = 20.sp
+            fontSize = 20.sp,
+
         )
 
         options.forEachIndexed { index, option ->
@@ -178,8 +177,6 @@ fun CheckBoxList(title: String, options: List<String>, checkBoxStates: List<Muta
                 Checkbox(
                     checked = isChecked.value,
                     onCheckedChange = { isChecked.value = it },
-                    modifier = Modifier
-                        .padding()
                 )
                 Text(
                     text = option,

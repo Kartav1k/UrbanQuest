@@ -37,15 +37,13 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
-import com.example.urbanquest.constants.LABEL_search
-import com.example.urbanquest.constants.item_not_found
-import com.example.urbanquest.constants.search_placeholder
 import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -111,7 +109,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, itemFromD
             }
 
             Text(
-                text = LABEL_search,
+                text = stringResource(R.string.LABEL_search),
                 modifier = Modifier.padding(top = 10.dp),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
@@ -136,7 +134,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, itemFromD
             },
             placeholder = {
                 Text(
-                    text = search_placeholder,
+                    text = stringResource(R.string.search_placeholder),
                     color = MaterialTheme.colorScheme.outlineVariant,
                     fontSize = 14.sp
                 )
@@ -244,7 +242,7 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, itemFromD
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
                                 Text(
-                                    text = item_not_found,
+                                    text = stringResource(R.string.item_not_found),
                                     color = MaterialTheme.colorScheme.tertiary,
                                     fontSize = 18.sp
                                 )

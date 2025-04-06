@@ -11,12 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
-import com.example.urbanquest.constants.LABEL_achievements
 
 @Composable
 fun AchievementsScreen(navController: NavHostController, isAuthorization: Boolean) {
@@ -45,7 +45,7 @@ fun AchievementsScreen(navController: NavHostController, isAuthorization: Boolea
                 }
 
                 Text(
-                    text = LABEL_achievements,
+                    text = stringResource(R.string.LABEL_achievements),
                     modifier = Modifier.padding(top = 10.dp),
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = when {

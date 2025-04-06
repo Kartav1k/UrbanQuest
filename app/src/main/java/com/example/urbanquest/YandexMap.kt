@@ -29,33 +29,18 @@ fun YandexMap(navController: NavHostController, isAuthorization: Boolean, lat: D
 
     AndroidView(
         factory = { context ->
-            // Инициализация MapKitFactory
             MapKitFactory.initialize(context)
             val view = LayoutInflater.from(context).inflate(R.layout.yandex_map, null, false)
             val mapView = view.findViewById<MapView>(R.id.mapview)
 
-            // Установка начальной позиции камеры
             val map = mapView.mapWindow.map
             val point = if (lat != null && lon != null) Point(lat, lon) else Point(55.751225, 37.629540)
             map.move(CameraPosition(point, 12.0f, 0.0f, 0.0f))
 
-            // Создание коллекции объектов карты
             val mapObjects = map.mapObjects.addCollection()
 
-            // Если координаты предоставлены, добавьте маркер
-            if (lat != null && lon != null) {
-                val imageProvider = ImageProvider.fromResource(context, R.drawable.label_user)
-                currentPlacemark = mapObjects.addPlacemark(point).apply {
-                    setIcon(imageProvider)
-                    setIconStyle(IconStyle().apply {
-                        anchor = PointF(0.38f, 0.83f)
-                        scale = 0.6f
-                        zIndex = 10.0f
-                    })
-                }
-            }
-
             // Создание слушателя событий на карте
+
             val inputListener = object : InputListener {
                 override fun onMapTap(map: com.yandex.mapkit.map.Map, point: Point) {
                     currentPlacemark?.let { mapObjects.remove(it) }
@@ -63,13 +48,12 @@ fun YandexMap(navController: NavHostController, isAuthorization: Boolean, lat: D
                     currentPlacemark = mapObjects.addPlacemark(point).apply {
                         setIcon(imageProvider)
                         setIconStyle(IconStyle().apply {
-                            anchor = PointF(0.38f, 0.83f)
+                            anchor = PointF(0.35f, 0.78f)
                             scale = 0.6f
                             zIndex = 10.0f
                         })
                     }
-
-                    // Добавление слушателя нажатий на метку
+                    
                     val placemarkTapListener = MapObjectTapListener { _, tapPoint ->
                         Log.d("YandexMap", "Tapped the point (${tapPoint.latitude}, ${tapPoint.longitude})")
                         true
@@ -78,7 +62,7 @@ fun YandexMap(navController: NavHostController, isAuthorization: Boolean, lat: D
                 }
 
                 override fun onMapLongTap(map: com.yandex.mapkit.map.Map, point: Point) {
-                    // Обработка долгого нажатия, если необходимо
+
                 }
             }
             map.addInputListener(inputListener)

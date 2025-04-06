@@ -1,11 +1,9 @@
 package com.example.urbanquest.SearchScreens
 
 import android.util.Log
+import com.example.urbanquest.R
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import com.example.urbanquest.SearchScreens.data.WorkingTime
-import com.example.urbanquest.constants.close_place
-import com.example.urbanquest.constants.open_place
-import com.example.urbanquest.constants.unlimited_access
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
@@ -20,26 +18,26 @@ import java.time.LocalTime
 fun isOpen(working: Map<String, WorkingTime>): String {
     val currentDay = LocalDate.now().dayOfWeek.toString().lowercase()
     val currentTime = LocalTime.now()
-    val workingTime = working[currentDay] ?: return close_place
+    val workingTime = working[currentDay] ?: return R.string.close_place.toString()
     if (workingTime.time_open.isEmpty() || workingTime.time_close.isEmpty()) {
-        return close_place
+        return R.string.close_place.toString()
     }
     if (workingTime.time_open == "Без ограничений" || workingTime.time_close == "Без ограничений") {
-        return unlimited_access
+        return R.string.unlimited_access.toString()
     }
     val openTime = LocalTime.parse(workingTime.time_open)
     val closeTime = LocalTime.parse(workingTime.time_close)
     if (closeTime.isBefore(openTime)) {
         if (currentTime.isAfter(openTime) || currentTime.isBefore(closeTime)) {
-            return "$open_place${workingTime.time_open}"
+            return "${R.string.open_place}${workingTime.time_open}"
         }
     } else {
         if (currentTime.isAfter(openTime) && currentTime.isBefore(closeTime)) {
-            return "$open_place${workingTime.time_open}"
+            return "${R.string.open_place}${workingTime.time_open}"
         }
     }
 
-    return close_place
+    return R.string.close_place.toString()
 }
 suspend fun fetchFoodPlaces(): List<ItemFromDB> {
     val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")

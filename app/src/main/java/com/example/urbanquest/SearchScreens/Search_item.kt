@@ -37,6 +37,13 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.urbanquest.R
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
+import com.example.urbanquest.constants.eightPad
+import com.example.urbanquest.constants.fourPad
+import com.example.urbanquest.constants.mediumFontSize
+import com.example.urbanquest.constants.sixteenFontSize
+import com.example.urbanquest.constants.sixteenPad
+import com.example.urbanquest.constants.twelvePad
+import com.example.urbanquest.constants.twentyFourPad
 
 
 @Composable
@@ -46,7 +53,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
     val isClicked = remember { mutableStateOf(false) }
 
     Box(modifier = Modifier
-        .padding(start = 24.dp, end = 16.dp, top = 24.dp, bottom = 8.dp)
+        .padding(start = twentyFourPad, end = sixteenPad, top = twentyFourPad, bottom = eightPad)
         .clip(RoundedCornerShape(15.dp))
         .fillMaxWidth()
         .background(MaterialTheme.colorScheme.secondaryContainer)
@@ -68,7 +75,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                 contentDescription = "Icon from Storage",
                 contentScale = ContentScale.Inside,
                 modifier = Modifier
-                .padding(start = 8.dp, top = 12.dp, end = 4.dp, bottom = 12.dp)
+                .padding(start = eightPad, top = twelvePad, end = fourPad, bottom = twelvePad)
                 .size(96.dp),
                 placeholder = painterResource(R.drawable.loading),
                 error = painterResource(R.drawable.placeholder_icon),
@@ -78,8 +85,6 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
 
 
             Column {
-
-                //The line with the favourite places
 
                 Row(
                     modifier = Modifier
@@ -94,7 +99,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                     ) {
                         Text(
                             place.name,
-                            modifier = Modifier.padding(top = 8.dp),
+                            modifier = Modifier.padding(top = eightPad),
                             color = MaterialTheme.colorScheme.tertiary,
                             fontSize = when {
                                 screenWidth <= 360.dp -> 20.sp
@@ -110,25 +115,13 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         contentDescription = "favourite icon",
                         tint = if (isClicked.value) Color.Red else MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
-                            .padding(top = 8.dp, end = 16.dp)
+                            .padding(top = eightPad, end = sixteenPad)
                             .size(25.dp)
                             .clickable {
                                 isClicked.value = !isClicked.value
-                                /*val editor = sharedPref.edit()
-                                if (isClicked.value) {
-                                    editor.putBoolean(name, true)
-                                    saveSearchQuery(context, name) // Добавление в историю при нажатии на иконку
-                                } else {
-                                    editor.remove(name)
-                                }
-                                editor.apply()*/
                             }
                     )
                 }
-
-
-                //The line with the address
-
 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = ImageVector.vectorResource(
@@ -144,16 +137,12 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         maxLines = 3,
                         softWrap = true,
                         fontSize = when {
-                            screenWidth <= 360.dp -> 16.sp
+                            screenWidth <= 360.dp -> sixteenFontSize
                             screenWidth > 360.dp -> 18.sp
                             else -> 18.sp
                         }
                     )
                 }
-
-
-                //The line with the rate
-
 
                 Row (
                     verticalAlignment = Alignment.CenterVertically){
@@ -166,21 +155,17 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                             .size(20.dp))
                     Text(place.rate.toString(),
                         color = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier.padding(start = 3.dp),
+                        modifier = Modifier.padding(start = 3.dp, top = 4.dp),
                         fontSize = when {
-                            screenWidth <= 360.dp -> 16.sp
-                            screenWidth > 360.dp -> 18.sp
-                            else -> 18.sp
+                            screenWidth <= 360.dp -> sixteenFontSize
+                            screenWidth > 360.dp -> mediumFontSize
+                            else -> mediumFontSize
                         }
                     )
                 }
 
-
-                //The line with the time
-
-
                 Row (modifier = Modifier
-                    .padding(bottom = 8.dp),
+                    .padding(bottom = eightPad),
                     verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = ImageVector.vectorResource(
                         id = R.drawable.clock_icon
@@ -190,13 +175,13 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         modifier = Modifier
                             .size(20.dp)
                     )
-                    Text(text = isOpen(place.working_time),
+                    Text(text = isOpen(place.workingTime),
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {
-                            screenWidth <= 360.dp -> 16.sp
-                            screenWidth > 360.dp -> 18.sp
-                            else -> 18.sp
+                            screenWidth <= 360.dp -> sixteenFontSize
+                            screenWidth > 360.dp -> mediumFontSize
+                            else -> mediumFontSize
                         }
                     )
                 }

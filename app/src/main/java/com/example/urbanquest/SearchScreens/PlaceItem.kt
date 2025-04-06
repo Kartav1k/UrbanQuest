@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -40,7 +41,6 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.urbanquest.R
-import com.example.urbanquest.constants.show_on_map
 
 
 @Composable
@@ -130,7 +130,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                                 .size(24.dp)
                         )
                         Text(
-                            text = show_on_map,
+                            text = stringResource(R.string.show_on_map),
                             fontSize = 12.sp,
                             color = MaterialTheme.colorScheme.tertiary,
                             modifier = Modifier
@@ -149,7 +149,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                             .size(24.dp)
                     )
                     Text(
-                        text = isOpen(place.working_time),
+                        text = isOpen(place.workingTime),
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.tertiary
                     )

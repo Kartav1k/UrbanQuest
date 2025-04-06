@@ -35,6 +35,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -45,9 +46,6 @@ import coil.request.ImageRequest
 import com.example.urbanquest.SearchScreens.ItemFromDBViewModel
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import com.example.urbanquest.SearchScreens.isOpen
-import com.example.urbanquest.constants.LABEL_recomendationList
-import com.example.urbanquest.constants.error_warning
-import com.example.urbanquest.constants.no_result
 
 
 @Composable
@@ -85,7 +83,7 @@ fun Recommendations(
             }
 
             Text(
-                text = LABEL_recomendationList,
+                text = stringResource(R.string.LABEL_recomendationList),
                 modifier = Modifier.padding(top = 10.dp),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
@@ -100,14 +98,14 @@ fun Recommendations(
             CircularProgressIndicator(modifier = Modifier.align(Alignment.CenterHorizontally))
         } else if (isError) {
             Text(
-                error_warning,
+                stringResource(R.string.error_warning),
                 color = Color.Red,
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally))
         } else {
             if (recommendations.isEmpty()) {
                 Text(
-                    no_result,
+                    stringResource(R.string.no_result),
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally))
             } else {
@@ -205,10 +203,6 @@ fun RecommendationItem(item: ItemFromDB, navController: NavHostController, itemF
                     )
                 }
 
-
-                //The line with the address
-
-
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = ImageVector.vectorResource(
                         id = R.drawable.map_pin_icon
@@ -230,10 +224,6 @@ fun RecommendationItem(item: ItemFromDB, navController: NavHostController, itemF
                     )
                 }
 
-
-                //The line with the rate
-
-
                 Row (
                     verticalAlignment = Alignment.CenterVertically){
                     Icon(imageVector = ImageVector.vectorResource(
@@ -254,10 +244,6 @@ fun RecommendationItem(item: ItemFromDB, navController: NavHostController, itemF
                     )
                 }
 
-
-                //The line with the time
-
-
                 Row (modifier = Modifier
                     .padding(bottom = 8.dp),
                     verticalAlignment = Alignment.CenterVertically) {
@@ -269,7 +255,7 @@ fun RecommendationItem(item: ItemFromDB, navController: NavHostController, itemF
                         modifier = Modifier
                             .size(20.dp)
                     )
-                    Text(text = isOpen(item.working_time),
+                    Text(text = isOpen(item.workingTime),
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {

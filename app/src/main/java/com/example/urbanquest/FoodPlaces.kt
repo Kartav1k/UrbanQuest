@@ -1,5 +1,10 @@
 package com.example.urbanquest
 
+
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,6 +19,10 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -33,6 +42,7 @@ import com.example.urbanquest.SearchScreens.SearchItem
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import com.example.urbanquest.SearchScreens.fetchFoodPlaces
 import com.example.urbanquest.constants.LABEL_foodplaces
+
 
 @Composable
 fun FoodPlaces(navController: NavHostController, isAuthorization: Boolean, itemFromDBViewModel: ItemFromDBViewModel) {
@@ -57,6 +67,7 @@ fun FoodPlaces(navController: NavHostController, isAuthorization: Boolean, itemF
         val screenWidth = configuration.screenWidthDp.dp
 
         Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
+
             IconButton(
                 onClick = {
                     navController.popBackStack()
@@ -71,7 +82,9 @@ fun FoodPlaces(navController: NavHostController, isAuthorization: Boolean, itemF
             }
 
             Text(
-                text = LABEL_foodplaces,
+
+                text = stringResource(R.string.LABEL_foodplaces),
+
                 modifier = Modifier.padding(top = 10.dp),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {

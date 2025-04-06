@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -38,11 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
-import com.example.urbanquest.constants.entrance_text
-import com.example.urbanquest.constants.forgetPassword_text
-import com.example.urbanquest.constants.login_text
-import com.example.urbanquest.constants.password_text
-import com.example.urbanquest.constants.recovery_text
 import com.example.urbanquest.ui.theme.WhiteGrey
 import com.example.urbanquest.ui.theme.linkColor
 import com.google.firebase.Firebase
@@ -85,7 +81,9 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
             login,
             placeholder = {
                 Text(
-                    login_text, fontSize = 12.sp, color = WhiteGrey
+                    stringResource(R.string.login_text),
+                    fontSize = 12.sp,
+                    color = WhiteGrey
                 )
             },
             onValueChange = {
@@ -112,7 +110,9 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
             password,
             placeholder = {
                 Text(
-                    password_text, fontSize = 12.sp, color = WhiteGrey
+                    stringResource(R.string.password_text),
+                    fontSize = 12.sp,
+                    color = WhiteGrey
                 )
             },
             onValueChange = {
@@ -158,11 +158,11 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
 
         Row(){
             Text(
-                forgetPassword_text,
+                stringResource(R.string.forgetPassword_text),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = 12.sp)
             Text(
-                recovery_text,
+                stringResource(R.string.recovery_text),
                 color = linkColor,
                 fontSize = 12.sp,
                 modifier = Modifier
@@ -203,7 +203,7 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
             shape = RoundedCornerShape(15.dp)
         ) {
             Text(
-                entrance_text,
+                stringResource(R.string.entrance_text),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
                     screenWidth <= 360.dp -> 14.sp
