@@ -8,7 +8,6 @@
             <handle>
             </handle>
           </Target>
-        </DropdownSelection>
         <DialogSelection />
       </SelectionState>
     </selectionStates>
