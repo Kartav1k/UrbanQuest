@@ -229,25 +229,30 @@ fun Registration(navController: NavHostController, userViewModel: UserViewModel)
 
         Button(
             onClick = {
-                if (
-                    password == confirmationPassword
-                    && isEmailValid(email)
-                    && isLoginValid(login)
-                    && isPasswordValid(password)
-                    )
-                {
-                    userViewModel.register(email, password, login) { success, error ->
-                        if (success) {
-                            navController.navigate("MenuHub") {
-                                popUpTo(0)
+                when {
+                    !isEmailValid(email) -> {
+                        Toast.makeText(context, "Неверный формат email", Toast.LENGTH_SHORT).show()
+                    }
+                    !isLoginValid(login) -> {
+                        Toast.makeText(context, "Логин должен быть от 4 до 16 символов и содержать буквы", Toast.LENGTH_SHORT).show()
+                    }
+                    !isPasswordValid(password) -> {
+                        Toast.makeText(context, "Пароль должен быть от 6 до 12 символов и содержать буквы и цифры", Toast.LENGTH_SHORT).show()
+                    }
+                    password != confirmationPassword -> {
+                        Toast.makeText(context, "Пароли не совпадают", Toast.LENGTH_SHORT).show()
+                    }
+                    else -> {
+                        userViewModel.register(email, password, login) { success, error ->
+                            if (success) {
+                                navController.navigate("MenuHub") {
+                                    popUpTo(0)
+                                }
+                            } else {
+                                Toast.makeText(context, error ?: "Ошибка регистрации", Toast.LENGTH_LONG).show()
                             }
-                        } else {
-                            Toast.makeText(context, error ?: "Ошибка регистрации", Toast.LENGTH_LONG).show()
                         }
                     }
-                } else {
-                    //Добавить вывод Тостов с определенной проблемой, а не в общем случае
-                    Toast.makeText(context, R.string.autorization_error , Toast.LENGTH_SHORT).show()
                 }
             },
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
