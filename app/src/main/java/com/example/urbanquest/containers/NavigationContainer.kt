@@ -128,5 +128,18 @@ fun NavigationContainer(navController: NavHostController) {
                 YandexMap(navController, userViewModel, lat, lon)
             }
         }
+        composable("FoodPlaces"){
+            FoodPlaces(navController, isAuthorization, walkingPlacesViewModel)
+        }
+        composable("WalkingPlaces"){
+            WalkingPlaces(navController, isAuthorization, walkingPlacesViewModel)
+        }
+        composable("map/{lat}/{lon}") { backStackEntry ->
+            val lat = backStackEntry.arguments?.getString("lat")?.toDoubleOrNull()
+            val lon = backStackEntry.arguments?.getString("lon")?.toDoubleOrNull()
+            if (lat != null && lon != null) {
+                YandexMap(navController, isAuthorization, lat, lon)
+            }
+        }
     }
 }
