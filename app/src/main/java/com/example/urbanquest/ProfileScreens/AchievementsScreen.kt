@@ -16,10 +16,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.AuthorizationScreens.UserViewModel
 import com.example.urbanquest.R
 
+
+//Composable-функция экрана с достижениями
 @Composable
-fun AchievementsScreen(navController: NavHostController, isAuthorization: Boolean) {
+fun AchievementsScreen(navController: NavHostController, userViewModel: UserViewModel) {
 
 
     val configuration = LocalConfiguration.current

@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.AuthorizationScreens.UserViewModel
 import com.example.urbanquest.R
 import com.example.urbanquest.constants.bigLabelSize
 import com.example.urbanquest.constants.eightPad
@@ -39,9 +40,9 @@ import com.example.urbanquest.constants.twentyFourPad
 import com.example.urbanquest.constants.twentyPad
 import com.example.urbanquest.constants.twentyTwoFontSize
 
-
+//Composable-функция настроек
 @Composable
-fun SettingsScreen(navController: NavHostController, isAuthorization: Boolean, themeViewModel: ThemeViewModel){
+fun SettingsScreen(navController: NavHostController, userViewModel: UserViewModel, themeViewModel: ThemeViewModel){
     Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 
         val configuration = LocalConfiguration.current

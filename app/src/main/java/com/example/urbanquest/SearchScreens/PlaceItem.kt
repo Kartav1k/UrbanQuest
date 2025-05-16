@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,6 +44,7 @@ import coil.request.ImageRequest
 import com.example.urbanquest.R
 
 
+//Composable-функция для описание выбранного элемента списка
 @Composable
 fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) {
 
@@ -50,6 +52,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
     val place by viewModel.selectedPlace.observeAsState()
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
+    val context = LocalContext.current
 
     place?.let { place ->
         Column(modifier = Modifier
@@ -118,7 +121,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                         shape = RoundedCornerShape(45.dp)
                     )
                     .clickable {
-
+                        navController.navigate("map/${place.geopoint_latitude}/${place.geopoint_longtitude}")
                     }
                 ){
                     Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -149,7 +152,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                             .size(24.dp)
                     )
                     Text(
-                        text = isOpen(place.workingTime),
+                        text = isOpen(place.working_time),
                         fontSize = 12.sp,
                         color = MaterialTheme.colorScheme.tertiary
                     )
@@ -178,7 +181,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 8.dp, top = 8.dp, bottom = 16.dp),
+                    .padding(start = 8.dp, top = 8.dp, bottom = 16.dp, end = 8.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(place.tags.entries.toList()) { tag ->
@@ -188,10 +191,11 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
 
             Text(
                 text = place.description,
+                textAlign = TextAlign.Justify,
                 color = MaterialTheme.colorScheme.tertiary,
+                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                 fontSize = 16.sp
             )
         }
     }
-
 }

@@ -46,10 +46,10 @@ import com.example.urbanquest.constants.twelvePad
 import com.example.urbanquest.constants.twentyFourPad
 
 
+//Composable-функция для отображения элемента списка в поиске
 @Composable
 fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostController, itemFromDBViewModel: ItemFromDBViewModel){
 
-    val sharedPref = context.getSharedPreferences("Favorites", Context.MODE_PRIVATE)
     val isClicked = remember { mutableStateOf(false) }
 
     Box(modifier = Modifier
@@ -165,7 +165,7 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                 }
 
                 Row (modifier = Modifier
-                    .padding(bottom = eightPad),
+                    .padding(bottom = 8.dp),
                     verticalAlignment = Alignment.CenterVertically) {
                     Icon(imageVector = ImageVector.vectorResource(
                         id = R.drawable.clock_icon
@@ -175,13 +175,13 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         modifier = Modifier
                             .size(20.dp)
                     )
-                    Text(text = isOpen(place.workingTime),
+                    Text(text = isOpen(place.working_time),
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {
-                            screenWidth <= 360.dp -> sixteenFontSize
-                            screenWidth > 360.dp -> mediumFontSize
-                            else -> mediumFontSize
+                            screenWidth <= 360.dp -> 16.sp
+                            screenWidth > 360.dp -> 18.sp
+                            else -> 18.sp
                         }
                     )
                 }

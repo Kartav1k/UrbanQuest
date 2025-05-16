@@ -20,6 +20,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.AuthorizationScreens.UserViewModel
 import com.example.urbanquest.R
 import com.example.urbanquest.constants.bigLabelSize
 import com.example.urbanquest.constants.eightPad
@@ -34,11 +35,12 @@ import com.example.urbanquest.constants.twentyTwoFontSize
 import com.example.urbanquest.ui.theme.linkColor
 
 @Composable
-fun InfoAboutApp(navController: NavHostController, isAuthorization: Boolean){
+fun InfoAboutApp(navController: NavHostController, userViewModel: UserViewModel){
 
     val configuration = LocalConfiguration.current
     val context = LocalContext.current
     val screenWidth = configuration.screenWidthDp.dp
+
 
     LazyColumn {
 
@@ -74,7 +76,23 @@ fun InfoAboutApp(navController: NavHostController, isAuthorization: Boolean){
         }
         item {
             Text(
-                stringResource(R.string.name_app_text) + stringResource(R.string.name_app),
+                stringResource(R.string.name_app_text) +" "+ stringResource(R.string.name_app),
+                modifier = Modifier.padding(start = sixteenPad, bottom = twelvePad),
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = when {
+                    screenWidth <= 360.dp -> sixteenFontSize
+                    screenWidth > 360.dp -> twentyTwoFontSize
+                    else -> twentyTwoFontSize
+                }
+            )
+        }
+
+        item {
+
+            val user = userViewModel.userData.value
+
+            Text(
+                stringResource(R.string.your_login) + " " + user?.login,
                 modifier = Modifier.padding(start = sixteenPad, bottom = twelvePad),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
@@ -107,7 +125,7 @@ fun InfoAboutApp(navController: NavHostController, isAuthorization: Boolean){
 
         item {
             Text(
-                stringResource(R.string.version_app)+"close beta",
+                stringResource(R.string.version_app)+" 0.2.1",
                 modifier = Modifier.padding(start = 16.dp),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {

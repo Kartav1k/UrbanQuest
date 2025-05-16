@@ -11,6 +11,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
+import com.example.urbanquest.AuthorizationScreens.UserViewModel
 import com.yandex.mapkit.MapKitFactory
 import com.yandex.mapkit.geometry.Point
 import com.yandex.mapkit.map.CameraPosition
@@ -21,9 +22,10 @@ import com.yandex.mapkit.map.PlacemarkMapObject
 import com.yandex.mapkit.mapview.MapView
 import com.yandex.runtime.image.ImageProvider
 
+//Composable-функция отображения Yandex карт
 
 @Composable
-fun YandexMap(navController: NavHostController, isAuthorization: Boolean) {
+fun YandexMap(navController: NavHostController, userViewModel: UserViewModel, lat: Double? = null, lon: Double? = null) {
     val context = LocalContext.current
     var currentPlacemark by remember { mutableStateOf<PlacemarkMapObject?>(null) }
 
@@ -34,24 +36,36 @@ fun YandexMap(navController: NavHostController, isAuthorization: Boolean) {
             val mapView = view.findViewById<MapView>(R.id.mapview)
 
             val map = mapView.mapWindow.map
-            map.move(CameraPosition(Point(55.751225, 37.629540), 12.0f, 0.0f, 0.0f))
+            val point = if (lat != null && lon != null) Point(lat, lon) else Point(55.751225, 37.629540)
+            map.move(CameraPosition(point, 12.0f, 0.0f, 0.0f))
 
             val mapObjects = map.mapObjects.addCollection()
+
+            if (lat != null && lon != null) {
+                val imageProvider = ImageProvider.fromResource(context, R.drawable.label_user)
+                currentPlacemark = mapObjects.addPlacemark(point).apply {
+                    setIcon(imageProvider)
+                    setIconStyle(IconStyle().apply {
+                        anchor = PointF(0.38f, 0.83f)
+                        scale = 0.6f
+                        zIndex = 10.0f
+                    })
+                }
+            }
 
             val inputListener = object : InputListener {
                 override fun onMapTap(map: com.yandex.mapkit.map.Map, point: Point) {
                     currentPlacemark?.let { mapObjects.remove(it) }
                     val imageProvider = ImageProvider.fromResource(context, R.drawable.label_user)
-                    currentPlacemark = mapObjects.addPlacemark().apply {
-                        geometry = point
+                    currentPlacemark = mapObjects.addPlacemark(point).apply {
                         setIcon(imageProvider)
                         setIconStyle(IconStyle().apply {
-                            anchor = PointF(0.35f, 0.78f)
+                            anchor = PointF(0.38f, 0.83f)
                             scale = 0.6f
                             zIndex = 10.0f
                         })
                     }
-                    
+
                     val placemarkTapListener = MapObjectTapListener { _, tapPoint ->
                         Log.d("YandexMap", "Tapped the point (${tapPoint.latitude}, ${tapPoint.longitude})")
                         true

@@ -1,7 +1,9 @@
 package com.example.urbanquest.AuthorizationScreens
 
 data class User(
-    val userID: String? = null,
-    val login:  String? = null,
-    val email: String? = null
+    val userId: String = "",
+    val email: String = "",
+    val login: String = "",
+    val favourites: Map<String, Boolean> = emptyMap(),
+    val achievements: Map<String, Boolean> = emptyMap()
 )

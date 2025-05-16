@@ -1,6 +1,6 @@
 package com.example.urbanquest.AuthorizationScreens
 
-import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -30,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -42,22 +43,19 @@ import com.example.urbanquest.R
 import com.example.urbanquest.ui.theme.WhiteGrey
 import com.example.urbanquest.ui.theme.linkColor
 import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
-import com.google.firebase.database.DatabaseReference
 
 
-private lateinit var firebaseRef: DatabaseReference
-private lateinit var auth: FirebaseAuth
-var userData: ArrayList<User> = arrayListOf()
-
+//Composable-функция экрана авторизации
 
 @Composable
-fun Authorization(navController: NavHostController, isAuthorization: Boolean){
+fun Authorization(navController: NavHostController, userViewModel: UserViewModel){
 
     var login by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var isVisible by rememberSaveable { mutableStateOf(false) }
+    val context = LocalContext.current
+
     val auth = Firebase.auth
 
     Column(modifier = Modifier
@@ -172,27 +170,18 @@ fun Authorization(navController: NavHostController, isAuthorization: Boolean){
 
         Button(
             onClick = {
-                if (isLoginEmpty(login) && isPasswordCorrect(password) && isLoginCorrect(login)) {
-                    checkLoginInDB(login = login, onEmailReceived = { email ->
-                        if (email != null) {
-                            auth.signInWithEmailAndPassword(email, password)
-                                .addOnCompleteListener() { task ->
-                                    if (task.isSuccessful) {
-                                        Log.d("Authorization", "Success")
-                                        navController.navigate("MenuHub")
-                                    } else {
-                                        Log.d("Authorization", "Failure")
-                                    }
-                                }
-                                .addOnFailureListener { exception ->
-                                    Log.w("Authorization", "Failure", exception)
-                                }
+                if (isLoginValid(login) && isPasswordValid(password)) {
+                    userViewModel.loginWithCredentials(login, password) { success, error ->
+                        if (success) {
+                            navController.navigate("MenuHub") {
+                                popUpTo(0)
+                            }
+                        } else {
+                            Toast.makeText(context, error ?: "Ошибка авторизации", Toast.LENGTH_LONG).show()
                         }
-                    },
-                        onError = { exception ->
-                            Log.w("Authorization", "Failure", exception)
-                        }
-                    )
+                    }
+                } else {
+                    Toast.makeText(context, R.string.autorization_error, Toast.LENGTH_SHORT).show()
                 }
             },
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),

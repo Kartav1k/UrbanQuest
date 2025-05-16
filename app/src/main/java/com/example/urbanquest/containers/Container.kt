@@ -22,7 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.example.urbanquest.R
 import com.example.urbanquest.ui.theme.BottomAppBarColor
 
-
+//Composable-функция-контейнер для других функций, вместе с нижней строкой навигации
 @Composable
 fun Container(){
 

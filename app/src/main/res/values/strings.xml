@@ -21,7 +21,8 @@
     <string name="LABEL_achievements">Достижения</string>
     <string name="LABEL_recomendationTest">Тест рекомендаций</string>
     <string name="LABEL_recomendationList">Ваши рекомендации</string>
-    <string name="LABEL_foodplaces">Различные заведения</string>
+    <string name="LABEL_foodplaces">Заведения</string>
+    <string name="LABEL_walkingplaces">Различные места</string>
 
     //Buttons
     <string name="friends_text">Друзья</string>
@@ -44,16 +45,17 @@
     //Warnings
     <string name="error_warning">Упс, возникли проблемы!</string>
     <string name="autorization_error">Недопустимое значение в одном из полей, исправьте его</string>
-    <string name="no_result">Ничего подходящего не найдено :(</string>
+    <string name="no_result">Для начала составьте список рекомендаций</string>
 
     //Text
     <string name="change_theme">Смена темы</string>
     <string name="close_place">Закрыто</string>
-    <string name="open_place">Открыто с </string>
+    <string name="open_place">Открыто с</string>
     <string name="unlimited_access">Без ограничений</string>
     <string name="item_not_found">Не найдено</string>
     <string name="yandex_terms_of_use_of_the_service">Условия использования сервиса Яндекс.Карты</string>
     <string name="version_app">Версия приложения - </string>
     <string name="name_app_text">Название приложения - </string>
     <string name="create_recomendation_list">Составить рекомендации</string>
+    <string name="your_login">Ваш логин - </string>
 </resources>

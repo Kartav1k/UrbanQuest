@@ -42,6 +42,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.AuthorizationScreens.UserViewModel
 import com.example.urbanquest.R
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import com.google.firebase.database.DatabaseReference
@@ -56,8 +57,10 @@ var searchListOfWalkingPlaces: ArrayList<ItemFromDB> = arrayListOf()
 var searchListOfCafes_And_Restaurants: ArrayList<ItemFromDB> = arrayListOf()
 private lateinit var firebaseRef: DatabaseReference
 
+
+//Composable-функция поиска
 @Composable
-fun Search(navController: NavHostController, isAuthorization: Boolean, itemFromDBViewModel: ItemFromDBViewModel){
+fun Search(navController: NavHostController, userViewModel: UserViewModel, itemFromDBViewModel: ItemFromDBViewModel){
 
     var searchRequest by rememberSaveable { mutableStateOf("") }
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -271,57 +274,3 @@ fun Search(navController: NavHostController, isAuthorization: Boolean, itemFromD
         }
     }
 }
-
-
-
-
-/*
-if (showHistory && searchRequest.isBlank()) {
-            key(showHistory){
-                Column {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 20.dp),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        Text(
-                            text = "История поиска",
-                            color = MaterialTheme.colorScheme.tertiary,
-                            fontSize = 18.sp
-                        )
-                        Text(
-                            text = "Очистить",
-                            color = MaterialTheme.colorScheme.error,
-                            modifier = Modifier.clickable {
-                                clearSearchHistory(context)
-                            },
-                            fontSize = 18.sp
-                        )
-                    }
-                    LazyColumn {
-                        items(searchHistory) { query ->
-                            Text(
-                                text = query,
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                                    .clickable {
-                                        searchRequest = query
-                                        fetchData(query)
-                                        if(query.isNotBlank()){
-                                            saveSearchQuery(context, query)
-                                            showHistory = false
-                                        }
-                                        //saveSearchQuery(context, query)
-                                        //showHistory = false
-                                    },
-                                color = MaterialTheme.colorScheme.tertiary,
-                                fontSize = 18.sp
-                            )
-                        }
-                    }
-                }
-            }
-        }
- */

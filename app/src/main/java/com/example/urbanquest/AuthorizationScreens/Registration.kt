@@ -41,11 +41,11 @@ import androidx.navigation.NavHostController
 import com.example.urbanquest.R
 
 
-//Функция регистрации, пока данные не сохраняются в строках при переходе назад
+//Composable-функция регистрации, пока данные не сохраняются в строках при переходе назад
 
 
 @Composable
-fun Registration(navController: NavHostController, isAuthorization: Boolean){
+fun Registration(navController: NavHostController, userViewModel: UserViewModel){
 
     var password by rememberSaveable { mutableStateOf("") }
     var confirmationPassword by rememberSaveable { mutableStateOf("") }
@@ -54,7 +54,6 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
     var isVisible by rememberSaveable { mutableStateOf(false) }
     var isVisibleForPassword by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
-
 
     Column(modifier = Modifier
         .fillMaxSize()
@@ -230,15 +229,22 @@ fun Registration(navController: NavHostController, isAuthorization: Boolean){
 
         Button(
             onClick = {
-                if (password == confirmationPassword
-                    && isEmailEmpty(email)
-                    && isLoginEmpty(login)
-                    && isEmailCorrect(email)
-                    && isPasswordCorrect(password)
-                    && isLoginCorrect(login))
+                if (
+                    password == confirmationPassword
+                    && isEmailValid(email)
+                    && isLoginValid(login)
+                    && isPasswordValid(password)
+                    )
                 {
-                    registrationUser(email, login, password)
-                    navController.navigate("MenuHub")
+                    userViewModel.register(email, password, login) { success, error ->
+                        if (success) {
+                            navController.navigate("MenuHub") {
+                                popUpTo(0)
+                            }
+                        } else {
+                            Toast.makeText(context, error ?: "Ошибка регистрации", Toast.LENGTH_LONG).show()
+                        }
+                    }
                 } else {
                     //Добавить вывод Тостов с определенной проблемой, а не в общем случае
                     Toast.makeText(context, R.string.autorization_error , Toast.LENGTH_SHORT).show()

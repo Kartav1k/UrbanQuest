@@ -1,5 +1,6 @@
 package com.example.urbanquest.AuthorizationScreens
 
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -27,15 +29,17 @@ import com.example.urbanquest.R
 
 
 //Начальный экран, где выбор куда перейти: на регистрацию, на авторизацию или войти без входа с урезанным функционалом(не реализовано)
+
 @Composable
-fun ChoiceAuthorization(navController: NavHostController){
-    
+fun ChoiceAuthorization(navController: NavHostController, userViewModel: UserViewModel){
+
     Column(
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(ScrollState(0)),
         horizontalAlignment = Alignment.CenterHorizontally) {
 
+        val context = LocalContext.current
         val configuration = LocalConfiguration.current
         val screenWidth = configuration.screenWidthDp.dp
 
@@ -94,7 +98,15 @@ fun ChoiceAuthorization(navController: NavHostController){
 
         Button(
             onClick = {
-                navController.navigate("MenuHub")
+                userViewModel.signInAnonymously { success, error ->
+                    if (success) {
+                        navController.navigate("MenuHub") {
+                            popUpTo(0)
+                        }
+                    } else {
+                        Toast.makeText(context, error ?: "Ошибка гостевого входа", Toast.LENGTH_LONG).show()
+                    }
+                }
             },
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier
@@ -112,7 +124,6 @@ fun ChoiceAuthorization(navController: NavHostController){
                 }
             )
         }
-
     }
 }
 

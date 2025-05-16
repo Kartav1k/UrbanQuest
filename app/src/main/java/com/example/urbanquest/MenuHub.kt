@@ -26,10 +26,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.AuthorizationScreens.UserViewModel
 
+//Composable-функция главного экрана с навигацией
 
 @Composable
-fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
+fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -149,7 +151,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
 
             Button(
                 onClick = {
-
+                    navController.navigate("WalkingPlaces")
                 },
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier
@@ -185,7 +187,7 @@ fun MenuHub(navController: NavHostController, isAuthorization: Boolean){
 
             Button(
                 onClick = {
-
+                    navController.navigate("FoodPlaces")
                 },
                 shape = RoundedCornerShape(15.dp),
                 modifier = Modifier

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
 
+//
 @Composable
 fun FriendList(navController: NavHostController, isAuthorization: Boolean){
 

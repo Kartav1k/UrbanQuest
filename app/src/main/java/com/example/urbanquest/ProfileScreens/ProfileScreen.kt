@@ -1,8 +1,6 @@
 package com.example.urbanquest.ProfileScreens
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,17 +19,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.AuthorizationScreens.UserViewModel
 import com.example.urbanquest.R
 
 
 @Composable
-fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
+fun ProfileScreen(navController: NavHostController, userViewModel: UserViewModel){
+
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
     ) {
@@ -68,197 +67,158 @@ fun ProfileScreen(navController: NavHostController, isAuthorization: Boolean){
             )
         }
 
-        Box(modifier = Modifier
-            .fillMaxWidth()
-            .padding(bottom = 24.dp),
-            contentAlignment = Alignment.Center
-        ){
-            Image(
-                painter = painterResource(id = R.drawable.no_avatar),
-                contentDescription = "Avatar icon",
-                modifier = Modifier.size(92.dp)
-            )
-        }
+        if (!userViewModel.isAuthorized.value) {
+            Text("Доступно только для авторизованных пользователей")
+        } else {
+            Column(
 
+                modifier = Modifier.fillMaxWidth(),
+                horizontalAlignment = Alignment.Start) {
 
-        Column(
-
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.Start) {
-
-            Button(
-                onClick = {
-                    navController.navigate("FriendList")
-                },
+                Button(
+                    onClick = {
+                        navController.navigate("Achievements")
+                    },
                     modifier = Modifier
                         .padding(start = 12.dp, end = 32.dp)
                         .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
 
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start,
-                    modifier = Modifier.fillMaxWidth()){
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.friends_icon),
-                        contentDescription = "Friends",
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .size(30.dp))
-                    Text(
-                        text = stringResource(R.string.friends_text),
-                        color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = when {
-                            screenWidth <= 360.dp -> 18.sp
-                            screenWidth > 360.dp -> 22.sp
-                            else -> 22.sp
-                        }
-                    )
-                }
-            }
-
-
-            Button(
-                onClick = {
-                    navController.navigate("Achievements")
-                },
-                modifier = Modifier
-                    .padding(start = 12.dp, end = 32.dp)
-                    .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
-
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start,
-                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.star_icon),
-                        contentDescription = "Achievements",
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .size(30.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.achievements_text),
-                        color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = when {
-                            screenWidth <= 360.dp -> 18.sp
-                            screenWidth > 360.dp -> 22.sp
-                            else -> 22.sp
-                        }
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.star_icon),
+                            contentDescription = "Achievements",
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .size(30.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.achievements_text),
+                            color = MaterialTheme.colorScheme.tertiary,
+                            fontSize = when {
+                                screenWidth <= 360.dp -> 18.sp
+                                screenWidth > 360.dp -> 22.sp
+                                else -> 22.sp
+                            }
+                        )
+                    }
                 }
-            }
 
 
-            Button(
-                onClick = {
-                    navController.navigate("Settings")
-                },
-                modifier = Modifier
-                    .padding(start = 12.dp, end = 32.dp)
-                    .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
+                Button(
+                    onClick = {
+                        navController.navigate("Settings")
+                    },
+                    modifier = Modifier
+                        .padding(start = 12.dp, end = 32.dp)
+                        .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
 
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start,
-                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.settings_icon),
-                        contentDescription = "Settings",
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .size(30.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.settings_text),
-                        color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = when {
-                            screenWidth <= 360.dp -> 18.sp
-                            screenWidth > 360.dp -> 22.sp
-                            else -> 22.sp
-                        }
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.settings_icon),
+                            contentDescription = "Settings",
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .size(30.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.settings_text),
+                            color = MaterialTheme.colorScheme.tertiary,
+                            fontSize = when {
+                                screenWidth <= 360.dp -> 18.sp
+                                screenWidth > 360.dp -> 22.sp
+                                else -> 22.sp
+                            }
+                        )
+                    }
                 }
-            }
 
 
-            Button(
-                onClick = {
-                    navController.navigate("InfoAboutApp")
-                },
-                modifier = Modifier
-                    .padding(start = 12.dp, end = 32.dp)
-                    .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
+                Button(
+                    onClick = {
+                        navController.navigate("InfoAboutApp")
+                    },
+                    modifier = Modifier
+                        .padding(start = 12.dp, end = 32.dp)
+                        .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
 
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start,
-                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.info_icon),
-                        contentDescription = "Info about App",
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .size(30.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.info_text),
-                        color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = when {
-                            screenWidth <= 360.dp -> 18.sp
-                            screenWidth > 360.dp -> 20.sp
-                            else -> 22.sp
-                        }
-                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.info_icon),
+                            contentDescription = "Info about App",
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .size(30.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.info_text),
+                            color = MaterialTheme.colorScheme.tertiary,
+                            fontSize = when {
+                                screenWidth <= 360.dp -> 18.sp
+                                screenWidth > 360.dp -> 20.sp
+                                else -> 22.sp
+                            }
+                        )
+                    }
                 }
-            }
 
 
-            Button(
-                onClick = {
-
-                },
-                modifier = Modifier
-                    .padding(start = 12.dp, end = 32.dp)
-                    .fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
-
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.Start,
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = R.drawable.exit_icon),
-                        contentDescription = "Exit from App",
-                        tint = MaterialTheme.colorScheme.tertiary,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .size(35.dp)
-                    )
-                    Text(
-                        text = stringResource(R.string.exit_text),
-                        color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = when {
-                            screenWidth <= 360.dp -> 18.sp
-                            screenWidth > 360.dp -> 22.sp
-                            else -> 22.sp
+                Button(
+                    onClick = {
+                        userViewModel.logout()
+                        navController.navigate("Choice_authorization") {
+                            popUpTo(0)
                         }
-                    )
+                    },
+                    modifier = Modifier
+                        .padding(start = 12.dp, end = 32.dp)
+                        .fillMaxWidth(),
+                    colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.background)
+
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = R.drawable.exit_icon),
+                            contentDescription = "Exit from App",
+                            tint = MaterialTheme.colorScheme.tertiary,
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .size(35.dp)
+                        )
+                        Text(
+                            text = stringResource(R.string.exit_text),
+                            color = MaterialTheme.colorScheme.tertiary,
+                            fontSize = when {
+                                screenWidth <= 360.dp -> 18.sp
+                                screenWidth > 360.dp -> 22.sp
+                                else -> 22.sp
+                            }
+                        )
+                    }
                 }
             }
         }

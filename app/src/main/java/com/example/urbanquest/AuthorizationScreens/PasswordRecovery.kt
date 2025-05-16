@@ -38,9 +38,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
 
-//Функция изменения пароля, пока без логики сохранения данных, не сохраняется и изменяет в БД у пользователя
+//Composable-функция изменения пароля, пока без логики сохранения данных, не сохраняется и изменяет в БД у пользователя
 @Composable
-fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean){
+fun PasswordRecovery(navController: NavHostController, userViewModel: UserViewModel){
     var password by rememberSaveable { mutableStateOf("") }
     var confirmationPassword by rememberSaveable { mutableStateOf("") }
     var email by rememberSaveable { mutableStateOf("") }
@@ -197,7 +197,7 @@ fun PasswordRecovery(navController: NavHostController, isAuthorization: Boolean)
 
         Button(
             onClick = {
-                navController.navigate("MenuHub")
+
             },
             colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
             modifier = Modifier

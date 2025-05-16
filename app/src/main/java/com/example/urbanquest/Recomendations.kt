@@ -37,6 +37,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -47,7 +48,7 @@ import com.example.urbanquest.SearchScreens.ItemFromDBViewModel
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import com.example.urbanquest.SearchScreens.isOpen
 
-
+//Composable-функция списка рекомендаций
 @Composable
 fun Recommendations(
     navController: NavHostController,
@@ -106,8 +107,13 @@ fun Recommendations(
             if (recommendations.isEmpty()) {
                 Text(
                     stringResource(R.string.no_result),
+                    textAlign = TextAlign.Justify,
+                    color = MaterialTheme.colorScheme.tertiary,
+                    fontSize = 14.sp,
                     modifier = Modifier
-                        .align(Alignment.CenterHorizontally))
+                        .padding(start = 32.dp),
+                    maxLines = 2
+                )
             } else {
                 recommendations.forEach { item ->
                     RecommendationItem(item, navController, itemFromDBViewModel)
@@ -121,6 +127,7 @@ fun Recommendations(
 fun RecommendationItem(item: ItemFromDB, navController: NavHostController, itemFromDBViewModel: ItemFromDBViewModel) {
 
     val isClicked = remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Box(modifier = Modifier
         .padding(start = 24.dp, end = 16.dp, top = 16.dp, bottom = 0.dp)
@@ -155,9 +162,6 @@ fun RecommendationItem(item: ItemFromDB, navController: NavHostController, itemF
 
 
             Column {
-
-                //The line with the favourite places
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
@@ -191,14 +195,6 @@ fun RecommendationItem(item: ItemFromDB, navController: NavHostController, itemF
                             .size(25.dp)
                             .clickable {
                                 isClicked.value = !isClicked.value
-                                /*val editor = sharedPref.edit()
-                                if (isClicked.value) {
-                                    editor.putBoolean(name, true)
-                                    saveSearchQuery(context, name) // Добавление в историю при нажатии на иконку
-                                } else {
-                                    editor.remove(name)
-                                }
-                                editor.apply()*/
                             }
                     )
                 }
@@ -255,7 +251,7 @@ fun RecommendationItem(item: ItemFromDB, navController: NavHostController, itemF
                         modifier = Modifier
                             .size(20.dp)
                     )
-                    Text(text = isOpen(item.workingTime),
+                    Text(text = isOpen(item.working_time),
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {

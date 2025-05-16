@@ -1,40 +1,29 @@
 package com.example.urbanquest.AuthorizationScreens
 
-import android.util.Log
-import com.google.firebase.Firebase
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
+import android.util.Patterns
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 
-fun isLoginEmpty(login: String): Boolean {
-    return login.isNotBlank()
-}
-fun isLoginCorrect(login: String): Boolean {
-    val hasLetter = login.any { it.isLetter() }
-    val lengthValid = login.length in 4..16
-    return hasLetter && lengthValid
+// Различные вспомогательные функции для процесса регистрации и авторизации
+
+fun isLoginValid(login: String): Boolean {
+    return login.isNotBlank() && login.any { it.isLetter() } && login.length in 4..16
 }
 
-fun isEmailEmpty(email: String): Boolean {
-    return email.isNotBlank()
+fun isEmailValid(email: String): Boolean {
+    return email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
 }
 
-fun isEmailCorrect(email: String): Boolean {
-    return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-}
-
-fun isPasswordCorrect(password: String): Boolean {
+fun isPasswordValid(password: String): Boolean {
     val hasLetter = password.any { it.isLetter() }
     val hasDigit = password.any { it.isDigit() }
-    val lengthValid = password.length in 6..12
-    return hasLetter && hasDigit && lengthValid
+    return password.length in 6..12 && hasLetter && hasDigit
 }
 
-fun registrationUser(email: String, login: String, password: String) {
+
+/*fun registrationUser(email: String, login: String, password: String, userViewModel: UserViewModel, navController: NavHostController) {
     val auth: FirebaseAuth = Firebase.auth
     val firebaseRef: DatabaseReference = FirebaseDatabase
         .getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")
@@ -49,6 +38,9 @@ fun registrationUser(email: String, login: String, password: String) {
                 if (userID != null) {
                     firebaseRef.child(userID).setValue(userData)
                         .addOnCompleteListener {
+                            userViewModel.login(userID)
+
+                            navController.navigate("MenuHub")
                             Log.d("RegistrationProfileInDB", "Success")
                         }
                         .addOnFailureListener { exception ->
@@ -59,7 +51,7 @@ fun registrationUser(email: String, login: String, password: String) {
                 Log.w("Registration", "Create user with email: failure", task.exception)
             }
         }
-}
+}*/
 
 
 fun checkLoginInDB(login: String, onEmailReceived: (String?) -> Unit, onError: (Exception) -> Unit) {

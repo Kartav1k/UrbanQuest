@@ -9,6 +9,9 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.suspendCancellableCoroutine
 
+//Вспомогательные функции для теста рекомендаций
+//Отладка
+
 suspend fun fetchRecommendations2(selectedTags: List<String>): List<ItemFromDB> {
     val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")
     val walkingPlacesRef = firebaseDatabase.getReference("walking_places_info")

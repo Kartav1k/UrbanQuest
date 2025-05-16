@@ -17,9 +17,11 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.AuthorizationScreens.UserViewModel
 
+//Composable-функция для избранного раздела
 @Composable
-fun Favourite(navController: NavHostController, isAuthorization: Boolean){
+fun Favourite(navController: NavHostController, userViewModel: UserViewModel){
     Column {
 
 
@@ -54,11 +56,14 @@ fun Favourite(navController: NavHostController, isAuthorization: Boolean){
                 }
             )
         }
+        if (!userViewModel.isAuthorized.value) {
+            Text("Войдите, чтобы получить доступ к этому разделу")
 
-        LazyColumn {
+        } else {
+            LazyColumn {
+                item {
 
-            item {
-
+                }
             }
         }
 

@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import kotlinx.coroutines.launch
 
+//ViewModel для списка рекомендаций
+
 class RecommendationViewModel : ViewModel() {
     private val _recommendations = MutableLiveData<List<ItemFromDB>>()
     val recommendations: LiveData<List<ItemFromDB>> get() = _recommendations
@@ -33,3 +35,4 @@ class RecommendationViewModel : ViewModel() {
         }
     }
 }
+

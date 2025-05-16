@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+//Composable-функция строки тегов в описании
 @Composable
 fun TagItem(value: String) {
     Box(

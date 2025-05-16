@@ -8,6 +8,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
+//ViewModel для смены темы приложения на тёмную и обратно
+
 class ThemeViewModel (application: Application) : AndroidViewModel(application){
 
     private val _isDarkTheme = MutableLiveData<Boolean>()

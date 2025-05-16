@@ -33,7 +33,7 @@ import androidx.navigation.NavHostController
 
 
 //Добавить по кол-ву человек
-
+//Composable-функция теста рекомендаций
 @Composable
 fun RecomendationTest(navController: NavHostController, viewModel: RecommendationViewModel) {
 
