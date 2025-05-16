@@ -33,7 +33,7 @@ import com.example.urbanquest.constants.bigLabelSize
 import com.example.urbanquest.constants.eightPad
 import com.example.urbanquest.constants.fourPad
 import com.example.urbanquest.constants.labelSize
-import com.example.urbanquest.constants.mediumFontSize
+import com.example.urbanquest.constants.eighteenFontSize
 import com.example.urbanquest.constants.tenPad
 import com.example.urbanquest.constants.thirtyTwoPad
 import com.example.urbanquest.constants.twentyFourPad
@@ -89,7 +89,7 @@ fun SettingsScreen(navController: NavHostController, userViewModel: UserViewMode
                 stringResource(R.string.change_theme),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {
-                    screenWidth <= 360.dp -> mediumFontSize
+                    screenWidth <= 360.dp -> eighteenFontSize
                     screenWidth > 360.dp -> twentyTwoFontSize
                     else -> twentyTwoFontSize
                 }

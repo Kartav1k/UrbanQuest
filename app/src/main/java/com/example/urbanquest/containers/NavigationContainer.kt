@@ -1,13 +1,8 @@
 package com.example.urbanquest.containers
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -47,21 +42,9 @@ fun NavigationContainer(navController: NavHostController) {
     val isLoginChecked by userViewModel.isLoginChecked
     val isLoading by userViewModel.isLoading
 
-    // Проверяем состояние авторизации при первом запуске
     LaunchedEffect(Unit) {
         val currentUser = FirebaseAuth.getInstance().currentUser
         userViewModel.updateAuthState(currentUser)
-    }
-
-    // Показываем загрузочный экран, пока проверяем состояние авторизации
-    if (!isLoginChecked || isLoading) {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
-        }
-        return
     }
 
     val startDestination = if (isAuthorized) "MenuHub" else "Choice_authorization"
@@ -129,16 +112,16 @@ fun NavigationContainer(navController: NavHostController) {
             }
         }
         composable("FoodPlaces"){
-            FoodPlaces(navController, isAuthorization, walkingPlacesViewModel)
+            FoodPlaces(navController, itemFromDBViewModel)
         }
         composable("WalkingPlaces"){
-            WalkingPlaces(navController, isAuthorization, walkingPlacesViewModel)
+            WalkingPlaces(navController, itemFromDBViewModel)
         }
         composable("map/{lat}/{lon}") { backStackEntry ->
             val lat = backStackEntry.arguments?.getString("lat")?.toDoubleOrNull()
             val lon = backStackEntry.arguments?.getString("lon")?.toDoubleOrNull()
             if (lat != null && lon != null) {
-                YandexMap(navController, isAuthorization, lat, lon)
+                YandexMap(navController, userViewModel, lat, lon)
             }
         }
     }

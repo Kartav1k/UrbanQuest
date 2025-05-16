@@ -11,16 +11,50 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
+import java.time.ZonedDateTime
 
 val close_place="Закрыто"
-val open_place="Открыто с "
+val open_place="Открыто "
 val unlimited_access="Без ограничений"
 
 //Вспомогательные функции
 
 fun isOpen(working: Map<String, WorkingTime>): String {
+    val zoneId = ZoneId.of("Europe/Moscow")
+    val currentDateTime = ZonedDateTime.now(zoneId)
+    val currentDay = currentDateTime.dayOfWeek.toString().lowercase()
+    val currentTime = currentDateTime.toLocalTime()
+
+    val workingTime = working[currentDay] ?: return close_place
+
+    val open = workingTime.time_open
+    val close = workingTime.time_close
+
+    if (open.isEmpty() || close.isEmpty()) return close_place
+
+    if (open == "Без ограничений" || close == "Без ограничений") {
+        return unlimited_access
+    }
+
+    val openTime = LocalTime.parse(open)
+    val closeTime = LocalTime.parse(close)
+
+    val isOpenNow = if (closeTime.isBefore(openTime)) {
+        currentTime.isAfter(openTime) || currentTime.isBefore(closeTime)
+    } else {
+        currentTime.isAfter(openTime) && currentTime.isBefore(closeTime)
+    }
+
+    return if (isOpenNow) {
+        "$open_place ($open - $close)"
+    } else {
+        close_place
+    }
+}
+
+/*fun isOpen(working: Map<String, WorkingTime>): String {
     val currentDay = LocalDate.now().dayOfWeek.toString().lowercase()
     val currentTime = LocalTime.now()
     val workingTime = working[currentDay] ?: return close_place
@@ -43,21 +77,7 @@ fun isOpen(working: Map<String, WorkingTime>): String {
     }
 
     return close_place
-}
-suspend fun fetchFoodPlaces(): List<ItemFromDB> {
-    val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")
-    val cafesAndRestaurantsRef = firebaseDatabase.getReference("cafes_and_restaurants")
-    return withContext(Dispatchers.IO) {
-        searchInDatabase(cafesAndRestaurantsRef, "")
-    }
-}
-suspend fun fetchWalkingPlaces(): List<ItemFromDB> {
-    val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")
-    val WalkingPlacesRef = firebaseDatabase.getReference("walking_places_info")
-    return withContext(Dispatchers.IO) {
-        searchInDatabase(WalkingPlacesRef, "")
-    }
-}
+}*/
 
 suspend fun searchItems(query: String): Pair<List<ItemFromDB>, List<ItemFromDB>> {
     val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")

@@ -39,7 +39,7 @@ import com.example.urbanquest.R
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import com.example.urbanquest.constants.eightPad
 import com.example.urbanquest.constants.fourPad
-import com.example.urbanquest.constants.mediumFontSize
+import com.example.urbanquest.constants.fourteenFontSize
 import com.example.urbanquest.constants.sixteenFontSize
 import com.example.urbanquest.constants.sixteenPad
 import com.example.urbanquest.constants.twelvePad
@@ -137,9 +137,9 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         maxLines = 3,
                         softWrap = true,
                         fontSize = when {
-                            screenWidth <= 360.dp -> sixteenFontSize
-                            screenWidth > 360.dp -> 18.sp
-                            else -> 18.sp
+                            screenWidth <= 360.dp -> fourteenFontSize
+                            screenWidth > 360.dp -> sixteenFontSize
+                            else -> fourteenFontSize
                         }
                     )
                 }
@@ -157,9 +157,9 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp, top = 4.dp),
                         fontSize = when {
-                            screenWidth <= 360.dp -> sixteenFontSize
-                            screenWidth > 360.dp -> mediumFontSize
-                            else -> mediumFontSize
+                            screenWidth <= 360.dp -> fourteenFontSize
+                            screenWidth > 360.dp -> sixteenFontSize
+                            else -> fourteenFontSize
                         }
                     )
                 }
@@ -179,9 +179,9 @@ fun SearchItem(context: Context, place: ItemFromDB, navController: NavHostContro
                         color = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.padding(start = 3.dp),
                         fontSize = when {
-                            screenWidth <= 360.dp -> 16.sp
-                            screenWidth > 360.dp -> 18.sp
-                            else -> 18.sp
+                            screenWidth <= 360.dp -> 14.sp
+                            screenWidth > 360.dp -> 16.sp
+                            else -> 14.sp
                         }
                     )
                 }
