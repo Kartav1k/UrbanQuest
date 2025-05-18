@@ -1,6 +1,7 @@
 package com.example.urbanquest.SearchScreens
 
 import android.util.Log
+import com.example.urbanquest.AuthorizationScreens.UserViewModel
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import com.example.urbanquest.SearchScreens.data.WorkingTime
 import com.google.firebase.database.DataSnapshot
@@ -54,31 +55,6 @@ fun isOpen(working: Map<String, WorkingTime>): String {
     }
 }
 
-/*fun isOpen(working: Map<String, WorkingTime>): String {
-    val currentDay = LocalDate.now().dayOfWeek.toString().lowercase()
-    val currentTime = LocalTime.now()
-    val workingTime = working[currentDay] ?: return close_place
-    if (workingTime.time_open.isEmpty() || workingTime.time_close.isEmpty()) {
-        return close_place
-    }
-    if (workingTime.time_open == "Без ограничений" || workingTime.time_close == "Без ограничений") {
-        return unlimited_access
-    }
-    val openTime = LocalTime.parse(workingTime.time_open)
-    val closeTime = LocalTime.parse(workingTime.time_close)
-    if (closeTime.isBefore(openTime)) {
-        if (currentTime.isAfter(openTime) || currentTime.isBefore(closeTime)) {
-            return "$open_place${workingTime.time_open}"
-        }
-    } else {
-        if (currentTime.isAfter(openTime) && currentTime.isBefore(closeTime)) {
-            return "$open_place${workingTime.time_open}"
-        }
-    }
-
-    return close_place
-}*/
-
 suspend fun searchItems(query: String): Pair<List<ItemFromDB>, List<ItemFromDB>> {
     val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")
     val walkingPlacesRef = firebaseDatabase.getReference("walking_places_info")
@@ -127,5 +103,40 @@ suspend fun fetchWalkingPlaces(): List<ItemFromDB> {
     val ref = db.getReference("walking_places_info")
     return withContext(Dispatchers.IO) {
         searchInDatabase(ref, "")
+    }
+}
+
+suspend fun loadFavoritePlaces(
+    userViewModel: UserViewModel,
+    onLoadingChange: (Boolean) -> Unit,
+    onErrorChange: (String?) -> Unit,
+    onWalkingPlacesLoaded: (List<ItemFromDB>) -> Unit,
+    onFoodPlacesLoaded: (List<ItemFromDB>) -> Unit
+) {
+    onLoadingChange(true)
+    onErrorChange(null)
+
+    try {
+        // Получаем список ID избранных мест
+        val favoritePlaceIds = userViewModel.getFavouritePlaces()
+
+        // Загружаем все места и фильтруем по избранным
+        val allWalkingPlaces = fetchWalkingPlaces()
+        val allFoodPlaces = fetchFoodPlaces()
+
+        val favoriteWalkingPlaces = allWalkingPlaces.filter {
+            favoritePlaceIds.contains(it.id.toString())
+        }
+
+        val favoriteFoodPlaces = allFoodPlaces.filter {
+            favoritePlaceIds.contains(it.id.toString())
+        }
+
+        onWalkingPlacesLoaded(favoriteWalkingPlaces)
+        onFoodPlacesLoaded(favoriteFoodPlaces)
+        onLoadingChange(false)
+    } catch (e: Exception) {
+        onErrorChange("Не удалось загрузить избранные места: ${e.message}")
+        onLoadingChange(false)
     }
 }

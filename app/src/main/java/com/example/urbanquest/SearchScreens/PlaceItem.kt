@@ -2,6 +2,7 @@ package com.example.urbanquest.SearchScreens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,6 +19,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -47,12 +49,9 @@ import com.example.urbanquest.R
 //Composable-функция для описание выбранного элемента списка
 @Composable
 fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) {
-
-
     val place by viewModel.selectedPlace.observeAsState()
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
-    val context = LocalContext.current
 
     place?.let { place ->
         Column(modifier = Modifier
@@ -60,18 +59,13 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
             .padding(16.dp)
             .verticalScroll(rememberScrollState())
         ) {
-
-            Row(
-                modifier = Modifier.padding(bottom = 16.dp, start = 4.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+            // Изменен только заголовок, чтобы соответствовать стилю Search и Favourite
+            Row(modifier = Modifier.padding(bottom = 8.dp, start = 4.dp)) {
                 IconButton(
                     onClick = {
                         navController.popBackStack()
                     },
-                    modifier = Modifier
-                        .padding(top = 4.dp, end = 8.dp)
-                        .size(18.dp)
+                    modifier = Modifier.padding(top = 4.dp)
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.back_arrow_icon),
@@ -82,17 +76,19 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
 
                 Text(
                     text = place.name,
-                    modifier = Modifier.padding(top = 6.dp),
+                    modifier = Modifier.padding(top = 10.dp),
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = when {
-                        screenWidth <= 360.dp -> 24.sp
-                        screenWidth > 360.dp -> 24.sp
-                        else -> 24.sp
+                        screenWidth <= 360.dp -> 32.sp
+                        screenWidth > 360.dp -> 36.sp
+                        else -> 36.sp
                     },
+                    maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             }
 
+            // Оставшийся код остается без изменений
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(place.imageURL)
@@ -112,7 +108,6 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                 .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ){
-
                 Spacer(modifier = Modifier.width(28.dp))
 
                 Box(modifier = Modifier
@@ -151,17 +146,20 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                         modifier = Modifier
                             .size(24.dp)
                     )
-                    Text(
-                        text = isOpen(place.working_time),
-                        fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.tertiary
-                    )
+                    // Добавляем горизонтальный скролл для времени работы
+                    Box(modifier = Modifier.horizontalScroll(rememberScrollState())) {
+                        Text(
+                            text = isOpen(place.working_time),
+                            fontSize = 12.sp,
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
+                    }
                 }
 
                 Spacer(modifier = Modifier.weight(1f))
 
                 Column(horizontalAlignment = Alignment.CenterHorizontally,
-                    ) {
+                ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.star_icon),
                         contentDescription = "Rate icon",
@@ -196,6 +194,14 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                 modifier = Modifier.padding(start = 8.dp, end = 8.dp),
                 fontSize = 16.sp
             )
+        }
+    } ?: run {
+        // Если place == null, показываем индикатор загрузки
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
         }
     }
 }

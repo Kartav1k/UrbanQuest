@@ -39,8 +39,7 @@ fun NavigationContainer(navController: NavHostController) {
     val recommendationViewModel: RecommendationViewModel = viewModel()
 
     val isAuthorized by userViewModel.isAuthorized
-    val isLoginChecked by userViewModel.isLoginChecked
-    val isLoading by userViewModel.isLoading
+
 
     LaunchedEffect(Unit) {
         val currentUser = FirebaseAuth.getInstance().currentUser
@@ -75,7 +74,7 @@ fun NavigationContainer(navController: NavHostController) {
             Search(navController, userViewModel, itemFromDBViewModel)
         }
         composable("Favourite"){
-            Favourite(navController, userViewModel)
+            Favourite(navController, userViewModel, itemFromDBViewModel)
         }
         composable("Profile"){
             ProfileScreen(navController, userViewModel)
@@ -99,23 +98,10 @@ fun NavigationContainer(navController: NavHostController) {
             Recommendations(navController, recommendationViewModel, itemFromDBViewModel)
         }
         composable("FoodPlaces"){
-            FoodPlaces(navController, itemFromDBViewModel)
+            FoodPlaces(navController, itemFromDBViewModel, userViewModel)
         }
         composable("WalkingPlaces"){
-            WalkingPlaces(navController, itemFromDBViewModel)
-        }
-        composable("map/{lat}/{lon}") { backStackEntry ->
-            val lat = backStackEntry.arguments?.getString("lat")?.toDoubleOrNull()
-            val lon = backStackEntry.arguments?.getString("lon")?.toDoubleOrNull()
-            if (lat != null && lon != null) {
-                YandexMap(navController, userViewModel, lat, lon)
-            }
-        }
-        composable("FoodPlaces"){
-            FoodPlaces(navController, itemFromDBViewModel)
-        }
-        composable("WalkingPlaces"){
-            WalkingPlaces(navController, itemFromDBViewModel)
+            WalkingPlaces(navController, itemFromDBViewModel, userViewModel)
         }
         composable("map/{lat}/{lon}") { backStackEntry ->
             val lat = backStackEntry.arguments?.getString("lat")?.toDoubleOrNull()

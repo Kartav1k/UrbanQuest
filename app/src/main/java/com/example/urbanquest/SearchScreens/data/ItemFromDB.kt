@@ -14,5 +14,6 @@ data class ItemFromDB(
  val imageURL: String = "",
  val tags: Map<String, String> = emptyMap(),
  val working_time: Map<String, WorkingTime> = emptyMap(),
- var matchCount: Int = 0
+ var matchCount: Int = 0,
+ val id: Long = 0
 )

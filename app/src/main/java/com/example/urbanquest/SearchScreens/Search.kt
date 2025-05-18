@@ -45,7 +45,6 @@ import androidx.navigation.NavHostController
 import com.example.urbanquest.AuthorizationScreens.UserViewModel
 import com.example.urbanquest.R
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
-import com.google.firebase.database.DatabaseReference
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -55,8 +54,6 @@ import kotlinx.coroutines.launch
 
 var searchListOfWalkingPlaces: ArrayList<ItemFromDB> = arrayListOf()
 var searchListOfCafes_And_Restaurants: ArrayList<ItemFromDB> = arrayListOf()
-private lateinit var firebaseRef: DatabaseReference
-
 
 //Composable-функция поиска
 @Composable
@@ -187,7 +184,7 @@ fun Search(navController: NavHostController, userViewModel: UserViewModel, itemF
                                 isError = false
                                 isLoading = false
                                 keyboardController?.hide()
-                        }
+                            }
                     )
                 }
             }
@@ -264,7 +261,8 @@ fun Search(navController: NavHostController, userViewModel: UserViewModel, itemF
                                     context = context,
                                     place = place,
                                     navController,
-                                    itemFromDBViewModel = itemFromDBViewModel
+                                    itemFromDBViewModel = itemFromDBViewModel,
+                                    userViewModel = userViewModel
                                 )
                             }
                         }

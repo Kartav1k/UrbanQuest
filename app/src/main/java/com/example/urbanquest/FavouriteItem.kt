@@ -1,7 +1,6 @@
-package com.example.urbanquest.SearchScreens
+package com.example.urbanquest
 
 import android.content.Context
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.horizontalScroll
@@ -21,9 +20,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -43,30 +39,24 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.urbanquest.AuthorizationScreens.UserViewModel
-import com.example.urbanquest.R
+import com.example.urbanquest.SearchScreens.ItemFromDBViewModel
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
+import com.example.urbanquest.SearchScreens.isOpen
 import com.example.urbanquest.constants.eightPad
 import com.example.urbanquest.constants.fourPad
 import com.example.urbanquest.constants.fourteenFontSize
 import com.example.urbanquest.constants.sixteenPad
 import com.example.urbanquest.constants.twelvePad
 
-
-//Composable-функция для отображения элемента списка в поиске
 @Composable
-fun SearchItem(
+fun FavoriteItem(
     context: Context,
     place: ItemFromDB,
     navController: NavHostController,
     itemFromDBViewModel: ItemFromDBViewModel,
-    userViewModel: UserViewModel
+    userViewModel: UserViewModel,
+    onRemoveFromFavorites: (String) -> Unit
 ) {
-    val isFavorite = remember { mutableStateOf(userViewModel.isFavourite(place.id.toString())) }
-
-    LaunchedEffect(userViewModel.userData.value) {
-        isFavorite.value = userViewModel.isFavourite(place.id.toString())
-    }
-
     // Адаптивные размеры на основе констант
     val imageSize = 96.dp
     val cornerRadius = 12.dp
@@ -124,7 +114,7 @@ fun SearchItem(
                     .padding(start = twelvePad)
                     .weight(1f)
             ) {
-                // Заголовок и иконка избранного
+                // Заголовок и иконка избранного в отдельной строке
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Top,
@@ -145,35 +135,19 @@ fun SearchItem(
                         )
                     }
 
-                    // Иконка избранного - специфична для SearchItem
+                    // Иконка избранного - специфична для FavoriteItem (всегда красная)
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.favourite_icon),
-                        contentDescription = "Избранное",
-                        tint = if (isFavorite.value) Color.Red else MaterialTheme.colorScheme.tertiary,
+                        contentDescription = "Удалить из избранного",
+                        tint = Color.Red,
                         modifier = Modifier
                             .size(24.dp)
                             .padding(2.dp)
                             .clickable {
-                                if (userViewModel.isAuthorized.value) {
-                                    if (isFavorite.value) {
-                                        userViewModel.removeFromFavourites(place.id.toString()) { success ->
-                                            if (success) {
-                                                isFavorite.value = false
-                                            }
-                                        }
-                                    } else {
-                                        userViewModel.addToFavourites(place.id.toString()) { success ->
-                                            if (success) {
-                                                isFavorite.value = true
-                                            }
-                                        }
+                                userViewModel.removeFromFavourites(place.id.toString()) { success ->
+                                    if (success) {
+                                        onRemoveFromFavorites(place.id.toString())
                                     }
-                                } else {
-                                    Toast.makeText(
-                                        context,
-                                        "Войдите, чтобы добавить в избранное",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
                                 }
                             }
                     )
@@ -221,7 +195,7 @@ fun SearchItem(
                     )
                 }
 
-                // Время работы с горизонтальным скроллом
+                // Улучшенное отображение времени работы - всегда в одну строку
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)

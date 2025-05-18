@@ -30,17 +30,17 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.urbanquest.AuthorizationScreens.UserViewModel
 import com.example.urbanquest.SearchScreens.ItemFromDBViewModel
 import com.example.urbanquest.SearchScreens.SearchItem
 import com.example.urbanquest.SearchScreens.data.ItemFromDB
 import com.example.urbanquest.SearchScreens.fetchFoodPlaces
 
 
-
 //Composable-функция для отображения всех заведений в БД
 
 @Composable
-fun FoodPlaces(navController: NavHostController, itemFromDBViewModel: ItemFromDBViewModel) {
+fun FoodPlaces(navController: NavHostController, itemFromDBViewModel: ItemFromDBViewModel, userViewModel: UserViewModel) {
     var foodPlaces by remember { mutableStateOf<List<ItemFromDB>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var isError by remember { mutableStateOf(false) }
@@ -104,7 +104,7 @@ fun FoodPlaces(navController: NavHostController, itemFromDBViewModel: ItemFromDB
         } else {
             LazyColumn {
                 items(foodPlaces) { place ->
-                    SearchItem(context = LocalContext.current, place = place, navController = navController, itemFromDBViewModel = itemFromDBViewModel)
+                    SearchItem(context = LocalContext.current, place = place, navController = navController, itemFromDBViewModel = itemFromDBViewModel, userViewModel = userViewModel)
                 }
             }
         }
