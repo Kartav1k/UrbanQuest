@@ -53,6 +53,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
 
+
     place?.let { place ->
         Column(modifier = Modifier
             .fillMaxSize()
