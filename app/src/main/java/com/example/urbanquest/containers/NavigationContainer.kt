@@ -40,7 +40,6 @@ fun NavigationContainer(navController: NavHostController) {
 
     val isAuthorized by userViewModel.isAuthorized
 
-
     LaunchedEffect(Unit) {
         val currentUser = FirebaseAuth.getInstance().currentUser
         userViewModel.updateAuthState(currentUser)

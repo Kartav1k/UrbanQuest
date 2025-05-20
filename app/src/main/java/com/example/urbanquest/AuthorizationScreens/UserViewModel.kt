@@ -31,7 +31,6 @@ class UserViewModel : ViewModel() {
     val isLoginChecked: State<Boolean> = _isLoginChecked
 
     init {
-        // Проверяем состояние авторизации при инициализации
         checkCurrentUser()
     }
 
@@ -81,6 +80,7 @@ class UserViewModel : ViewModel() {
     /**
      * Создание записи пользователя в базе данных
      */
+
     private fun createUserInDatabase(userId: String, email: String, login: String, onResult: (Boolean, String?) -> Unit) {
         val newUser = User(userId = userId, email = email, login = login)
 
@@ -95,7 +95,6 @@ class UserViewModel : ViewModel() {
             }
             .addOnFailureListener { exception ->
                 Log.e(TAG, "Ошибка при добавлении пользователя в базу данных", exception)
-                // Если не удалось создать запись в БД, удаляем пользователя из Auth
                 auth.currentUser?.delete()
                 _isLoading.value = false
                 onResult(false, "Ошибка сохранения данных: ${exception.message}")
@@ -131,7 +130,6 @@ class UserViewModel : ViewModel() {
             }
             .addOnFailureListener { exception ->
                 Log.e(TAG, "Ошибка при проверке логина", exception)
-                // Если произошла ошибка, сообщаем, что логин существует, чтобы избежать конфликтов
                 onResult(true)
             }
     }
@@ -257,18 +255,32 @@ class UserViewModel : ViewModel() {
      */
     fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
         _isLoading.value = true
-        Log.d(TAG, "Запрос на восстановление пароля для: $email")
+        Log.d(TAG, "Проверка наличия email в базе для восстановления пароля: $email")
 
-        auth.sendPasswordResetEmail(email)
-            .addOnSuccessListener {
-                Log.d(TAG, "Письмо для восстановления пароля отправлено")
-                _isLoading.value = false
-                onResult(true, null)
+        db.orderByChild("email").equalTo(email).get()
+            .addOnSuccessListener { snapshot ->
+                if (snapshot.exists()) {
+                    auth.sendPasswordResetEmail(email)
+                        .addOnSuccessListener {
+                            Log.d(TAG, "Письмо для восстановления пароля отправлено")
+                            _isLoading.value = false
+                            onResult(true, null)
+                        }
+                        .addOnFailureListener { exception ->
+                            Log.e(TAG, "Ошибка при отправке письма для восстановления пароля", exception)
+                            _isLoading.value = false
+                            onResult(false, "Ошибка: ${exception.message}")
+                        }
+                } else {
+                    Log.w(TAG, "Email не найден в базе данных: $email")
+                    _isLoading.value = false
+                    onResult(false, "Пользователь с таким email не зарегистрирован")
+                }
             }
             .addOnFailureListener { exception ->
-                Log.e(TAG, "Ошибка при отправке письма для восстановления пароля", exception)
+                Log.e(TAG, "Ошибка при проверке email в базе данных", exception)
                 _isLoading.value = false
-                onResult(false, "Ошибка: ${exception.message}")
+                onResult(false, "Ошибка проверки email: ${exception.message}")
             }
     }
 
@@ -320,7 +332,6 @@ class UserViewModel : ViewModel() {
         db.child(uid).child("favourites").child(placeId).setValue(true)
             .addOnSuccessListener {
                 Log.d(TAG, "Место успешно добавлено в избранное")
-                // Обновляем данные пользователя
                 fetchUserData(uid)
                 onResult(true)
             }

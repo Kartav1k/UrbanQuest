@@ -145,13 +145,12 @@ fun SearchItem(
                         )
                     }
 
-                    // Иконка избранного - специфична для SearchItem
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.favourite_icon),
                         contentDescription = "Избранное",
                         tint = if (isFavorite.value) Color.Red else MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
-                            .size(24.dp)
+                            .size(26.dp)
                             .padding(2.dp)
                             .clickable {
                                 if (userViewModel.isAuthorized.value) {

@@ -1,12 +1,17 @@
 package com.example.urbanquest.ProfileScreens
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -15,12 +20,18 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -30,6 +41,16 @@ import com.example.urbanquest.R
 
 @Composable
 fun ProfileScreen(navController: NavHostController, userViewModel: UserViewModel){
+
+    var isLoading by remember { mutableStateOf(true) }
+
+    LaunchedEffect(Unit) {
+        if (userViewModel.isAuthorized.value) {
+            isLoading = true
+        } else {
+            isLoading = false
+        }
+    }
 
     Column(
         modifier = Modifier.verticalScroll(rememberScrollState())
@@ -68,8 +89,38 @@ fun ProfileScreen(navController: NavHostController, userViewModel: UserViewModel
         }
 
         if (!userViewModel.isAuthorized.value) {
-            Text("Доступно только для авторизованных пользователей")
-        } else {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(16.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        "Войдите, чтобы получить доступ к избранному",
+                        color = MaterialTheme.colorScheme.tertiary,
+                        fontSize = 18.sp,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Button(
+                        onClick = {
+                            navController.navigate("Choice_authorization")
+                        },
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
+                        shape = RoundedCornerShape(45.dp)
+                    ) {
+                        Text(
+                            "Войти",
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
+                    }
+                }
+            }
+        } else if (isLoading) {
             Column(
 
                 modifier = Modifier.fillMaxWidth(),

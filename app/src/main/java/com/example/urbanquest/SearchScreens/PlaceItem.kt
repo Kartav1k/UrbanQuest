@@ -196,7 +196,6 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
             )
         }
     } ?: run {
-        // Если place == null, показываем индикатор загрузки
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center

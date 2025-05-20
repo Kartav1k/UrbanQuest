@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -54,6 +55,7 @@ fun Authorization(navController: NavHostController, userViewModel: UserViewModel
     var login by rememberSaveable { mutableStateOf("") }
     var password by rememberSaveable { mutableStateOf("") }
     var isVisible by rememberSaveable { mutableStateOf(false) }
+    var isLoading by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
 
     val auth = Firebase.auth
@@ -142,7 +144,7 @@ fun Authorization(navController: NavHostController, userViewModel: UserViewModel
                 if (password.isNotBlank()) {
                     Icon(
                         passwordIcon,
-                        contentDescription = "Opeb password icon",
+                        contentDescription = "Open password icon",
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier
                             .size(20.dp)
@@ -167,7 +169,6 @@ fun Authorization(navController: NavHostController, userViewModel: UserViewModel
                     .padding(bottom = 16.dp)
                     .clickable { navController.navigate("PasswordRecovery") })
         }
-
         Button(
             onClick = {
                 if (isLoginValid(login) && isPasswordValid(password)) {
@@ -189,17 +190,25 @@ fun Authorization(navController: NavHostController, userViewModel: UserViewModel
                 .padding(start = 84.dp, end = 84.dp)
                 .height(height = 52.dp)
                 .fillMaxWidth(),
-            shape = RoundedCornerShape(15.dp)
+            shape = RoundedCornerShape(15.dp),
+            enabled = !isLoading
         ) {
-            Text(
-                stringResource(R.string.entrance_text),
-                color = MaterialTheme.colorScheme.tertiary,
-                fontSize = when {
-                    screenWidth <= 360.dp -> 14.sp
-                    screenWidth > 360.dp -> 18.sp
-                    else -> 18.sp
-                }
-            )
+            if (isLoading) {
+                CircularProgressIndicator(
+                    color = MaterialTheme.colorScheme.tertiary,
+                    modifier = Modifier.size(24.dp)
+                )
+            } else {
+                Text(
+                    stringResource(R.string.entrance_text),
+                    color = MaterialTheme.colorScheme.tertiary,
+                    fontSize = when {
+                        screenWidth <= 360.dp -> 14.sp
+                        screenWidth > 360.dp -> 18.sp
+                        else -> 18.sp
+                    }
+                )
+            }
         }
     }
 }

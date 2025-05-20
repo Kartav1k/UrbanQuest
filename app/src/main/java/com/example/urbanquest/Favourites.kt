@@ -9,7 +9,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -117,14 +119,18 @@ fun Favourite(navController: NavHostController, userViewModel: UserViewModel, it
                     Button(
                         onClick = {
                             navController.navigate("Choice_authorization")
-                        }
+                        },
+                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary),
+                        shape = RoundedCornerShape(45.dp)
                     ) {
-                        Text("Войти")
+                        Text(
+                            "Войти",
+                            color = MaterialTheme.colorScheme.tertiary
+                        )
                     }
                 }
             }
         } else if (isLoading) {
-            // Loading state
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center

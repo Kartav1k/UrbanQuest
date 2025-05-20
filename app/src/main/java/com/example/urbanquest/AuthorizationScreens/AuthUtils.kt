@@ -15,7 +15,5 @@ fun isEmailValid(email: String): Boolean {
 fun isPasswordValid(password: String): Boolean {
     val hasLetter = password.any { it.isLetter() }
     val hasDigit = password.any { it.isDigit() }
-    return password.length in 6..12 && hasLetter && hasDigit
+    return password.length in 6..16 && hasLetter && hasDigit
 }
-
-
