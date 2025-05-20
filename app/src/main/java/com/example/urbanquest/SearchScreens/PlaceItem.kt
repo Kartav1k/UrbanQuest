@@ -25,6 +25,8 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
@@ -53,15 +55,32 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
 
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.clearSelectedPlace()
+        }
+    }
+
+    if (place == null || place?.id == 0L) {
+        LaunchedEffect(Unit) {
+            navController.popBackStack()
+        }
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.Center
+        ) {
+            CircularProgressIndicator()
+        }
+        return
+    }
 
     place?.let { place ->
         Column(modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
             .verticalScroll(rememberScrollState())
         ) {
-            // Изменен только заголовок, чтобы соответствовать стилю Search и Favourite
-            Row(modifier = Modifier.padding(bottom = 8.dp, start = 4.dp)) {
+
+            Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
                 IconButton(
                     onClick = {
                         navController.popBackStack()
@@ -80,16 +99,15 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                     modifier = Modifier.padding(top = 10.dp),
                     color = MaterialTheme.colorScheme.tertiary,
                     fontSize = when {
-                        screenWidth <= 360.dp -> 32.sp
-                        screenWidth > 360.dp -> 36.sp
-                        else -> 36.sp
+                        screenWidth <= 360.dp -> 28.sp
+                        screenWidth > 360.dp -> 32.sp
+                        else -> 32.sp
                     },
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis
                 )
             }
 
-            // Оставшийся код остается без изменений
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(place.imageURL)
@@ -109,6 +127,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                 .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
             ){
+
                 Spacer(modifier = Modifier.width(28.dp))
 
                 Box(modifier = Modifier
@@ -147,7 +166,6 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                         modifier = Modifier
                             .size(24.dp)
                     )
-                    // Добавляем горизонтальный скролл для времени работы
                     Box(modifier = Modifier.horizontalScroll(rememberScrollState())) {
                         Text(
                             text = isOpen(place.working_time),
@@ -180,7 +198,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
             LazyRow(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 8.dp, top = 8.dp, bottom = 16.dp, end = 8.dp),
+                    .padding(start = 24.dp, top = 8.dp, bottom = 16.dp, end = 24.dp),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 items(place.tags.entries.toList()) { tag ->
@@ -192,16 +210,9 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
                 text = place.description,
                 textAlign = TextAlign.Justify,
                 color = MaterialTheme.colorScheme.tertiary,
-                modifier = Modifier.padding(start = 8.dp, end = 8.dp),
+                modifier = Modifier.padding(start = 24.dp, end = 24.dp),
                 fontSize = 16.sp
             )
-        }
-    } ?: run {
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            CircularProgressIndicator()
         }
     }
 }

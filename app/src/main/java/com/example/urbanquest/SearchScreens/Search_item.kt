@@ -22,8 +22,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,6 +52,10 @@ import com.example.urbanquest.constants.fourPad
 import com.example.urbanquest.constants.fourteenFontSize
 import com.example.urbanquest.constants.sixteenPad
 import com.example.urbanquest.constants.twelvePad
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 //Composable-функция для отображения элемента списка в поиске
@@ -62,6 +68,7 @@ fun SearchItem(
     userViewModel: UserViewModel
 ) {
     val isFavorite = remember { mutableStateOf(userViewModel.isFavourite(place.id.toString())) }
+    var isNavigating by remember { mutableStateOf(false) }
 
     LaunchedEffect(userViewModel.userData.value) {
         isFavorite.value = userViewModel.isFavourite(place.id.toString())
@@ -88,16 +95,20 @@ fun SearchItem(
             .clip(RoundedCornerShape(cornerRadius))
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.secondaryContainer)
-            .clickable {
+            .clickable(enabled = !isNavigating) {
+                isNavigating = true
                 itemFromDBViewModel.selectPlace(place)
-                navController.navigate("placeItem")
+                CoroutineScope(Dispatchers.Main).launch {
+                    delay(100)
+                    navController.navigate("placeItem")
+                    isNavigating = false
+                }
             }
     ) {
         Row(
             modifier = Modifier.padding(twelvePad),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Изображение с улучшенным видом
             Box(
                 modifier = Modifier
                     .size(imageSize)
