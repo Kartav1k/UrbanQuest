@@ -19,7 +19,7 @@
         android:theme="@style/Theme.UrbanQuest"
         tools:targetApi="31" >
         <activity
-            android:name=".containers.MainActivity"
+            android:name=".core.presentation.MainActivity"
             android:exported="true"
             android:label="@string/name_app"
             android:theme="@style/Theme.UrbanQuest" >
