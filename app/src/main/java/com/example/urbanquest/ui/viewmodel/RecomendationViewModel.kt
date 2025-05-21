@@ -12,8 +12,11 @@ import kotlinx.coroutines.launch
 //ViewModel для списка рекомендаций
 
 class RecommendationViewModel : ViewModel() {
-    private val _recommendations = MutableLiveData<List<ItemFromDB>>()
-    val recommendations: LiveData<List<ItemFromDB>> get() = _recommendations
+    private val _walkingPlaces = MutableLiveData<List<ItemFromDB>>()
+    val walkingPlaces: LiveData<List<ItemFromDB>> get() = _walkingPlaces
+
+    private val _foodPlaces = MutableLiveData<List<ItemFromDB>>()
+    val foodPlaces: LiveData<List<ItemFromDB>> get() = _foodPlaces
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> get() = _isLoading
@@ -21,15 +24,24 @@ class RecommendationViewModel : ViewModel() {
     private val _isError = MutableLiveData<Boolean>()
     val isError: LiveData<Boolean> get() = _isError
 
+    private val _recommendationLimit = MutableLiveData(10)
+    val recommendationLimit: LiveData<Int> get() = _recommendationLimit
+
+    fun setRecommendationLimit(limit: Int) {
+        _recommendationLimit.value = limit
+    }
+
     fun fetchRecommendations(selectedTags: List<String>) {
         viewModelScope.launch {
             _isLoading.value = true
             try {
-                val recommendations = fetchRecommendations2(selectedTags)
-                _recommendations.value = recommendations
+                val limit = _recommendationLimit.value ?: 10
+                val (walkingPlaces, foodPlaces) = fetchRecommendations2(selectedTags, limit)
+                _walkingPlaces.value = walkingPlaces
+                _foodPlaces.value = foodPlaces
             } catch (e: Exception) {
                 _isError.value = true
-                Log.d("Firebase", "Error fetching recommendations: ${e.message}")
+                Log.e("RecommendationViewModel", "Error fetching recommendations: ${e.message}", e)
             } finally {
                 _isLoading.value = false
             }

@@ -15,6 +15,7 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,6 +29,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -63,6 +65,7 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
     val foodCheckBoxStates = remember { foodCheckBoxLists.flatten().map { mutableStateOf(false) } }
     var showFoodOptions by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    var recommendationCount by remember { mutableStateOf(5) }
 
     Column(
         modifier = Modifier
@@ -136,8 +139,38 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
             }
         }
 
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = "Количество рекомендаций: $recommendationCount",
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 16.sp,
+                modifier = Modifier.padding(bottom = 8.dp)
+            )
+
+            Slider(
+                value = recommendationCount.toFloat(),
+                onValueChange = { recommendationCount = it.toInt() },
+                valueRange = 1f..10f,
+                steps = 9,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+
+            Text(
+                text = "Будет показано до $recommendationCount мест для прогулок и до $recommendationCount заведений",
+                color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.7f),
+                fontSize = 12.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
+            )
+        }
         Button(
             onClick = {
+                viewModel.setRecommendationLimit(recommendationCount)
                 val selectedTags = checkBoxStates.mapIndexedNotNull { index, state ->
                     if (state.value) checkBoxLists.flatten()[index] else null
                 } + foodCheckBoxStates.mapIndexedNotNull { index, state ->
@@ -149,7 +182,7 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
                     userViewModel.addAchievement(achievementId) { success ->
                         if (success) {
                             Toast.makeText(
-                                context, // Убедитесь, что объект context доступен в области видимости
+                                context,
                                 "Достижение разблокировано: Первооткрыватель",
                                 Toast.LENGTH_SHORT
                             ).show()

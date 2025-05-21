@@ -10,26 +10,19 @@ import com.google.firebase.database.ValueEventListener
 import kotlinx.coroutines.suspendCancellableCoroutine
 
 //Вспомогательные функции для теста рекомендаций
-//Отладка
 
-suspend fun fetchRecommendations2(selectedTags: List<String>): List<ItemFromDB> {
+suspend fun fetchRecommendations2(selectedTags: List<String>, limit: Int = 10): Pair<List<ItemFromDB>, List<ItemFromDB>> {
     val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")
     val walkingPlacesRef = firebaseDatabase.getReference("walking_places_info")
     val cafesAndRestaurantsRef = firebaseDatabase.getReference("cafes_and_restaurants")
 
-    val walkingPlaces = searchInDatabaseWithTags(walkingPlacesRef, selectedTags)
-    val cafesAndRestaurants = searchInDatabaseWithTags(cafesAndRestaurantsRef, selectedTags)
+    val walkingPlaces = searchInDatabaseWithTags(walkingPlacesRef, selectedTags, limit, true)
+    val cafesAndRestaurants = searchInDatabaseWithTags(cafesAndRestaurantsRef, selectedTags, limit, true)
 
-    val combinedResults = walkingPlaces + cafesAndRestaurants
-
-    Log.d("FetchRecommendations", "Walking places found: ${walkingPlaces.size}")
-    Log.d("FetchRecommendations", "Cafes and restaurants found: ${cafesAndRestaurants.size}")
-    Log.d("FetchRecommendations", "Total combined results: ${combinedResults.size}")
-
-    return combinedResults.sortedByDescending { it.matchCount }
+    return Pair(walkingPlaces, cafesAndRestaurants)
 }
 
-private suspend fun searchInDatabaseWithTags(reference: DatabaseReference, tags: List<String>): List<ItemFromDB> {
+private suspend fun searchInDatabaseWithTags(reference: DatabaseReference, tags: List<String>, limit: Int = 10, strictLimit: Boolean = true): List<ItemFromDB> {
     return suspendCancellableCoroutine { continuation ->
         reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -39,7 +32,7 @@ private suspend fun searchInDatabaseWithTags(reference: DatabaseReference, tags:
                         val item = items.getValue(ItemFromDB::class.java)
                         if (item != null) {
                             val matches = countTagMatches(item, tags)
-                            Log.d("DatabaseSearch", "Item: ${item.name}, Matches: $matches, Tags: ${item.tags?.values}") // Логгирование
+                            Log.d("DatabaseSearch", "Item: ${item.name}, Matches: $matches, Tags: ${item.tags?.values}")
                             if (matches > 0) {
                                 item.matchCount = matches
                                 result.add(item)
@@ -48,7 +41,20 @@ private suspend fun searchInDatabaseWithTags(reference: DatabaseReference, tags:
                     }
                 }
                 Log.d("DatabaseSearch", "Found ${result.size} items with matching tags")
-                continuation.resume(result) { }
+                val sortedResult = result.sortedWith(
+                    compareByDescending<ItemFromDB> { it.matchCount }
+                        .thenByDescending { it.rate }
+                )
+                val limitedResult = if (sortedResult.size > limit) {
+                    val cutoffScore = sortedResult[limit - 1].matchCount
+                    val itemsWithCutoffScore = sortedResult.filter { it.matchCount == cutoffScore }
+                    val guaranteedItems = sortedResult.filter { it.matchCount > cutoffScore }
+                    guaranteedItems + itemsWithCutoffScore
+                } else {
+                    sortedResult
+                }
+                val finalResult = sortedResult.take(limit)
+                continuation.resume(finalResult) { }
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -61,23 +67,16 @@ private suspend fun searchInDatabaseWithTags(reference: DatabaseReference, tags:
 
 private fun countTagMatches(item: ItemFromDB, selectedTags: List<String>): Int {
     if (selectedTags.isEmpty() || item.tags.isNullOrEmpty()) return 0
-
     var totalScore = 0
 
-    // Проверяем каждый выбранный тег
     for (selectedTag in selectedTags) {
         var bestMatchScore = 0
-
-        // Проверяем против каждого тега элемента
         for (itemTag in item.tags.values) {
             val score = calculateTagMatchScore(selectedTag, itemTag)
             bestMatchScore = maxOf(bestMatchScore, score)
         }
-
         totalScore += bestMatchScore
     }
-
-    Log.d("CountTagMatches", "Item: ${item.name}, Total Score: $totalScore, Selected Tags: $selectedTags")
     return totalScore
 }
 

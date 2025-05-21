@@ -8,6 +8,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.urbanquest.YandexMap
+import com.example.urbanquest.ui.components.PlaceItem
 import com.example.urbanquest.ui.screens.AchievementsScreen
 import com.example.urbanquest.ui.screens.Authorization
 import com.example.urbanquest.ui.screens.ChoiceAuthorization
@@ -16,7 +17,6 @@ import com.example.urbanquest.ui.screens.FoodPlaces
 import com.example.urbanquest.ui.screens.InfoAboutApp
 import com.example.urbanquest.ui.screens.MenuHub
 import com.example.urbanquest.ui.screens.PasswordRecovery
-import com.example.urbanquest.ui.screens.PlaceItem
 import com.example.urbanquest.ui.screens.ProfileScreen
 import com.example.urbanquest.ui.screens.RecomendationTest
 import com.example.urbanquest.ui.screens.Recommendations
@@ -94,7 +94,7 @@ fun NavigationContainer(navController: NavHostController) {
             RecomendationTest(navController, recommendationViewModel, userViewModel)
         }
         composable("RecomendationList"){
-            Recommendations(navController, recommendationViewModel, itemFromDBViewModel)
+            Recommendations(navController, recommendationViewModel, itemFromDBViewModel, userViewModel)
         }
         composable("FoodPlaces"){
             FoodPlaces(navController, itemFromDBViewModel, userViewModel)

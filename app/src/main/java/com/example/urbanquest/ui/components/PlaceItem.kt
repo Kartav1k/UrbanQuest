@@ -1,4 +1,4 @@
-package com.example.urbanquest.ui.screens
+package com.example.urbanquest.ui.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -46,9 +46,8 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.urbanquest.R
-import com.example.urbanquest.ui.viewmodel.ItemFromDBViewModel
 import com.example.urbanquest.domain.utils.isOpen
-import com.example.urbanquest.ui.components.TagItem
+import com.example.urbanquest.ui.viewmodel.ItemFromDBViewModel
 
 
 //Composable-функция для описание выбранного элемента списка
