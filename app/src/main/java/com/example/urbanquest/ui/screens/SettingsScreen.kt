@@ -1,6 +1,7 @@
 package com.example.urbanquest.ui.screens
 
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -27,19 +28,19 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.ui.viewmodel.UserViewModel
-import com.example.urbanquest.ui.viewmodel.ThemeViewModel
 import com.example.urbanquest.R
 import com.example.urbanquest.domain.utils.constants.bigLabelSize
 import com.example.urbanquest.domain.utils.constants.eightPad
+import com.example.urbanquest.domain.utils.constants.eighteenFontSize
 import com.example.urbanquest.domain.utils.constants.fourPad
 import com.example.urbanquest.domain.utils.constants.labelSize
-import com.example.urbanquest.domain.utils.constants.eighteenFontSize
 import com.example.urbanquest.domain.utils.constants.tenPad
 import com.example.urbanquest.domain.utils.constants.thirtyTwoPad
 import com.example.urbanquest.domain.utils.constants.twentyFourPad
 import com.example.urbanquest.domain.utils.constants.twentyPad
 import com.example.urbanquest.domain.utils.constants.twentyTwoFontSize
+import com.example.urbanquest.ui.viewmodel.ThemeViewModel
+import com.example.urbanquest.ui.viewmodel.UserViewModel
 
 //Composable-функция настроек
 @Composable
@@ -102,6 +103,20 @@ fun SettingsScreen(navController: NavHostController, userViewModel: UserViewMode
                 checked = isDarkTheme,
                 onCheckedChange = {
                     themeViewModel.toggleTheme(it)
+                    if (it) {
+                        val achievementId = "dark_theme_switcher"
+                        if (!userViewModel.hasAchievement(achievementId)) {
+                            userViewModel.addAchievement(achievementId) { success ->
+                                if (success) {
+                                    Toast.makeText(
+                                        context,
+                                        "Достижение разблокировано: Повелитель тьмы",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                        }
+                    }
                 },
                 colors = SwitchDefaults.colors(
                     uncheckedThumbColor = MaterialTheme.colorScheme.secondaryContainer,

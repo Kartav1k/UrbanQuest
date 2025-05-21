@@ -21,3 +21,10 @@ val eighteenFontSize = 18.sp
 val twentyTwoFontSize = 22.sp
 val labelSize = 32.sp
 val bigLabelSize = 36.sp
+
+object Achievements {
+    const val DARK_THEME_SWITCHER = "dark_theme_switcher"
+    const val FIRST_RECOMMENDATION_LIST = "first_recommendation_list"
+    const val APP_INFO_VISITOR = "app_info_visitor"
+
+}

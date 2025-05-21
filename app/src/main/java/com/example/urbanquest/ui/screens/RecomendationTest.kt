@@ -1,6 +1,7 @@
 package com.example.urbanquest.ui.screens
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +17,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,19 +25,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
+import com.example.urbanquest.ui.components.CheckBoxList
 import com.example.urbanquest.ui.viewmodel.RecommendationViewModel
+import com.example.urbanquest.ui.viewmodel.UserViewModel
 
 
 //Добавить по кол-ву человек
 //Composable-функция теста рекомендаций
 @Composable
-fun RecomendationTest(navController: NavHostController, viewModel: RecommendationViewModel) {
+fun RecomendationTest(navController: NavHostController, viewModel: RecommendationViewModel, userViewModel: UserViewModel) {
 
     val checkBoxLists = listOf(
         listOf("Один", "С парой", "С друзьями", "С коллегами", "С семьей"),
@@ -59,6 +62,7 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
     val checkBoxStates = remember { checkBoxLists.flatten().map { mutableStateOf(false) } }
     val foodCheckBoxStates = remember { foodCheckBoxLists.flatten().map { mutableStateOf(false) } }
     var showFoodOptions by remember { mutableStateOf(false) }
+    val context = LocalContext.current
 
     Column(
         modifier = Modifier
@@ -140,7 +144,18 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
                     if (state.value) foodCheckBoxLists.flatten()[index] else null
                 }
                 Log.d("SelectedTags", "Selected Tags: $selectedTags")
-
+                val achievementId = "first_recommendation_list"
+                if (!userViewModel.hasAchievement(achievementId)) {
+                    userViewModel.addAchievement(achievementId) { success ->
+                        if (success) {
+                            Toast.makeText(
+                                context, // Убедитесь, что объект context доступен в области видимости
+                                "Достижение разблокировано: Первооткрыватель",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    }
+                }
                 viewModel.fetchRecommendations(selectedTags)
                 navController.navigate("RecomendationList")
             },
@@ -155,37 +170,6 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
                 fontSize = 18.sp,
                 modifier = Modifier.padding(top = 4.dp, bottom = 4.dp)
             )
-        }
-    }
-}
-
-@Composable
-fun CheckBoxList(title: String, options: List<String>, checkBoxStates: List<MutableState<Boolean>>) {
-    Column(modifier = Modifier.padding(start = 16.dp)) {
-        Text(
-            text = title,
-            color = MaterialTheme.colorScheme.tertiary,
-            fontSize = 20.sp,
-
-        )
-
-        options.forEachIndexed { index, option ->
-            val isChecked = checkBoxStates[index]
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                Checkbox(
-                    checked = isChecked.value,
-                    onCheckedChange = { isChecked.value = it },
-                )
-                Text(
-                    text = option,
-                    color = MaterialTheme.colorScheme.tertiary,
-                    fontSize = 16.sp
-                )
-            }
         }
     }
 }

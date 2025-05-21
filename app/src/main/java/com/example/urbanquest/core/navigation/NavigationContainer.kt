@@ -91,7 +91,7 @@ fun NavigationContainer(navController: NavHostController) {
             PlaceItem(navController, itemFromDBViewModel)
         }
         composable("RecomendationTest"){
-            RecomendationTest(navController, recommendationViewModel)
+            RecomendationTest(navController, recommendationViewModel, userViewModel)
         }
         composable("RecomendationList"){
             Recommendations(navController, recommendationViewModel, itemFromDBViewModel)
