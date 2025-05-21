@@ -59,9 +59,48 @@ private suspend fun searchInDatabaseWithTags(reference: DatabaseReference, tags:
     }
 }
 
-private fun countTagMatches(item: ItemFromDB, tags: List<String>): Int {
-    val matchingTags = item.tags?.values?.filter { tags.contains(it.trim()) }
-    Log.d("CountTagMatches", "Item: ${item.name}, Matching Tags: $matchingTags")
-    return matchingTags?.count() ?: 0
+private fun countTagMatches(item: ItemFromDB, selectedTags: List<String>): Int {
+    if (selectedTags.isEmpty() || item.tags.isNullOrEmpty()) return 0
+
+    var totalScore = 0
+
+    // Проверяем каждый выбранный тег
+    for (selectedTag in selectedTags) {
+        var bestMatchScore = 0
+
+        // Проверяем против каждого тега элемента
+        for (itemTag in item.tags.values) {
+            val score = calculateTagMatchScore(selectedTag, itemTag)
+            bestMatchScore = maxOf(bestMatchScore, score)
+        }
+
+        totalScore += bestMatchScore
+    }
+
+    Log.d("CountTagMatches", "Item: ${item.name}, Total Score: $totalScore, Selected Tags: $selectedTags")
+    return totalScore
+}
+
+private fun calculateTagMatchScore(selectedTag: String, itemTag: String): Int {
+    val normalizedSelectedTag = selectedTag.trim().lowercase()
+    val normalizedItemTag = itemTag.trim().lowercase()
+
+    if (normalizedSelectedTag == normalizedItemTag) {
+        return 3
+    }
+
+    if (normalizedSelectedTag.contains(normalizedItemTag) ||
+        normalizedItemTag.contains(normalizedSelectedTag)) {
+        return 2
+    }
+
+    val keywords = normalizedSelectedTag.split(" ")
+    for (keyword in keywords) {
+        if (keyword.length > 3 && normalizedItemTag.contains(keyword)) {
+            return 1
+        }
+    }
+
+    return 0
 }
 
