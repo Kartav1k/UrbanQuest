@@ -16,6 +16,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -146,7 +147,7 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = "Количество рекомендаций: $recommendationCount",
+                text = "Количество рекомендованных мест: $recommendationCount",
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = 16.sp,
                 modifier = Modifier.padding(bottom = 8.dp)
@@ -157,13 +158,17 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
                 onValueChange = { recommendationCount = it.toInt() },
                 valueRange = 1f..10f,
                 steps = 9,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
+                colors = SliderDefaults.colors(
+                    thumbColor = MaterialTheme.colorScheme.tertiary,
+                    activeTrackColor = MaterialTheme.colorScheme.tertiary,
+                    inactiveTrackColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.3f)
+                )
             )
-
             Text(
                 text = "Будет показано до $recommendationCount мест для прогулок и до $recommendationCount заведений",
-                color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.7f),
-                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.tertiary,
+                fontSize = 10.sp,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(top = 4.dp, bottom = 16.dp)
             )

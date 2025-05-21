@@ -14,6 +14,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,17 +23,21 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.urbanquest.R
 import com.example.urbanquest.ui.theme.BottomAppBarColor
+import com.example.urbanquest.ui.viewmodel.ItemFromDBViewModel
 
 //Composable-функция-контейнер для других функций, вместе с нижней строкой навигации
 @Composable
-fun Container() {
+fun Container(itemFromDBViewModel: ItemFromDBViewModel = viewModel()) {
     val navController = rememberNavController()
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
+    val selectedPlaceIds by itemFromDBViewModel.selectedForMap.collectAsState()
+    val selectedCount = selectedPlaceIds.size
 
     Scaffold(
         bottomBar = {
@@ -99,18 +104,23 @@ fun Container() {
 
                         IconButton(
                             onClick = {
-                                if (currentRoute != "YandexMap") {
-                                    navController.navigate("YandexMap")
+                                val selectedCount = itemFromDBViewModel.selectedForMap.value.size
+                                if (selectedCount > 0) {
+                                    navController.navigate("map?showSelected=true")
+                                } else {
+                                    navController.navigate("map?showSelected=false")
                                 }
                             },
-                            enabled = currentRoute != "YandexMap"
+                            enabled = currentRoute !in listOf("YandexMap", "map_selected", "map?showSelected=true", "map?showSelected=false")
                         ) {
                             Icon(
                                 painter = painterResource(id = R.drawable.map_icon),
                                 contentDescription = "Yandex Map",
-                                modifier = Modifier
-                                    .size(40.dp),
-                                tint = if (currentRoute == "YandexMap") MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.secondaryContainer
+                                modifier = Modifier.size(40.dp),
+                                tint = if (currentRoute in listOf("YandexMap", "map_selected", "map?showSelected=true", "map?showSelected=false"))
+                                    MaterialTheme.colorScheme.primary
+                                else
+                                    MaterialTheme.colorScheme.secondaryContainer
                             )
                         }
 

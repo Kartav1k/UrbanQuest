@@ -66,8 +66,12 @@ fun NavigationContainer(navController: NavHostController) {
         composable("MenuHub"){
             MenuHub(navController, userViewModel)
         }
-        composable("YandexMap"){
-            YandexMap(navController, userViewModel)
+        composable("YandexMap") {
+            YandexMap(
+                navController = navController,
+                userViewModel = userViewModel,
+                itemViewModel = itemFromDBViewModel
+            )
         }
         composable("Search"){
             Search(navController, userViewModel, itemFromDBViewModel)
@@ -102,12 +106,37 @@ fun NavigationContainer(navController: NavHostController) {
         composable("WalkingPlaces"){
             WalkingPlaces(navController, itemFromDBViewModel, userViewModel)
         }
+
+        composable("map_selected") {
+            YandexMap(
+                navController = navController,
+                userViewModel = userViewModel,
+                itemViewModel = itemFromDBViewModel,
+                showSelectedOnly = true
+            )
+        }
+
         composable("map/{lat}/{lon}") { backStackEntry ->
             val lat = backStackEntry.arguments?.getString("lat")?.toDoubleOrNull()
             val lon = backStackEntry.arguments?.getString("lon")?.toDoubleOrNull()
             if (lat != null && lon != null) {
-                YandexMap(navController, userViewModel, lat, lon)
+                YandexMap(
+                    navController = navController,
+                    userViewModel = userViewModel,
+                    lat = lat,
+                    lon = lon,
+                    itemViewModel = itemFromDBViewModel
+                )
             }
+        }
+        composable("map?showSelected={showSelected}") { backStackEntry ->
+            val showSelected = backStackEntry.arguments?.getString("showSelected")?.toBoolean() ?: false
+            YandexMap(
+                navController = navController,
+                userViewModel = userViewModel,
+                itemViewModel = itemFromDBViewModel,
+                showSelectedOnly = showSelected
+            )
         }
     }
 }

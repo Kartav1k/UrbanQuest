@@ -1,5 +1,6 @@
 package com.example.urbanquest.ui.components
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -16,11 +17,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -70,6 +73,8 @@ fun RecommendationItem(
     val isFavorite = remember { mutableStateOf(userViewModel?.isFavourite(item.id.toString()) ?: false) }
     var isNavigating by remember { mutableStateOf(false) }
 
+    val selectedPlaces by itemFromDBViewModel.selectedForMap.collectAsState()
+    val isSelected = selectedPlaces.contains(item.id)
 
     if (userViewModel != null) {
         LaunchedEffect(userViewModel.userData.value) {
@@ -111,6 +116,16 @@ fun RecommendationItem(
             modifier = Modifier.padding(twelvePad),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Чекбокс внутри Row
+            Checkbox(
+                checked = isSelected,
+                onCheckedChange = {
+                    Log.d("RecommendationItem", "Checkbox for ${item.name} (ID: ${item.id}) changed to $it")
+                    itemFromDBViewModel.togglePlaceSelection(item.id)
+                },
+                modifier = Modifier.padding(end = 8.dp)
+            )
+
             // Изображение
             Box(
                 modifier = Modifier
@@ -201,6 +216,7 @@ fun RecommendationItem(
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)
+                        .horizontalScroll(rememberScrollState())
                 ) {
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.map_pin_icon),
@@ -280,8 +296,4 @@ fun RecommendationItem(
             }
         }
     }
-}
-
-private fun calculateMatchPercentage(matchCount: Int): Int {
-    return minOf(matchCount * 10, 100)
 }
