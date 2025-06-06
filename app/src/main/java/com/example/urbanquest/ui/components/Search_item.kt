@@ -44,16 +44,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.urbanquest.ui.viewmodel.UserViewModel
 import com.example.urbanquest.R
-import com.example.urbanquest.ui.viewmodel.ItemFromDBViewModel
 import com.example.urbanquest.domain.model.ItemFromDB
-import com.example.urbanquest.domain.utils.isOpen
 import com.example.urbanquest.domain.utils.constants.eightPad
 import com.example.urbanquest.domain.utils.constants.fourPad
 import com.example.urbanquest.domain.utils.constants.fourteenFontSize
 import com.example.urbanquest.domain.utils.constants.sixteenPad
 import com.example.urbanquest.domain.utils.constants.twelvePad
+import com.example.urbanquest.domain.utils.isOpen
+import com.example.urbanquest.ui.viewmodel.ItemFromDBViewModel
+import com.example.urbanquest.ui.viewmodel.UserViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -137,7 +137,6 @@ fun SearchItem(
                     .padding(start = twelvePad)
                     .weight(1f)
             ) {
-                // Заголовок и иконка избранного
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Top,
@@ -154,7 +153,7 @@ fun SearchItem(
                             color = MaterialTheme.colorScheme.tertiary,
                             fontSize = titleFontSize,
                             fontWeight = FontWeight.Bold,
-                            modifier = Modifier.padding(end = if (screenWidth < 360.dp) 24.dp else 32.dp) // Обеспечиваем место для иконки
+                            modifier = Modifier.padding(end = if (screenWidth < 360.dp) 24.dp else 32.dp)
                         )
                     }
 

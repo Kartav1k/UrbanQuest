@@ -32,8 +32,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.ui.viewmodel.UserViewModel
 import com.example.urbanquest.R
+import com.example.urbanquest.ui.viewmodel.UserViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -233,11 +233,7 @@ fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
                             color = MaterialTheme.colorScheme.tertiary,
                             textAlign = TextAlign.Center,
                             softWrap = true,
-                            fontSize = when {
-                                screenWidth <= 360.dp -> 15.sp
-                                screenWidth > 360.dp -> 18.sp
-                                else -> 18.sp
-                            }
+                            fontSize = 15.sp
                         )
                     }
                 }
@@ -284,11 +280,7 @@ fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
                             color = MaterialTheme.colorScheme.tertiary,
                             textAlign = TextAlign.Center,
                             softWrap = true,
-                            fontSize = when {
-                                screenWidth <= 360.dp -> 15.sp
-                                screenWidth > 360.dp -> 18.sp
-                                else -> 18.sp
-                            }
+                            fontSize = 15.sp
                         )
                     }
                 }

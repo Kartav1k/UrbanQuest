@@ -329,8 +329,10 @@ class UserViewModel : ViewModel() {
             return
         }
 
-        Log.d(TAG, "Добавление места $placeId в избранное для пользователя $uid")
-        db.child(uid).child("favourites").child(placeId).setValue(true)
+        val safeKey = "place_$placeId"
+
+        Log.d(TAG, "Добавление места $safeKey в избранное для пользователя $uid")
+        db.child(uid).child("favourites").child(safeKey).setValue(true)
             .addOnSuccessListener {
                 Log.d(TAG, "Место успешно добавлено в избранное")
                 fetchUserData(uid)
@@ -354,11 +356,12 @@ class UserViewModel : ViewModel() {
             return
         }
 
-        Log.d(TAG, "Удаление места $placeId из избранного для пользователя $uid")
-        db.child(uid).child("favourites").child(placeId).removeValue()
+        val safeKey = "place_$placeId"
+
+        Log.d(TAG, "Удаление места $safeKey из избранного для пользователя $uid")
+        db.child(uid).child("favourites").child(safeKey).removeValue()
             .addOnSuccessListener {
                 Log.d(TAG, "Место успешно удалено из избранного")
-                // Обновляем данные пользователя
                 fetchUserData(uid)
                 onResult(true)
             }
@@ -405,14 +408,18 @@ class UserViewModel : ViewModel() {
      * Проверка наличия места в избранном
      */
     fun isFavourite(placeId: String): Boolean {
-        return _userData.value?.favourites?.containsKey(placeId) == true
+        val safeKey = "place_$placeId"
+        return _userData.value?.favourites?.containsKey(safeKey) == true
     }
+
 
     /**
      * Получение списка избранных мест
      */
     fun getFavouritePlaces(): List<String> {
-        return _userData.value?.favourites?.filter { it.value }?.keys?.toList() ?: emptyList()
+        return _userData.value?.favourites?.filter { it.value }?.keys?.map {
+            it.removePrefix("place_")
+        }?.toList() ?: emptyList()
     }
 
     /**

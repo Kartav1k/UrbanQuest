@@ -145,7 +145,7 @@ fun InfoAboutApp(navController: NavHostController, userViewModel: UserViewModel)
 
         item {
             Text(
-                stringResource(R.string.version_app)+" 0.2.1",
+                stringResource(R.string.version_app)+" 1.0",
                 modifier = Modifier.padding(start = 16.dp),
                 color = MaterialTheme.colorScheme.tertiary,
                 fontSize = when {

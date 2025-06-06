@@ -82,7 +82,7 @@ fun PlaceItem(navController: NavHostController, viewModel: ItemFromDBViewModel) 
             .verticalScroll(rememberScrollState())
         ) {
 
-            Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
+            Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp).horizontalScroll(rememberScrollState())) {
                 IconButton(
                     onClick = {
                         navController.popBackStack()
