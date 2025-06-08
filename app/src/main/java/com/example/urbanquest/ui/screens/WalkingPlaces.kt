@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -162,7 +163,8 @@ fun WalkingPlaces(
                                                 onClick = {
                                                     itemFromDBViewModel.loadMoreWalkingPlaces()
                                                 },
-                                                enabled = !isLoadingMore
+                                                enabled = !isLoadingMore,
+                                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
                                             ) {
                                                 if (isLoadingMore) {
                                                     Row {
@@ -200,12 +202,12 @@ fun WalkingPlaces(
                         .padding(start = 16.dp, bottom = 16.dp)
                         .size(40.dp),
                     shape = CircleShape,
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowUp,
                         contentDescription = "Наверх",
-                        tint = MaterialTheme.colorScheme.onPrimary,
+                        tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.size(20.dp)
                     )
                 }

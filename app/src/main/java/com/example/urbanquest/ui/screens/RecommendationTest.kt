@@ -12,6 +12,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -43,7 +44,7 @@ import com.example.urbanquest.ui.viewmodel.UserViewModel
 //Добавить по кол-ву человек
 //Composable-функция теста рекомендаций
 @Composable
-fun RecomendationTest(navController: NavHostController, viewModel: RecommendationViewModel, userViewModel: UserViewModel) {
+fun RecommendationTest(navController: NavHostController, viewModel: RecommendationViewModel, userViewModel: UserViewModel) {
 
     val checkBoxLists = listOf(
         listOf("Один", "С парой", "С друзьями", "С коллегами", "С семьей"),
@@ -119,7 +120,11 @@ fun RecomendationTest(navController: NavHostController, viewModel: Recommendatio
         ) {
             Checkbox(
                 checked = showFoodOptions,
-                onCheckedChange = { showFoodOptions = it }
+                onCheckedChange = { showFoodOptions = it },
+                colors = CheckboxDefaults.colors(
+                    checkedColor = MaterialTheme.colorScheme.tertiary,
+                    uncheckedColor = MaterialTheme.colorScheme.outline,
+                )
             )
             Text(
                 text = stringResource(R.string.want_eat),

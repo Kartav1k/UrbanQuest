@@ -45,21 +45,14 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Регистрация нового пользователя
-     */
     fun register(email: String, password: String, login: String, onResult: (Boolean, String?) -> Unit) {
         _isLoading.value = true
-
-        // Проверяем уникальность логина
         checkLoginExists(login) { loginExists ->
             if (loginExists) {
                 _isLoading.value = false
                 onResult(false, "Логин уже занят")
                 return@checkLoginExists
             }
-
-            // Если логин свободен, создаем нового пользователя
             auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -77,10 +70,6 @@ class UserViewModel : ViewModel() {
                 }
         }
     }
-
-    /**
-     * Создание записи пользователя в базе данных
-     */
 
     private fun createUserInDatabase(userId: String, email: String, login: String, onResult: (Boolean, String?) -> Unit) {
         val newUser = User(userId = userId, email = email, login = login)
@@ -102,9 +91,6 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    /**
-     * Обработка ошибок авторизации Firebase
-     */
     private fun handleAuthError(exception: Exception?, onResult: (Boolean, String?) -> Unit) {
         val errorMessage = when {
             exception?.message?.contains("email address is already in use", ignoreCase = true) == true ->
@@ -119,9 +105,6 @@ class UserViewModel : ViewModel() {
         onResult(false, errorMessage)
     }
 
-    /**
-     * Проверка существования логина в базе данных
-     */
     private fun checkLoginExists(login: String, onResult: (Boolean) -> Unit) {
         db.orderByChild("login").equalTo(login).get()
             .addOnSuccessListener { snapshot ->
@@ -135,14 +118,8 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    /**
-     * Авторизация по логину и паролю
-     */
     fun loginWithCredentials(login: String, password: String, onResult: (Boolean, String?) -> Unit) {
         _isLoading.value = true
-        Log.d(TAG, "Попытка входа с логином: $login")
-
-        // Находим email по логину
         db.orderByChild("login").equalTo(login).get()
             .addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
@@ -151,7 +128,6 @@ class UserViewModel : ViewModel() {
                         val user = userSnapshot.getValue(User::class.java)
 
                         if (user != null && user.email.isNotEmpty()) {
-                            // Вход с найденным email и введенным паролем
                             signInWithEmail(user.email, password, onResult)
                         } else {
                             _isLoading.value = false
@@ -174,9 +150,6 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    /**
-     * Вход с использованием email и пароля
-     */
     private fun signInWithEmail(email: String, password: String, onResult: (Boolean, String?) -> Unit) {
         auth.signInWithEmailAndPassword(email, password)
             .addOnSuccessListener {
@@ -202,19 +175,13 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    /**
-     * Получение данных пользователя из базы данных
-     */
     fun fetchUserData(userId: String, onResult: (Boolean) -> Unit = {}) {
         _isLoading.value = true
-        Log.d(TAG, "Загрузка данных пользователя с ID: $userId")
-
         db.child(userId).get()
             .addOnSuccessListener { snapshot ->
                 try {
                     val user = snapshot.getValue(User::class.java)
                     if (user != null) {
-                        Log.d(TAG, "Данные пользователя загружены успешно")
                         _userData.value = user
                         _isAuthorized.value = true
                     } else {
@@ -235,12 +202,7 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    /**
-     * Обновление состояния авторизации
-     */
     fun updateAuthState(currentUser: FirebaseUser?) {
-        Log.d(TAG, "Обновление состояния авторизации: ${currentUser?.uid}")
-
         if (currentUser != null && !currentUser.isAnonymous) {
             _isAuthorized.value = true
             fetchUserData(currentUser.uid)
@@ -251,13 +213,8 @@ class UserViewModel : ViewModel() {
         }
     }
 
-    /**
-     * Восстановление пароля
-     */
     fun resetPassword(email: String, onResult: (Boolean, String?) -> Unit) {
         _isLoading.value = true
-        Log.d(TAG, "Проверка наличия email в базе для восстановления пароля: $email")
-
         db.orderByChild("email").equalTo(email).get()
             .addOnSuccessListener { snapshot ->
                 if (snapshot.exists()) {
@@ -284,14 +241,8 @@ class UserViewModel : ViewModel() {
                 onResult(false, "Ошибка проверки email: ${exception.message}")
             }
     }
-
-    /**
-     * Гостевой вход
-     */
     fun signInAnonymously(onResult: (Boolean, String?) -> Unit) {
         _isLoading.value = true
-        Log.d(TAG, "Попытка гостевого входа")
-
         auth.signInAnonymously()
             .addOnSuccessListener {
                 Log.d(TAG, "Гостевой вход успешен")
@@ -303,8 +254,6 @@ class UserViewModel : ViewModel() {
             .addOnFailureListener { exception ->
                 Log.e(TAG, "Ошибка при гостевом входе", exception)
                 _isLoading.value = false
-
-                // Более детальная обработка ошибок
                 val errorMessage = when {
                     exception.message?.contains("administrators only") == true ->
                         "Анонимный вход отключен. Включите его в консоли Firebase."
@@ -317,21 +266,13 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    /**
-     * Добавление места в избранное
-     */
     fun addToFavourites(placeId: String, onResult: (Boolean) -> Unit = {}) {
         val uid = auth.currentUser?.uid
-
         if (uid == null || auth.currentUser?.isAnonymous == true) {
-            Log.w(TAG, "Попытка добавить в избранное без авторизации")
             onResult(false)
             return
         }
-
         val safeKey = "place_$placeId"
-
-        Log.d(TAG, "Добавление места $safeKey в избранное для пользователя $uid")
         db.child(uid).child("favourites").child(safeKey).setValue(true)
             .addOnSuccessListener {
                 Log.d(TAG, "Место успешно добавлено в избранное")
@@ -344,9 +285,6 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    /**
-     * Удаление места из избранного
-     */
     fun removeFromFavourites(placeId: String, onResult: (Boolean) -> Unit = {}) {
         val uid = auth.currentUser?.uid
 
@@ -355,9 +293,7 @@ class UserViewModel : ViewModel() {
             onResult(false)
             return
         }
-
         val safeKey = "place_$placeId"
-
         Log.d(TAG, "Удаление места $safeKey из избранного для пользователя $uid")
         db.child(uid).child("favourites").child(safeKey).removeValue()
             .addOnSuccessListener {
@@ -371,23 +307,15 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    /**
-     * Добавление достижения
-     */
     fun addAchievement(achievementId: String, onResult: (Boolean) -> Unit = {}) {
         val uid = auth.currentUser?.uid
-
         if (uid == null || auth.currentUser?.isAnonymous == true) {
-            Log.w(TAG, "Попытка добавить достижение без авторизации")
             onResult(false)
             return
         }
-
-        Log.d(TAG, "Добавление достижения $achievementId для пользователя $uid")
         db.child(uid).child("achievements").child(achievementId).setValue(true)
             .addOnSuccessListener {
                 Log.d(TAG, "Достижение успешно добавлено")
-                // Обновляем данные пользователя
                 fetchUserData(uid)
                 onResult(true)
             }
@@ -397,41 +325,25 @@ class UserViewModel : ViewModel() {
             }
     }
 
-    /**
-     * Проверка наличия достижения
-     */
     fun hasAchievement(achievementId: String): Boolean {
         return _userData.value?.achievements?.containsKey(achievementId) == true
     }
 
-    /**
-     * Проверка наличия места в избранном
-     */
     fun isFavourite(placeId: String): Boolean {
         val safeKey = "place_$placeId"
         return _userData.value?.favourites?.containsKey(safeKey) == true
     }
 
-
-    /**
-     * Получение списка избранных мест
-     */
     fun getFavouritePlaces(): List<String> {
         return _userData.value?.favourites?.filter { it.value }?.keys?.map {
             it.removePrefix("place_")
         }?.toList() ?: emptyList()
     }
 
-    /**
-     * Получение списка достижений
-     */
     fun getAchievements(): List<String> {
         return _userData.value?.achievements?.filter { it.value }?.keys?.toList() ?: emptyList()
     }
 
-    /**
-     * Выход из аккаунта
-     */
     fun logout() {
         Log.d(TAG, "Выход из аккаунта")
         auth.signOut()

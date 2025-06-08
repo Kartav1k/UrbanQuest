@@ -10,7 +10,6 @@ import com.example.urbanquest.domain.utils.fetchRecommendations2
 import kotlinx.coroutines.launch
 
 //ViewModel для списка рекомендаций
-
 class RecommendationViewModel : ViewModel() {
     private val _walkingPlaces = MutableLiveData<List<ItemFromDB>>()
     val walkingPlaces: LiveData<List<ItemFromDB>> get() = _walkingPlaces
@@ -48,4 +47,3 @@ class RecommendationViewModel : ViewModel() {
         }
     }
 }
-

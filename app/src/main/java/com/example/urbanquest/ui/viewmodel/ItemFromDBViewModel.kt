@@ -67,7 +67,6 @@ class ItemFromDBViewModel : ViewModel() {
     private val _currentSearchQuery = MutableLiveData<String>("")
     val currentSearchQuery: LiveData<String> = _currentSearchQuery
 
-    // Ключи для пагинации
     private var lastWalkingKey: String? = null
     private var lastFoodKey: String? = null
 
@@ -132,7 +131,6 @@ class ItemFromDBViewModel : ViewModel() {
         }
     }
 
-    // НОВАЯ функция для загрузки первой страницы еды
     fun loadFoodPlacesFirstPage() {
         if (_isLoadingFood.value == true) return
 
@@ -148,7 +146,6 @@ class ItemFromDBViewModel : ViewModel() {
                 lastFoodKey = newLastKey
                 _hasMoreFoodPages.value = places.size == 10 && newLastKey != null
 
-                // ДОБАВЬТЕ ЭТУ СТРОКУ:
                 _foodPlaces.value = foodPlacesCache.toList()
 
                 _isLoadingFood.value = false
@@ -230,57 +227,40 @@ class ItemFromDBViewModel : ViewModel() {
         _selectedPlace.value = ItemFromDB()
     }
 
-    // Выбрать/отменить выбор места для отображения на карте
     fun togglePlaceSelection(placeId: Long) {
         val currentSelected = _selectedForMap.value.toMutableSet()
 
         if (currentSelected.contains(placeId)) {
             currentSelected.remove(placeId)
-            Log.d("ItemFromDBViewModel", "Removed place $placeId from selection")
         } else {
             currentSelected.add(placeId)
-            Log.d("ItemFromDBViewModel", "Added place $placeId to selection")
         }
 
         _selectedForMap.value = currentSelected
-        Log.d("ItemFromDBViewModel", "Updated selected places: ${_selectedForMap.value}")
     }
 
 
-    // Проверить, выбрано ли место для отображения на карте
     fun isSelectedForMap(placeId: Long): Boolean {
         val isSelected = _selectedForMap.value.contains(placeId)
-        Log.d("ItemFromDBViewModel", "Checking if place $placeId is selected: $isSelected")
         return isSelected
     }
 
-    // Получить все выбранные места
     fun getSelectedPlaces(): List<ItemFromDB> {
-        // Для отладки
-        Log.d("ItemFromDBViewModel", "getSelectedPlaces called, selectedIds = ${_selectedForMap.value}")
-
-        // Проверяем кэши и загружаем места, если они еще не загружены
         if (walkingPlacesCache.isEmpty()) {
-            Log.d("ItemFromDBViewModel", "Walking places cache is empty, loading places")
-            // Загружаем синхронно вместо асинхронной загрузки
             try {
                 val places = runBlocking { fetchWalkingPlaces() }
                 walkingPlacesCache.clear()
                 walkingPlacesCache.addAll(places)
-                Log.d("ItemFromDBViewModel", "Loaded ${places.size} walking places")
             } catch (e: Exception) {
                 Log.e("ItemFromDBViewModel", "Error loading walking places: ${e.message}")
             }
         }
 
         if (foodPlacesCache.isEmpty()) {
-            Log.d("ItemFromDBViewModel", "Food places cache is empty, loading places")
-            // Загружаем синхронно вместо асинхронной загрузки
             try {
                 val places = runBlocking { fetchFoodPlaces() }
                 foodPlacesCache.clear()
                 foodPlacesCache.addAll(places)
-                Log.d("ItemFromDBViewModel", "Loaded ${places.size} food places")
             } catch (e: Exception) {
                 Log.e("ItemFromDBViewModel", "Error loading food places: ${e.message}")
             }
@@ -289,10 +269,6 @@ class ItemFromDBViewModel : ViewModel() {
         val allPlaces = walkingPlacesCache + foodPlacesCache
         val selectedPlacesIds = _selectedForMap.value
         val selectedPlaces = allPlaces.filter { selectedPlacesIds.contains(it.id) }
-
-        Log.d("ItemFromDBViewModel", "All places: ${allPlaces.size}, Selected places: ${selectedPlaces.size}")
-        Log.d("ItemFromDBViewModel", "Selected place IDs: $selectedPlacesIds")
-        Log.d("ItemFromDBViewModel", "Selected place names: ${selectedPlaces.map { it.name }}")
 
         return selectedPlaces
     }
@@ -320,7 +296,6 @@ class ItemFromDBViewModel : ViewModel() {
                 val allResults = searchWalkingPlacesCache + searchFoodPlacesCache
                 _searchResults.value = allResults
 
-                // Если получили меньше чем ожидали, значит больше данных нет
                 _hasMoreSearchPages.value = walkingPlaces.size == 10 || foodPlaces.size == 10
 
                 _isLoadingSearch.value = false
@@ -371,7 +346,10 @@ class ItemFromDBViewModel : ViewModel() {
         }
     }
 
-    // Очистить выбор всех мест
+    fun isNewSearchQuery(query: String): Boolean {
+        return query.trim() != _currentSearchQuery.value?.trim()
+    }
+
     fun clearSelections() {
         _selectedForMap.value = setOf()
         Log.d("ItemFromDBViewModel", "Cleared all selections")
@@ -387,7 +365,6 @@ class ItemFromDBViewModel : ViewModel() {
         Log.d("ItemFromDBViewModel", "Walking places cache cleared")
     }
 
-    // Очистка кэша для еды
     fun clearFoodPlacesCache() {
         foodPlacesCache.clear()
         lastFoodKey = null
@@ -398,7 +375,6 @@ class ItemFromDBViewModel : ViewModel() {
         Log.d("ItemFromDBViewModel", "Food places cache cleared")
     }
 
-    // Очистка кэша поиска
     fun clearSearchCache() {
         searchWalkingPlacesCache.clear()
         searchFoodPlacesCache.clear()
@@ -420,7 +396,7 @@ class ItemFromDBViewModel : ViewModel() {
     }
 
     fun searchWithDebounce(query: String) {
-        searchJob?.cancel() // Отменяем предыдущий поиск
+        searchJob?.cancel()
         searchJob = viewModelScope.launch {
             delay(500)
             searchFirstPage(query)

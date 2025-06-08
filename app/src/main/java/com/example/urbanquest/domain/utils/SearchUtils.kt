@@ -22,7 +22,6 @@ val open_place="Открыто "
 val unlimited_access="Без ограничений"
 
 //Вспомогательные функции
-
 fun isOpen(working: Map<String, WorkingTime>): String {
     val zoneId = ZoneId.of("Europe/Moscow")
     val currentDateTime = ZonedDateTime.now(zoneId)
@@ -157,7 +156,6 @@ private suspend fun fetchPaginatedData(
                         }
                     }
                 }
-
                 continuation.resume(Pair(result, newLastKey)) { }
             }
 
@@ -181,21 +179,15 @@ suspend fun loadFavoritePlaces(
     onErrorChange(null)
 
     try {
-        // Получаем список ID избранных мест
         val favoritePlaceIds = userViewModel.getFavouritePlaces()
-
-        // Загружаем все места и фильтруем по избранным
         val allWalkingPlaces = fetchWalkingPlaces()
         val allFoodPlaces = fetchFoodPlaces()
-
         val favoriteWalkingPlaces = allWalkingPlaces.filter {
             favoritePlaceIds.contains(it.id.toString())
         }
-
         val favoriteFoodPlaces = allFoodPlaces.filter {
             favoritePlaceIds.contains(it.id.toString())
         }
-
         onWalkingPlacesLoaded(favoriteWalkingPlaces)
         onFoodPlacesLoaded(favoriteFoodPlaces)
         onLoadingChange(false)
@@ -254,10 +246,8 @@ private suspend fun searchInDatabasePaginated(
                             }
                         }
                     }
-
-                    // Если не нашли достаточно результатов и обработали все доступные элементы
                     if (result.size < pageSize && processedCount < pageSize * 3) {
-                        newLastKey = null // Больше данных нет
+                        newLastKey = null
                     }
                 }
 

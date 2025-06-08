@@ -29,14 +29,12 @@ fun AchievementsScreen(navController: NavHostController, userViewModel: UserView
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
 
-    // Получаем список разблокированных достижений
     val unlockedAchievements = userViewModel.getAchievements()
 
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
     ) {
-        // Заголовок
         item {
             Row(
                 modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)
@@ -68,7 +66,6 @@ fun AchievementsScreen(navController: NavHostController, userViewModel: UserView
             }
         }
 
-        // Секция разблокированных достижений
         if (unlockedAchievements.isNotEmpty()) {
             item {
                 Text(
@@ -89,7 +86,6 @@ fun AchievementsScreen(navController: NavHostController, userViewModel: UserView
             }
         }
 
-        // Секция заблокированных достижений
         item {
             Text(
                 text = if (unlockedAchievements.isEmpty()) "Доступные достижения" else "Еще не получены",
@@ -100,7 +96,6 @@ fun AchievementsScreen(navController: NavHostController, userViewModel: UserView
             )
         }
 
-        // Достижение: Переключить тему на тёмную
         item {
             val achievementId = "dark_theme_switcher"
             if (!unlockedAchievements.contains(achievementId)) {
@@ -111,7 +106,6 @@ fun AchievementsScreen(navController: NavHostController, userViewModel: UserView
             }
         }
 
-        // Достижение: Создать первый список рекомендаций
         item {
             val achievementId = "first_recommendation_list"
             if (!unlockedAchievements.contains(achievementId)) {
@@ -122,7 +116,6 @@ fun AchievementsScreen(navController: NavHostController, userViewModel: UserView
             }
         }
 
-        // Достижение: Зайти в раздел информации о приложении
         item {
             val achievementId = "app_info_visitor"
             if (!unlockedAchievements.contains(achievementId)) {

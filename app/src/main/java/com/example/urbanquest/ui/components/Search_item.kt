@@ -76,15 +76,12 @@ fun SearchItem(
         isFavorite.value = userViewModel.isFavourite(place.id.toString())
     }
 
-    // Адаптивные размеры на основе констант
     val imageSize = 96.dp
     val cornerRadius = 12.dp
     val iconSize = 18.dp
-
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
 
-    // Адаптивный размер шрифта на основе ширины экрана
     val titleFontSize = when {
         screenWidth < 320.dp -> 16.sp
         screenWidth < 360.dp -> 18.sp
@@ -131,7 +128,6 @@ fun SearchItem(
                 )
             }
 
-            // Информация о месте
             Column(
                 modifier = Modifier
                     .padding(start = twelvePad)
@@ -142,7 +138,6 @@ fun SearchItem(
                     verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    // Название места с горизонтальным скроллом
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -192,7 +187,6 @@ fun SearchItem(
 
                 Spacer(modifier = Modifier.height(fourPad))
 
-                // Адрес
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)
@@ -213,7 +207,6 @@ fun SearchItem(
                     )
                 }
 
-                // Рейтинг
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)
@@ -232,7 +225,6 @@ fun SearchItem(
                     )
                 }
 
-                // Время работы с горизонтальным скроллом
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)
@@ -244,7 +236,6 @@ fun SearchItem(
                         modifier = Modifier.size(iconSize)
                     )
 
-                    // Используем Box с горизонтальным скроллом для длинных строк времени работы
                     Box(
                         modifier = Modifier
                             .weight(1f)

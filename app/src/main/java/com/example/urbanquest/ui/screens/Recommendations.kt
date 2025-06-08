@@ -99,7 +99,6 @@
                         CircularProgressIndicator()
                     }
                 } else if (isError) {
-                    // Обработка ошибки
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
@@ -121,7 +120,6 @@
                         )
                     }
                 } else {
-                    // Список мест
                     LazyColumn(
                         modifier = Modifier.fillMaxSize()
                     ) {
@@ -166,8 +164,6 @@
                                 )
                             }
                         }
-
-                        // Добавляем отступ для нижней кнопки
                         item {
                             Spacer(modifier = Modifier.height(80.dp))
                         }
@@ -175,7 +171,6 @@
                 }
             }
 
-            // Нижняя панель с кнопкой "Показать на карте"
             if (selectedPlaces.isNotEmpty()) {
                 Box(
                     modifier = Modifier

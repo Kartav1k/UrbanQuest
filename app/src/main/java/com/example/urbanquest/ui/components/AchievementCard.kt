@@ -31,27 +31,26 @@ import com.example.urbanquest.R
 
 @Composable
 fun AchievementCard(achievementId: String, isUnlocked: Boolean) {
-    // Данные о достижении на основе ID
     val (title, description, iconResId) = when (achievementId) {
         "dark_theme_switcher" -> Triple(
             "Повелитель тьмы",
             "Переключите тему на тёмную",
-            R.drawable.eye_open // Замените на реальный ID
+            R.drawable.eye_open
         )
         "first_recommendation_list" -> Triple(
             "Первооткрыватель",
             "Создайте свой первый список рекомендаций",
-            R.drawable.map_icon// Замените на реальный ID
+            R.drawable.map_icon
         )
         "app_info_visitor" -> Triple(
             "Любознательный исследователь",
             "Посетите раздел информации о приложении",
-            R.drawable.info_icon // Замените на реальный ID
+            R.drawable.info_icon
         )
         else -> Triple(
             "Неизвестное достижение",
             "Описание отсутствует",
-            R.drawable.placeholder_icon // Замените на реальный ID
+            R.drawable.placeholder_icon
         )
     }
 
@@ -113,7 +112,6 @@ fun AchievementCard(achievementId: String, isUnlocked: Boolean) {
                 )
             }
 
-            // Индикатор состояния достижения
             if (isUnlocked) {
                 Icon(
                     imageVector = Icons.Rounded.CheckCircle,

@@ -10,7 +10,6 @@
     import kotlinx.coroutines.suspendCancellableCoroutine
 
     //Вспомогательные функции для теста рекомендаций
-
     suspend fun fetchRecommendations2(selectedTags: List<String>, limit: Int = 10): Pair<List<ItemFromDB>, List<ItemFromDB>> {
         val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")
         val walkingPlacesRef = firebaseDatabase.getReference("walking_places_info")

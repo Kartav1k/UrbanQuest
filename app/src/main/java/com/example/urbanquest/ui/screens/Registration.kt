@@ -1,6 +1,6 @@
 package com.example.urbanquest.ui.screens
 
-    import android.widget.Toast
+import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -38,16 +38,14 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-    import com.example.urbanquest.ui.viewmodel.UserViewModel
-    import com.example.urbanquest.domain.utils.isEmailValid
-    import com.example.urbanquest.domain.utils.isLoginValid
-    import com.example.urbanquest.domain.utils.isPasswordValid
-    import com.example.urbanquest.R
+import com.example.urbanquest.ui.viewmodel.UserViewModel
+import com.example.urbanquest.domain.utils.isEmailValid
+import com.example.urbanquest.domain.utils.isLoginValid
+import com.example.urbanquest.domain.utils.isPasswordValid
+import com.example.urbanquest.R
 
 
     //Composable-функция регистрации, пока данные не сохраняются в строках при переходе назад
-
-
     @Composable
     fun Registration(navController: NavHostController, userViewModel: UserViewModel){
 

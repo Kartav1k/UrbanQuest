@@ -1,6 +1,5 @@
 package com.example.urbanquest.ui.screens
 
-
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -49,7 +49,6 @@ import kotlinx.coroutines.launch
 
 
 //Composable-функция для отображения всех заведений в БД
-
 @Composable
 fun FoodPlaces(
     navController: NavHostController,
@@ -61,19 +60,15 @@ fun FoodPlaces(
         val isLoadingMore by itemFromDBViewModel.isLoadingMoreFood.observeAsState(initial = false)
         val hasMorePages by itemFromDBViewModel.hasMoreFoodPages.observeAsState(initial = true)
         val places by itemFromDBViewModel.foodPlaces.observeAsState(initial = emptyList())
-
-        // Состояние списка и скролла
         val listState = rememberLazyListState()
         val scope = rememberCoroutineScope()
 
-        // Показывать ли кнопку "Наверх"
         val showScrollToTopButton by remember {
             derivedStateOf {
                 listState.firstVisibleItemIndex > 5
             }
         }
 
-        // Загружаем первую страницу при первом запуске
         LaunchedEffect(Unit) {
             if (places.isEmpty() && !isLoading) {
                 itemFromDBViewModel.loadFoodPlacesFirstPage()
@@ -85,13 +80,12 @@ fun FoodPlaces(
                 val configuration = LocalConfiguration.current
                 val screenWidth = configuration.screenWidthDp.dp
 
-                // Заголовок
                 Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
                     IconButton(
                         onClick = {
                             itemFromDBViewModel.clearFoodPlacesCache()
                             navController.popBackStack()
-                                  },
+                        },
                         modifier = Modifier.padding(top = 4.dp)
                     ) {
                         Icon(
@@ -138,7 +132,6 @@ fun FoodPlaces(
 
                     else -> {
                         Column {
-                            // Список мест
                             LazyColumn(
                                 state = listState,
                                 modifier = Modifier.weight(1f)
@@ -165,7 +158,8 @@ fun FoodPlaces(
                                                 onClick = {
                                                     itemFromDBViewModel.loadMoreFoodPlaces()
                                                 },
-                                                enabled = !isLoadingMore
+                                                enabled = !isLoadingMore,
+                                                colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
                                             ) {
                                                 if (isLoadingMore) {
                                                     Row {
@@ -202,12 +196,12 @@ fun FoodPlaces(
                         .padding(start = 16.dp, bottom = 16.dp)
                         .size(40.dp),
                     shape = CircleShape,
-                    containerColor = MaterialTheme.colorScheme.primary
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer
                 ) {
                     Icon(
                         imageVector = Icons.Default.KeyboardArrowUp,
                         contentDescription = "Наверх",
-                        tint = MaterialTheme.colorScheme.onPrimary,
+                        tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.size(20.dp)
                     )
                 }

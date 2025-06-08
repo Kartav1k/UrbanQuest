@@ -18,7 +18,7 @@ import com.example.urbanquest.ui.screens.InfoAboutApp
 import com.example.urbanquest.ui.screens.MenuHub
 import com.example.urbanquest.ui.screens.PasswordRecovery
 import com.example.urbanquest.ui.screens.ProfileScreen
-import com.example.urbanquest.ui.screens.RecomendationTest
+import com.example.urbanquest.ui.screens.RecommendationTest
 import com.example.urbanquest.ui.screens.Recommendations
 import com.example.urbanquest.ui.screens.Registration
 import com.example.urbanquest.ui.screens.Search
@@ -64,7 +64,7 @@ fun NavigationContainer(navController: NavHostController) {
             PasswordRecovery(navController, userViewModel)
         }
         composable("MenuHub"){
-            MenuHub(navController, userViewModel)
+            MenuHub(navController)
         }
         composable("YandexMap") {
             YandexMap(
@@ -95,7 +95,7 @@ fun NavigationContainer(navController: NavHostController) {
             PlaceItem(navController, itemFromDBViewModel)
         }
         composable("RecomendationTest"){
-            RecomendationTest(navController, recommendationViewModel, userViewModel)
+            RecommendationTest(navController, recommendationViewModel, userViewModel)
         }
         composable("RecomendationList"){
             Recommendations(navController, recommendationViewModel, itemFromDBViewModel, userViewModel)

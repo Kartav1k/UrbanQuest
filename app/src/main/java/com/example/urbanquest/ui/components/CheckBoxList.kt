@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -20,9 +21,8 @@ fun CheckBoxList(title: String, options: List<String>, checkBoxStates: List<Muta
         Text(
             text = title,
             color = MaterialTheme.colorScheme.tertiary,
-            fontSize = 20.sp,
-
-            )
+            fontSize = 20.sp
+        )
 
         options.forEachIndexed { index, option ->
             val isChecked = checkBoxStates[index]
@@ -34,6 +34,10 @@ fun CheckBoxList(title: String, options: List<String>, checkBoxStates: List<Muta
                 Checkbox(
                     checked = isChecked.value,
                     onCheckedChange = { isChecked.value = it },
+                    colors = CheckboxDefaults.colors(
+                        checkedColor = MaterialTheme.colorScheme.tertiary,
+                        uncheckedColor = MaterialTheme.colorScheme.outline,
+                    )
                 )
                 Text(
                     text = option,

@@ -37,10 +37,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Запрос разрешений на местоположение
         checkLocationPermissions()
-
         val mapkitApiKey = BuildConfig.MAPKIT_API_KEY
         MapKitFactory.setApiKey(mapkitApiKey)
 

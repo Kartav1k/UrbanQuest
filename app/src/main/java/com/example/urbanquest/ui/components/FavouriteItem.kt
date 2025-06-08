@@ -38,16 +38,16 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import com.example.urbanquest.ui.viewmodel.UserViewModel
 import com.example.urbanquest.R
-import com.example.urbanquest.ui.viewmodel.ItemFromDBViewModel
 import com.example.urbanquest.domain.model.ItemFromDB
-import com.example.urbanquest.domain.utils.isOpen
 import com.example.urbanquest.domain.utils.constants.eightPad
 import com.example.urbanquest.domain.utils.constants.fourPad
 import com.example.urbanquest.domain.utils.constants.fourteenFontSize
 import com.example.urbanquest.domain.utils.constants.sixteenPad
 import com.example.urbanquest.domain.utils.constants.twelvePad
+import com.example.urbanquest.domain.utils.isOpen
+import com.example.urbanquest.ui.viewmodel.ItemFromDBViewModel
+import com.example.urbanquest.ui.viewmodel.UserViewModel
 
 @Composable
 fun FavoriteItem(
@@ -58,7 +58,6 @@ fun FavoriteItem(
     userViewModel: UserViewModel,
     onRemoveFromFavorites: (String) -> Unit
 ) {
-    // Адаптивные размеры на основе констант
     val imageSize = 96.dp
     val cornerRadius = 12.dp
     val iconSize = 18.dp
@@ -66,7 +65,6 @@ fun FavoriteItem(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
 
-    // Адаптивный размер шрифта на основе ширины экрана
     val titleFontSize = when {
         screenWidth < 320.dp -> 16.sp
         screenWidth < 360.dp -> 18.sp
@@ -88,7 +86,6 @@ fun FavoriteItem(
             modifier = Modifier.padding(twelvePad),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Изображение с улучшенным видом
             Box(
                 modifier = Modifier
                     .size(imageSize)
@@ -109,19 +106,16 @@ fun FavoriteItem(
                 )
             }
 
-            // Информация о месте
             Column(
                 modifier = Modifier
                     .padding(start = twelvePad)
                     .weight(1f)
             ) {
-                // Заголовок и иконка избранного в отдельной строке
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    // Название места с горизонтальным скроллом
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -136,7 +130,6 @@ fun FavoriteItem(
                         )
                     }
 
-                    // Иконка избранного - специфична для FavoriteItem (всегда красная)
                     Icon(
                         imageVector = ImageVector.vectorResource(id = R.drawable.favourite_icon),
                         contentDescription = "Удалить из избранного",
@@ -156,7 +149,6 @@ fun FavoriteItem(
 
                 Spacer(modifier = Modifier.height(fourPad))
 
-                // Адрес
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)
@@ -177,7 +169,6 @@ fun FavoriteItem(
                     )
                 }
 
-                // Рейтинг
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)
@@ -196,7 +187,6 @@ fun FavoriteItem(
                     )
                 }
 
-                // Улучшенное отображение времени работы - всегда в одну строку
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)
@@ -207,8 +197,6 @@ fun FavoriteItem(
                         tint = MaterialTheme.colorScheme.tertiary,
                         modifier = Modifier.size(iconSize)
                     )
-
-                    // Используем Box с горизонтальным скроллом для длинных строк времени работы
                     Box(
                         modifier = Modifier
                             .weight(1f)

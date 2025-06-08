@@ -44,8 +44,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.ui.viewmodel.UserViewModel
 import com.example.urbanquest.R
+import com.example.urbanquest.ui.viewmodel.UserViewModel
 
 //Composable-функция изменения пароля, пока без логики сохранения данных, не сохраняется и изменяет в БД у пользователя
 
@@ -136,7 +136,6 @@ fun PasswordRecovery(navController: NavHostController, userViewModel: UserViewMo
             )
         )
 
-        // Отображение ошибки
         if (errorMessage != null) {
             Text(
                 text = errorMessage!!,
@@ -146,7 +145,6 @@ fun PasswordRecovery(navController: NavHostController, userViewModel: UserViewMo
             )
         }
 
-        // Кнопка отправки
         Button(
             onClick = {
                 if (email.isEmpty()) {

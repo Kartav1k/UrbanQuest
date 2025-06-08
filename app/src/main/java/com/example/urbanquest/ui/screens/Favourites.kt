@@ -35,26 +35,23 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.ui.viewmodel.UserViewModel
-import com.example.urbanquest.ui.components.FavoriteItem
 import com.example.urbanquest.R
-import com.example.urbanquest.ui.viewmodel.ItemFromDBViewModel
 import com.example.urbanquest.domain.model.ItemFromDB
 import com.example.urbanquest.domain.utils.loadFavoritePlaces
+import com.example.urbanquest.ui.components.FavoriteItem
+import com.example.urbanquest.ui.viewmodel.ItemFromDBViewModel
+import com.example.urbanquest.ui.viewmodel.UserViewModel
 import kotlinx.coroutines.launch
 
 @Composable
 fun Favourite(navController: NavHostController, userViewModel: UserViewModel, itemFromDBViewModel: ItemFromDBViewModel) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-
-    // State for favorite places
     var walkingPlaces by remember { mutableStateOf<List<ItemFromDB>>(emptyList()) }
     var foodPlaces by remember { mutableStateOf<List<ItemFromDB>>(emptyList()) }
     var isLoading by remember { mutableStateOf(true) }
     var error by remember { mutableStateOf<String?>(null) }
 
-    // Загружаем данные при первом отображении
     LaunchedEffect(Unit) {
         if (userViewModel.isAuthorized.value) {
             loadFavoritePlaces(
@@ -73,7 +70,6 @@ fun Favourite(navController: NavHostController, userViewModel: UserViewModel, it
         val configuration = LocalConfiguration.current
         val screenWidth = configuration.screenWidthDp.dp
 
-        // Верхняя панель
         Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
             IconButton(
                 onClick = {
@@ -140,7 +136,6 @@ fun Favourite(navController: NavHostController, userViewModel: UserViewModel, it
                 CircularProgressIndicator()
             }
         } else if (error != null) {
-            // Error state
             Box(
                 modifier = Modifier
                     .fillMaxSize()
@@ -191,9 +186,7 @@ fun Favourite(navController: NavHostController, userViewModel: UserViewModel, it
                 )
             }
         } else {
-            // Show favorites
             LazyColumn {
-                // Блок мест для прогулок
                 if (walkingPlaces.isNotEmpty()) {
                     item {
                         Text(
@@ -219,7 +212,6 @@ fun Favourite(navController: NavHostController, userViewModel: UserViewModel, it
                     }
                 }
 
-                // Блок кафе и ресторанов
                 if (foodPlaces.isNotEmpty()) {
                     item {
                         Text(

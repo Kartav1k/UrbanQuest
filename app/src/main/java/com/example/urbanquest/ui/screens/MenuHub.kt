@@ -33,7 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
-import com.example.urbanquest.ui.viewmodel.UserViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -41,7 +40,7 @@ import kotlinx.coroutines.launch
 
 //Composable-функция главного экрана с навигацией
 @Composable
-fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
+fun MenuHub(navController: NavHostController){
     var isNavigatingToWalking by remember { mutableStateOf(false) }
     var isNavigatingToFood by remember { mutableStateOf(false) }
     var isNavigatingToRecommendations by remember { mutableStateOf(false) }
@@ -67,7 +66,6 @@ fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
             }
         )
 
-        // Первая кнопка - Тест рекомендаций
         Button(
             onClick = {
                 if (!isNavigatingToRecommendationTest) {
@@ -137,8 +135,6 @@ fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
                 else -> 26.sp
             }
         )
-
-        // Вторая кнопка - Список рекомендаций
         Button(
             onClick = {
                 if (!isNavigatingToRecommendations) {
@@ -153,7 +149,7 @@ fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
             shape = RoundedCornerShape(15.dp),
             modifier = Modifier
                 .height(110.dp)
-                .padding(start = 44.dp, end = 44.dp, bottom = 16.dp)
+                .padding(start = 32.dp, end = 32.dp, bottom = 16.dp)
                 .fillMaxWidth()
                 .shadow(
                     elevation = 15.dp,
@@ -191,8 +187,6 @@ fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
 
         Row(horizontalArrangement = Arrangement.Center,
             modifier = Modifier.fillMaxWidth()) {
-
-            // Кнопка мест для прогулок
             Button(
                 onClick = {
                     if (!isNavigatingToWalking) {
@@ -208,7 +202,7 @@ fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
                 modifier = Modifier
                     .weight(1f)
                     .height(128.dp)
-                    .padding(start = 44.dp)
+                    .padding(start = 32.dp)
                     .shadow(
                         elevation = 15.dp,
                         shape = RoundedCornerShape(4.dp),
@@ -239,7 +233,6 @@ fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
                 }
             }
 
-            // Кнопка ресторанов и кафе
             Button(
                 onClick = {
                     if (!isNavigatingToFood) {
@@ -255,7 +248,7 @@ fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
                 modifier = Modifier
                     .weight(1f)
                     .height(128.dp)
-                    .padding(start = 8.dp, end = 44.dp)
+                    .padding(start = 8.dp, end = 32.dp)
                     .shadow(
                         elevation = 15.dp,
                         shape = RoundedCornerShape(4.dp),
@@ -288,5 +281,3 @@ fun MenuHub(navController: NavHostController, userViewModel: UserViewModel){
         }
     }
 }
-
-

@@ -89,7 +89,6 @@ fun RecommendationItem(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp.dp
 
-    // Адаптивный размер шрифта
     val titleFontSize = when {
         screenWidth < 320.dp -> 16.sp
         screenWidth < 360.dp -> 18.sp
@@ -116,7 +115,6 @@ fun RecommendationItem(
             modifier = Modifier.padding(twelvePad),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            // Чекбокс внутри Row
             Checkbox(
                 checked = isSelected,
                 onCheckedChange = {
@@ -126,7 +124,6 @@ fun RecommendationItem(
                 modifier = Modifier.padding(end = 8.dp)
             )
 
-            // Изображение
             Box(
                 modifier = Modifier
                     .size(imageSize)
@@ -147,19 +144,16 @@ fun RecommendationItem(
                 )
             }
 
-            // Информация о месте
             Column(
                 modifier = Modifier
                     .padding(start = twelvePad)
                     .weight(1f)
             ) {
-                // Заголовок и иконка избранного
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    // Название места с горизонтальным скроллом
                     Box(
                         modifier = Modifier
                             .weight(1f)
@@ -174,7 +168,6 @@ fun RecommendationItem(
                         )
                     }
 
-                    // Иконка избранного если userViewModel не null
                     if (userViewModel != null) {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = R.drawable.favourite_icon),
@@ -212,7 +205,6 @@ fun RecommendationItem(
 
                 Spacer(modifier = Modifier.height(fourPad))
 
-                // Адрес
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)
@@ -234,7 +226,6 @@ fun RecommendationItem(
                     )
                 }
 
-                // Рейтинг
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)
@@ -253,7 +244,6 @@ fun RecommendationItem(
                     )
                 }
 
-                // Время работы
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(vertical = 2.dp)
@@ -277,22 +267,6 @@ fun RecommendationItem(
                         )
                     }
                 }
-
-                // Показ процента соответствия для рекомендаций
-                /*if (item.matchCount > 0) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        modifier = Modifier.padding(vertical = 2.dp)
-                    ) {
-                        Text(
-                            text = "Соответствие: ${calculateMatchPercentage(item.matchCount)}%",
-                            color = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.7f),
-                            fontSize = 12.sp,
-                            textAlign = TextAlign.Start,
-                            modifier = Modifier.padding(start = fourPad)
-                        )
-                    }
-                }*/
             }
         }
     }

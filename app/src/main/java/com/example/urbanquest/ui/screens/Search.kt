@@ -1,5 +1,6 @@
 package com.example.urbanquest.ui.screens
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -26,7 +28,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -42,7 +43,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.urbanquest.R
-import com.example.urbanquest.domain.model.ItemFromDB
 import com.example.urbanquest.ui.components.SearchItem
 import com.example.urbanquest.ui.viewmodel.ItemFromDBViewModel
 import com.example.urbanquest.ui.viewmodel.UserViewModel
@@ -52,9 +52,6 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
-
-var searchListOfWalkingPlaces: ArrayList<ItemFromDB> = arrayListOf()
-var searchListOfCafes_And_Restaurants: ArrayList<ItemFromDB> = arrayListOf()
 
 //Composable-функция поиска
 @Composable
@@ -68,27 +65,28 @@ fun Search(
     var searchJob by remember { mutableStateOf<Job?>(null) }
     val context = LocalContext.current
 
-    // Observe search states
     val isLoading by itemFromDBViewModel.isLoadingSearch.observeAsState(initial = false)
     val isLoadingMore by itemFromDBViewModel.isLoadingMoreSearch.observeAsState(initial = false)
     val hasMorePages by itemFromDBViewModel.hasMoreSearchPages.observeAsState(initial = true)
     val searchResults by itemFromDBViewModel.searchResults.observeAsState(initial = emptyList())
     val currentQuery by itemFromDBViewModel.currentSearchQuery.observeAsState(initial = "")
 
-    // Состояние списка и скролла
     val listState = rememberLazyListState()
-    val scope = rememberCoroutineScope()
+
+    BackHandler {
+        itemFromDBViewModel.clearSearchCache()
+        navController.navigate("MenuHub")
+    }
 
     Column {
         val configuration = LocalConfiguration.current
         val screenWidth = configuration.screenWidthDp.dp
 
-        // Header
         Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
             IconButton(
                 onClick = {
                     itemFromDBViewModel.clearSearchCache()
-                    navController.popBackStack()
+                    navController.navigate("MenuHub")
                 },
                 modifier = Modifier.padding(top = 4.dp)
             ) {
@@ -111,7 +109,6 @@ fun Search(
             )
         }
 
-        // Search TextField
         TextField(
             value = searchRequest,
             onValueChange = { newValue ->
@@ -122,8 +119,10 @@ fun Search(
                     itemFromDBViewModel.clearSearchCache()
                 } else {
                     searchJob = CoroutineScope(Dispatchers.Main).launch {
-                        delay(500) // Debounce
-                        itemFromDBViewModel.searchFirstPage(newValue)
+                        delay(500)
+                        if (itemFromDBViewModel.isNewSearchQuery(newValue)) {
+                            itemFromDBViewModel.searchFirstPage(newValue)
+                        }
                     }
                 }
             },
@@ -157,7 +156,8 @@ fun Search(
                         .size(25.dp)
                         .padding(end = 4.dp)
                         .clickable {
-                            if (searchRequest.isNotBlank()) {
+                            if (searchRequest.isNotBlank() &&
+                                itemFromDBViewModel.isNewSearchQuery(searchRequest)) {
                                 searchJob?.cancel()
                                 searchJob = CoroutineScope(Dispatchers.Main).launch {
                                     itemFromDBViewModel.searchFirstPage(searchRequest)
@@ -184,7 +184,6 @@ fun Search(
             }
         )
 
-        // Content based on state
         when {
             isLoading && searchResults.isEmpty() -> {
                 Box(
@@ -200,8 +199,9 @@ fun Search(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(20.dp),
-                    verticalArrangement = Arrangement.Top,
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally,
+
                 ) {
                     Text(
                         text = stringResource(R.string.item_not_found),
@@ -227,7 +227,7 @@ fun Search(
                             )
                         }
 
-                        if (hasMorePages) {
+                        if (hasMorePages && !isLoading) {
                             item(key = "load_more_search_button") {
                                 Row(
                                     modifier = Modifier
@@ -239,7 +239,8 @@ fun Search(
                                         onClick = {
                                             itemFromDBViewModel.searchMoreResults()
                                         },
-                                        enabled = !isLoadingMore
+                                        enabled = !isLoadingMore,
+                                        colors = ButtonDefaults.buttonColors(MaterialTheme.colorScheme.secondary)
                                     ) {
                                         if (isLoadingMore) {
                                             Row {
@@ -264,7 +265,6 @@ fun Search(
             }
 
             else -> {
-                // Empty state - show nothing or search prompt
                 Box(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
@@ -272,7 +272,7 @@ fun Search(
                     Text(
                         text = "Введите запрос для поиска",
                         color = MaterialTheme.colorScheme.tertiary,
-                        fontSize = 16.sp
+                        fontSize = 18.sp
                     )
                 }
             }
