@@ -67,11 +67,7 @@ fun NavigationContainer(navController: NavHostController) {
             MenuHub(navController)
         }
         composable("YandexMap") {
-            YandexMap(
-                navController = navController,
-                userViewModel = userViewModel,
-                itemViewModel = itemFromDBViewModel
-            )
+            YandexMap(navController, userViewModel, itemFromDBViewModel)
         }
         composable("Search"){
             Search(navController, userViewModel, itemFromDBViewModel)

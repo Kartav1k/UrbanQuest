@@ -136,7 +136,6 @@ fun WalkingPlaces(
 
                     else -> {
                         Column {
-                            // Список мест
                             LazyColumn(
                                 state = listState,
                                 modifier = Modifier.weight(1f)

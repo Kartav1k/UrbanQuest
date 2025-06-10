@@ -97,6 +97,7 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.perf)
     implementation(libs.jetbrains.kotlinx.collections.immutable)
+    implementation(libs.firebase.firestore)
     testImplementation(libs.junit)
     testImplementation(libs.androidx.arch.core.testing)
     testImplementation(libs.coroutines.test)

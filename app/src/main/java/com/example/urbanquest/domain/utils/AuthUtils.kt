@@ -3,9 +3,8 @@ package com.example.urbanquest.domain.utils
 import android.util.Patterns
 
 // Различные вспомогательные функции для процесса регистрации и авторизации
-
 fun isLoginValid(login: String): Boolean {
-    return login.isNotBlank() && login.any { it.isLetter() } && login.length in 4..16
+    return login.isNotBlank() && login.any { it.isLetter() } && login.length in 6..16
 }
 
 fun isEmailValid(email: String): Boolean {

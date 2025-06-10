@@ -221,37 +221,61 @@ private suspend fun searchInDatabasePaginated(
     pageSize: Int
 ): Pair<List<ItemFromDB>, String?> {
     return suspendCancellableCoroutine { continuation ->
-        val dbQuery: Query = if (lastKey != null) {
-            reference.orderByKey().startAfter(lastKey).limitToFirst(pageSize * 3) // Берем больше для фильтрации
-        } else {
-            reference.orderByKey().limitToFirst(pageSize * 3)
-        }
-
-        dbQuery.addListenerForSingleValueEvent(object : ValueEventListener {
+        // Загружаем ВСЕ данные для поиска, как это делает fetchPaginatedData
+        reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                val result = mutableListOf<ItemFromDB>()
-                var newLastKey: String? = null
-                var processedCount = 0
+                val allMatchingItems = mutableListOf<ItemFromDB>()
+
+                Log.d("SearchPaginated", "Starting search for query: '$query'")
+                Log.d("SearchPaginated", "Total items in database: ${snapshot.childrenCount}")
 
                 if (snapshot.exists()) {
+                    // Ищем ВСЕ подходящие элементы (как в обычном списке мест)
                     for (itemSnapshot in snapshot.children) {
                         val item = itemSnapshot.getValue(ItemFromDB::class.java)
-                        newLastKey = itemSnapshot.key
-                        processedCount++
 
-                        if (item != null && item.name.contains(query, ignoreCase = true)) {
-                            result.add(item)
-                            if (result.size >= pageSize) {
-                                break
+                        if (item != null) {
+                            val itemName = item.name.takeIf { it.isNotBlank() } ?: ""
+                            Log.d("SearchPaginated", "Checking item: name='$itemName', key='${itemSnapshot.key}', query='$query'")
+
+                            if (itemName.isNotEmpty() && itemName.contains(query, ignoreCase = true)) {
+                                Log.d("SearchPaginated", "Found match: $itemName")
+                                allMatchingItems.add(item)
                             }
+                        } else {
+                            Log.w("SearchPaginated", "Item is null for key: ${itemSnapshot.key}")
                         }
                     }
-                    if (result.size < pageSize && processedCount < pageSize * 3) {
-                        newLastKey = null
-                    }
-                }
 
-                continuation.resume(Pair(result, newLastKey)) { }
+                    Log.d("SearchPaginated", "Total matching items found: ${allMatchingItems.size}")
+
+                    // Применяем пагинацию к результатам поиска
+                    val startIndex = if (lastKey != null) {
+                        val lastIndex = allMatchingItems.indexOfFirst { it.id.toString() == lastKey }
+                        if (lastIndex >= 0) lastIndex + 1 else 0
+                    } else {
+                        0
+                    }
+
+                    val endIndex = minOf(startIndex + pageSize, allMatchingItems.size)
+                    val paginatedResults = if (startIndex < allMatchingItems.size) {
+                        allMatchingItems.subList(startIndex, endIndex)
+                    } else {
+                        emptyList()
+                    }
+
+                    val newLastKey = if (endIndex < allMatchingItems.size) {
+                        paginatedResults.lastOrNull()?.id?.toString()
+                    } else {
+                        null
+                    }
+
+                    Log.d("SearchPaginated", "Returning ${paginatedResults.size} results for this page")
+                    continuation.resume(Pair(paginatedResults, newLastKey)) { }
+                } else {
+                    Log.d("SearchPaginated", "No data in snapshot")
+                    continuation.resume(Pair(emptyList(), null)) { }
+                }
             }
 
             override fun onCancelled(error: DatabaseError) {

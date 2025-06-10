@@ -30,6 +30,7 @@ googleFirebaseFirebasePerf = "1.4.2"
 coroutinesTest = "1.7.3"
 archCoreTesting = "2.2.0"
 testCore = "1.5.0"
+firebaseFirestore = "25.1.4"
 
 
 [libraries]
@@ -76,6 +77,7 @@ google-firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref
 firebase-database = { group = "com.google.firebase", name = "firebase-database", version.ref = "firebaseDatabase" }
 firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebasePerf" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
 
 
 [plugins]
