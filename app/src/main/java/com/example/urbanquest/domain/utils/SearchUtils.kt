@@ -55,18 +55,6 @@ fun isOpen(working: Map<String, WorkingTime>): String {
     }
 }
 
-suspend fun searchItems(query: String): Pair<List<ItemFromDB>, List<ItemFromDB>> {
-    val firebaseDatabase = FirebaseDatabase.getInstance("https://urbanquest-ce793-default-rtdb.europe-west1.firebasedatabase.app/")
-    val walkingPlacesRef = firebaseDatabase.getReference("walking_places_info")
-    val cafesAndRestaurantsRef = firebaseDatabase.getReference("cafes_and_restaurants")
-
-    return withContext(Dispatchers.IO) {
-        val walkingPlaces = searchInDatabase(walkingPlacesRef, query)
-        val cafesAndRestaurants = searchInDatabase(cafesAndRestaurantsRef, query)
-        Pair(walkingPlaces, cafesAndRestaurants)
-    }
-}
-
 private suspend fun searchInDatabase(reference: DatabaseReference, query: String): List<ItemFromDB> {
     return suspendCancellableCoroutine { continuation ->
         reference.addListenerForSingleValueEvent(object: ValueEventListener {

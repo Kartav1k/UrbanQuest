@@ -12,11 +12,9 @@ import com.example.urbanquest.domain.utils.fetchWalkingPlaces
 import com.example.urbanquest.domain.utils.fetchWalkingPlacesPaginated
 import com.example.urbanquest.domain.utils.searchItemsPaginated
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 
 class ItemFromDBViewModel : ViewModel() {
     private val _selectedPlace = MutableLiveData<ItemFromDB?>()
@@ -96,7 +94,7 @@ class ItemFromDBViewModel : ViewModel() {
                 walkingPlacesCache.addAll(places)
                 lastWalkingKey = newLastKey
                 _hasMoreWalkingPages.value = places.size == 10 && newLastKey != null
-                _walkingPlaces.value = walkingPlacesCache.toList() // ДОБАВИТЬ
+                _walkingPlaces.value = walkingPlacesCache.toList()
                 _isLoadingWalking.value = false
             } catch (e: Exception) {
                 Log.e("ItemFromDBViewModel", "Error loading walking places first page: ${e.message}")
@@ -118,7 +116,7 @@ class ItemFromDBViewModel : ViewModel() {
                     walkingPlacesCache.addAll(places)
                     lastWalkingKey = newLastKey
                     _hasMoreWalkingPages.value = places.size == 10 && newLastKey != null
-                    _walkingPlaces.value = walkingPlacesCache.toList() // ДОБАВИТЬ
+                    _walkingPlaces.value = walkingPlacesCache.toList()
                 } else {
                     _hasMoreWalkingPages.value = false
                 }
@@ -220,9 +218,6 @@ class ItemFromDBViewModel : ViewModel() {
         return foodPlacesCache
     }
 
-    fun getCurrentWalkingPlaces(): List<ItemFromDB> = walkingPlacesCache.toList()
-    fun getCurrentFoodPlaces(): List<ItemFromDB> = foodPlacesCache.toList()
-
     fun clearSelectedPlace() {
         _selectedPlace.value = ItemFromDB()
     }
@@ -239,39 +234,6 @@ class ItemFromDBViewModel : ViewModel() {
         _selectedForMap.value = currentSelected
     }
 
-
-    fun isSelectedForMap(placeId: Long): Boolean {
-        val isSelected = _selectedForMap.value.contains(placeId)
-        return isSelected
-    }
-
-    fun getSelectedPlaces(): List<ItemFromDB> {
-        if (walkingPlacesCache.isEmpty()) {
-            try {
-                val places = runBlocking { fetchWalkingPlaces() }
-                walkingPlacesCache.clear()
-                walkingPlacesCache.addAll(places)
-            } catch (e: Exception) {
-                Log.e("ItemFromDBViewModel", "Error loading walking places: ${e.message}")
-            }
-        }
-
-        if (foodPlacesCache.isEmpty()) {
-            try {
-                val places = runBlocking { fetchFoodPlaces() }
-                foodPlacesCache.clear()
-                foodPlacesCache.addAll(places)
-            } catch (e: Exception) {
-                Log.e("ItemFromDBViewModel", "Error loading food places: ${e.message}")
-            }
-        }
-
-        val allPlaces = walkingPlacesCache + foodPlacesCache
-        val selectedPlacesIds = _selectedForMap.value
-        val selectedPlaces = allPlaces.filter { selectedPlacesIds.contains(it.id) }
-
-        return selectedPlaces
-    }
 
     fun searchFirstPage(query: String) {
         if (_isLoadingSearch.value == true || query.isBlank()) return
@@ -386,21 +348,6 @@ class ItemFromDBViewModel : ViewModel() {
         _isLoadingSearch.value = false
         _isLoadingMoreSearch.value = false
         Log.d("ItemFromDBViewModel", "Search cache cleared")
-    }
-
-    fun clearAllCache() {
-        clearWalkingPlacesCache()
-        clearFoodPlacesCache()
-        clearSearchCache()
-        Log.d("ItemFromDBViewModel", "All cache cleared")
-    }
-
-    fun searchWithDebounce(query: String) {
-        searchJob?.cancel()
-        searchJob = viewModelScope.launch {
-            delay(500)
-            searchFirstPage(query)
-        }
     }
 
     override fun onCleared() {

@@ -313,9 +313,6 @@ object MapUtils {
         return earthRadius * c
     }
 
-    fun calculateSimpleDistance(lat1: Double, lon1: Double, lat2: Double, lon2: Double): Double {
-        return calculateDistance(lat1, lon1, lat2, lon2) / 1000.0
-    }
 
     fun calculateBounds(points: List<Point>): Pair<Point, Point>? {
         if (points.isEmpty()) return null
@@ -407,7 +404,6 @@ object MapUtils {
         val finalPoints = optimizedRoute.map { points[it] }
         val finalPlaces = optimizedRoute.map { places[it] }
 
-        val totalDistance = calculateTotalRouteDistance(finalPoints)
         return Pair(finalPoints, finalPlaces)
     }
 
@@ -447,8 +443,6 @@ object MapUtils {
 
     private fun findCandidateStartPoints(points: List<Point>, clusters: List<PointCluster>): List<Int> {
         val candidates = mutableSetOf<Int>()
-        val centerLat = points.map { it.latitude }.average()
-        val centerLon = points.map { it.longitude }.average()
         candidates.add(points.indices.maxByOrNull { points[it].latitude } ?: 0)
         candidates.add(points.indices.minByOrNull { points[it].latitude } ?: 0)
         candidates.add(points.indices.maxByOrNull { points[it].longitude } ?: 0)
@@ -544,24 +538,6 @@ object MapUtils {
         }
     }
 
-    private fun findMostCentralPoint(points: List<Point>, clusters: List<PointCluster>): Int {
-        val avgLat = points.map { it.latitude }.average()
-        val avgLon = points.map { it.longitude }.average()
-
-        var centralIndex = 0
-        var minDistance = Double.MAX_VALUE
-
-        points.forEachIndexed { index, point ->
-            val distance = calculateDistance(avgLat, avgLon, point.latitude, point.longitude)
-            if (distance < minDistance) {
-                minDistance = distance
-                centralIndex = index
-            }
-        }
-
-        return centralIndex
-    }
-
     private fun buildClusterAwareRoute(
         points: List<Point>,
         clusters: List<PointCluster>,
@@ -617,37 +593,6 @@ object MapUtils {
             }
         }
         return -1
-    }
-
-    private fun orderPointsInCluster(
-        points: List<Point>,
-        clusterPoints: List<Int>,
-        startFromIndex: Int
-    ): List<Int> {
-        if (clusterPoints.size <= 1) return clusterPoints
-
-        val ordered = mutableListOf<Int>()
-        val remaining = clusterPoints.toMutableList()
-        var current = startFromIndex
-
-        while (remaining.isNotEmpty()) {
-            val nearest = remaining.minByOrNull { pointIndex ->
-                calculateDistance(
-                    points[current].latitude, points[current].longitude,
-                    points[pointIndex].latitude, points[pointIndex].longitude
-                )
-            }
-
-            if (nearest != null) {
-                ordered.add(nearest)
-                remaining.remove(nearest)
-                current = nearest
-            } else {
-                break
-            }
-        }
-
-        return ordered
     }
 
     private fun findBestNextTarget(
@@ -780,37 +725,6 @@ object MapUtils {
         return atan2(y, x)
     }
 
-    private fun findIntermediatePoints(
-        points: List<Point>,
-        fromIndex: Int,
-        toIndex: Int,
-        visited: BooleanArray
-    ): Int {
-        val unvisited = points.indices.filter { !visited[it] && it != toIndex }
-        if (unvisited.isEmpty()) return 0
-
-        val directDistance = calculateDistance(
-            points[fromIndex].latitude, points[fromIndex].longitude,
-            points[toIndex].latitude, points[toIndex].longitude
-        )
-
-        return unvisited.count { intermediateIndex ->
-            val distanceToIntermediate = calculateDistance(
-                points[fromIndex].latitude, points[fromIndex].longitude,
-                points[intermediateIndex].latitude, points[intermediateIndex].longitude
-            )
-
-            val distanceFromIntermediate = calculateDistance(
-                points[intermediateIndex].latitude, points[intermediateIndex].longitude,
-                points[toIndex].latitude, points[toIndex].longitude
-            )
-
-            val totalViaIntermediate = distanceToIntermediate + distanceFromIntermediate
-            val deviation = totalViaIntermediate / directDistance
-
-            deviation <= (1.0 + INTERMEDIATE_POINT_THRESHOLD)
-        }
-    }
 
     private fun applyAdvancedOptimizations(points: List<Point>, route: List<Int>): List<Int> {
         var optimizedRoute = route.toMutableList()

@@ -40,14 +40,12 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.ui.viewmodel.UserViewModel
+import com.example.urbanquest.R
 import com.example.urbanquest.domain.utils.isLoginValid
 import com.example.urbanquest.domain.utils.isPasswordValid
-import com.example.urbanquest.R
 import com.example.urbanquest.ui.theme.WhiteGrey
 import com.example.urbanquest.ui.theme.linkColor
-import com.google.firebase.Firebase
-import com.google.firebase.auth.auth
+import com.example.urbanquest.ui.viewmodel.UserViewModel
 
 
 //Composable-функция экрана авторизации
@@ -60,8 +58,6 @@ fun Authorization(navController: NavHostController, userViewModel: UserViewModel
     var isVisible by rememberSaveable { mutableStateOf(false) }
     var isLoading by rememberSaveable { mutableStateOf(false) }
     val context = LocalContext.current
-
-    val auth = Firebase.auth
 
     Column(modifier = Modifier
         .fillMaxSize()

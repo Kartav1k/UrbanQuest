@@ -29,7 +29,6 @@ class UserViewModel : ViewModel() {
     val isLoading: State<Boolean> = _isLoading
 
     private val _isLoginChecked = mutableStateOf(false)
-    val isLoginChecked: State<Boolean> = _isLoginChecked
 
     init {
         checkCurrentUser()

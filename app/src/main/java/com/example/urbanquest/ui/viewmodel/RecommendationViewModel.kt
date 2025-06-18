@@ -24,7 +24,6 @@ class RecommendationViewModel : ViewModel() {
     val isError: LiveData<Boolean> get() = _isError
 
     private val _recommendationLimit = MutableLiveData(10)
-    val recommendationLimit: LiveData<Int> get() = _recommendationLimit
 
     fun setRecommendationLimit(limit: Int) {
         _recommendationLimit.value = limit
