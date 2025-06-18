@@ -25,12 +25,11 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
-import com.example.urbanquest.ui.viewmodel.UserViewModel
 import com.example.urbanquest.R
+import com.example.urbanquest.ui.viewmodel.UserViewModel
 
 
-//Начальный экран, где выбор куда перейти: на регистрацию, на авторизацию или войти без входа с урезанным функционалом(не реализовано)
-
+//Начальный экран, где выбор куда перейти: на регистрацию, на авторизацию или войти без входа с урезанным функционалом
 @Composable
 fun ChoiceAuthorization(navController: NavHostController, userViewModel: UserViewModel){
 

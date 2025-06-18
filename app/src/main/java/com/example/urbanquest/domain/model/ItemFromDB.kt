@@ -1,6 +1,5 @@
 package com.example.urbanquest.domain.model
 
-//Data-класс для места
 data class ItemFromDB(
     val name: String = "",
     val address: String = "",

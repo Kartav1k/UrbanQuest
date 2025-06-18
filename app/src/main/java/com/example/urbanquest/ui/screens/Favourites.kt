@@ -171,7 +171,6 @@ fun Favourite(navController: NavHostController, userViewModel: UserViewModel, it
                 }
             }
         } else if (walkingPlaces.isEmpty() && foodPlaces.isEmpty()) {
-            // No favorites
             Box(
                 modifier = Modifier
                     .fillMaxSize()

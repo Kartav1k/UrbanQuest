@@ -60,18 +60,15 @@ fun WalkingPlaces(
         val hasMorePages by itemFromDBViewModel.hasMoreWalkingPages.observeAsState(initial = true)
         val places by itemFromDBViewModel.walkingPlaces.observeAsState(initial = emptyList())
 
-        // Состояние списка и скролла
         val listState = rememberLazyListState()
         val scope = rememberCoroutineScope()
 
-        // Показывать ли кнопку "Наверх"
         val showScrollToTopButton by remember {
             derivedStateOf {
                 listState.firstVisibleItemIndex > 5
             }
         }
 
-        // Загружаем первую страницу при первом запуске
         LaunchedEffect(Unit) {
             if (places.isEmpty() && !isLoading) {
                 itemFromDBViewModel.loadWalkingPlacesFirstPage()
@@ -83,7 +80,6 @@ fun WalkingPlaces(
                 val configuration = LocalConfiguration.current
                 val screenWidth = configuration.screenWidthDp.dp
 
-                // Заголовок
                 Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
                     IconButton(
                         onClick = {

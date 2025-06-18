@@ -209,7 +209,6 @@ private suspend fun searchInDatabasePaginated(
     pageSize: Int
 ): Pair<List<ItemFromDB>, String?> {
     return suspendCancellableCoroutine { continuation ->
-        // Загружаем ВСЕ данные для поиска, как это делает fetchPaginatedData
         reference.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val allMatchingItems = mutableListOf<ItemFromDB>()
@@ -218,7 +217,6 @@ private suspend fun searchInDatabasePaginated(
                 Log.d("SearchPaginated", "Total items in database: ${snapshot.childrenCount}")
 
                 if (snapshot.exists()) {
-                    // Ищем ВСЕ подходящие элементы (как в обычном списке мест)
                     for (itemSnapshot in snapshot.children) {
                         val item = itemSnapshot.getValue(ItemFromDB::class.java)
 
@@ -234,10 +232,6 @@ private suspend fun searchInDatabasePaginated(
                             Log.w("SearchPaginated", "Item is null for key: ${itemSnapshot.key}")
                         }
                     }
-
-                    Log.d("SearchPaginated", "Total matching items found: ${allMatchingItems.size}")
-
-                    // Применяем пагинацию к результатам поиска
                     val startIndex = if (lastKey != null) {
                         val lastIndex = allMatchingItems.indexOfFirst { it.id.toString() == lastKey }
                         if (lastIndex >= 0) lastIndex + 1 else 0

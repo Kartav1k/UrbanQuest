@@ -47,8 +47,7 @@ import androidx.navigation.NavHostController
 import com.example.urbanquest.R
 import com.example.urbanquest.ui.viewmodel.UserViewModel
 
-//Composable-функция изменения пароля, пока без логики сохранения данных, не сохраняется и изменяет в БД у пользователя
-
+//Composable-функция изменения пароля
 @Composable
 fun PasswordRecovery(navController: NavHostController, userViewModel: UserViewModel) {
     var email by rememberSaveable { mutableStateOf("") }
