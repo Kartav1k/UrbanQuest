@@ -58,7 +58,6 @@ import com.example.urbanquest.ui.viewmodel.UserViewModel
         Column(
             modifier = Modifier.fillMaxSize()
         ) {
-            // Верхняя панель с заголовком
             Row(modifier = Modifier.padding(bottom = 8.dp, start = 20.dp)) {
                 IconButton(
                     onClick = {
@@ -81,14 +80,12 @@ import com.example.urbanquest.ui.viewmodel.UserViewModel
                 )
             }
 
-            // Центральная часть с контентом
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .weight(1f)
             ) {
                 if (isLoading) {
-                    // Индикатор загрузки
                     Box(
                         modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center
